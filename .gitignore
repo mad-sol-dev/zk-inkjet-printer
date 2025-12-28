@@ -85,6 +85,7 @@ tools/**/*.tmp
 # ============================================================================
 # Temporary & Generated Files
 # ============================================================================
+SENSITIVE_DATA_SCAN_REPORT.md
 *.tmp
 *.bak
 *.log
@@ -104,3 +105,4 @@ dist/
 # MCP config files (contain tokens/keys)
 **/.mcp.json
 .mcp.json
+.mcp-stdio.json
