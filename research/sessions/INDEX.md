@@ -23,3 +23,4 @@ For documentation format and purpose, see [README.md](README.md).
 | 2025-12-27 | 2025-12-27_arm-thumb-analysis-mmio-extraction.md | ARM/Thumb analysis and MMIO register extraction. |
 | 2025-12-27 | 2025-12-27_bsp-mmio-registers.md | BSP header MMIO base and register extraction. |
 | 2025-12-27 | 2025-12-27_repository-restructure-planning.md | Repository restructure planning and CLAUDE.md update. |
+| 2025-12-28 | 2025-12-28_repository-anonymization-security-cleanup.md | Repository anonymization, security leak remediation, Git identity. |
