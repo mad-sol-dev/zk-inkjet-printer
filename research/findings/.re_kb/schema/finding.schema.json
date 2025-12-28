@@ -1,0 +1,465 @@
+{
+  "$defs": {
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional human readable explanation for this evidence item",
+          "title": "Description"
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Identifier for the referenced PDF or document",
+          "title": "Document Id"
+        },
+        "domain_file_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Ghidra domain file identifier (from project_overview)",
+          "title": "Domain File Id"
+        },
+        "file": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Path to a referenced log file or artifact",
+          "title": "File"
+        },
+        "function_address": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Address of the referenced function within the program",
+          "title": "Function Address"
+        },
+        "function_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Function name from Ghidra analysis (e.g., 'boot_stage_main')",
+          "title": "Function Name"
+        },
+        "ghidra_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GhidraReference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional helper payload emitted by GhidraMCPd. When provided the program_id/function_address/label fields are auto-populated."
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Label for the Ghidra symbol",
+          "title": "Label"
+        },
+        "line": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Line number for log/file based evidence",
+          "title": "Line"
+        },
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Page number within a PDF or document",
+          "title": "Page"
+        },
+        "program_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Legacy user-chosen identifier (deprecated, use domain_file_id)",
+          "title": "Program Id"
+        },
+        "program_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Human-readable program name (e.g., 'ZK-INKJET-NANO-BOOT.bin')",
+          "title": "Program Name"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Summary of the referenced test result",
+          "title": "Result"
+        },
+        "source_type": {
+          "$ref": "#/$defs/EvidenceSourceType",
+          "description": "Type of evidence reference"
+        },
+        "test_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Identifier for a referenced automated/manual test",
+          "title": "Test Id"
+        }
+      },
+      "required": [
+        "source_type"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "EvidenceSourceType": {
+      "enum": [
+        "ghidra",
+        "pdf",
+        "log",
+        "test",
+        "other"
+      ],
+      "title": "EvidenceSourceType",
+      "type": "string"
+    },
+    "FindingSeverity": {
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "title": "FindingSeverity",
+      "type": "string"
+    },
+    "FindingStatus": {
+      "enum": [
+        "open",
+        "in_progress",
+        "verified",
+        "closed"
+      ],
+      "title": "FindingStatus",
+      "type": "string"
+    },
+    "FindingType": {
+      "enum": [
+        "bug",
+        "vuln",
+        "behavior",
+        "hypothesis",
+        "todo"
+      ],
+      "title": "FindingType",
+      "type": "string"
+    },
+    "GhidraReference": {
+      "additionalProperties": false,
+      "properties": {
+        "domain_file_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Ghidra domain file identifier from project_overview",
+          "title": "Domain File Id"
+        },
+        "function_address": {
+          "description": "Entry point address for the referenced function",
+          "title": "Function Address",
+          "type": "string"
+        },
+        "function_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Function name from Ghidra analysis (e.g., 'boot_stage_main')",
+          "title": "Function Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional Ghidra symbol label; copied to evidence when absent",
+          "title": "Label"
+        },
+        "program_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Legacy user-chosen identifier (deprecated, use domain_file_id)",
+          "title": "Program Id"
+        },
+        "program_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Human-readable program name (e.g., 'ZK-INKJET-NANO-BOOT.bin')",
+          "title": "Program Name"
+        }
+      },
+      "required": [
+        "function_address"
+      ],
+      "title": "GhidraReference",
+      "type": "object"
+    }
+  },
+  "$id": "https://schemas.re-kb/v1/finding.schema.json",
+  "additionalProperties": false,
+  "properties": {
+    "component": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Component"
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "id": {
+      "pattern": "^finding-\\d{4,}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "next_steps": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Next Steps",
+      "type": "array"
+    },
+    "project_id": {
+      "title": "Project Id",
+      "type": "string"
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "maxLength": 512,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Provenance"
+    },
+    "raw_note": {
+      "anyOf": [
+        {
+          "maxLength": 32768,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Optional unstructured notes where analysts can dump raw thoughts and observations",
+      "title": "Raw Note"
+    },
+    "schema_version": {
+      "default": "2.0",
+      "description": "Schema version for migration support",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "severity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FindingSeverity"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "status": {
+      "$ref": "#/$defs/FindingStatus"
+    },
+    "summary": {
+      "maxLength": 2048,
+      "title": "Summary",
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "title": {
+      "maxLength": 512,
+      "title": "Title",
+      "type": "string"
+    },
+    "type": {
+      "$ref": "#/$defs/FindingType"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "project_id",
+    "type",
+    "status",
+    "title",
+    "summary"
+  ],
+  "title": "Finding",
+  "type": "object"
+}

@@ -1,0 +1,71 @@
+{
+  "$id": "https://schemas.re-kb/v1/project.schema.json",
+  "additionalProperties": false,
+  "properties": {
+    "auth_token": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Optional opaque token used by automation or shims when calling the RE KB tools.",
+      "title": "Auth Token"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Optional description of the project",
+      "title": "Description"
+    },
+    "name": {
+      "description": "Human readable project name",
+      "title": "Name",
+      "type": "string"
+    },
+    "project_id": {
+      "description": "Short identifier for the project",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "session_token": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Optional session token for automatic project binding via SSE transport. Generated during 'rekb init' and embedded in .mcp.json URL.",
+      "title": "Session Token"
+    },
+    "tags": {
+      "description": "Project level tags",
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    }
+  },
+  "required": [
+    "project_id",
+    "name"
+  ],
+  "title": "Project",
+  "type": "object"
+}
