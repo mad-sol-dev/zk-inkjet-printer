@@ -99,3 +99,4 @@ build/
 dist/
 *.tgz
 *.tar.gz
+.mcp.json
