@@ -459,7 +459,7 @@ cat ~/.cache/codex-as-mcp/logs/codex_agent_*.last_message.md
 
 **Agent Output Locations:**
 - Logs: `~/.cache/codex-as-mcp/logs/`
-- Work directory: `/home/martinm/programme/Projekte/zk-inkjet-printer`
+- Work directory: `$HOME/workspace/zk-inkjet-printer`
 
 ---
 
@@ -549,7 +549,7 @@ See `research/sessions/` for chronological logs:
 
 ### **Old Repository**
 
-Archived at: `/home/martinm/programme/Projekte/zk-inkjet-printer_old`
+Archived at: `$HOME/workspace/zk-inkjet-printer_old`
 - Contains legacy data/ structure
 - Reference for migration
 
