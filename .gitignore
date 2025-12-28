@@ -100,3 +100,7 @@ dist/
 *.tgz
 *.tar.gz
 .mcp.json
+
+# MCP config files (contain tokens/keys)
+**/.mcp.json
+.mcp.json
