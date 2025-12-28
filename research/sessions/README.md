@@ -34,6 +34,46 @@ Examples:
 - `2025-12-27_arm-thumb-analysis-mmio-extraction.md`
 - `2025-12-15_raw-write-chain-discovery.md`
 
+## Privacy & Anonymization
+
+**CRITICAL:** Session logs are public and committed to GitHub. All sensitive information must be anonymized before committing.
+
+### Anonymization Rules
+
+**Always replace:**
+- Real names: `martinm` → `user`, `Martin` → `User`
+- Home paths: `/home/martinm/` → `$HOME/`
+- Project paths: `/home/martinm/programme/Projekte/` → `$HOME/workspace/`
+- Hostnames: `roadwarrior` → `host`
+- System paths: `/usr/lib/jvm/jdk-21.0.8-oracle-x64/` → `$JAVA_HOME/`
+
+**Never commit:**
+- API keys, tokens, passwords
+- Private email addresses (use `mad-sol-dev@users.noreply.github.com`)
+- Absolute paths containing usernames
+- Internal hostnames or network information
+
+### Verification Before Commit
+
+Before committing a new session log:
+
+```bash
+# Check for sensitive data
+grep -n "martinm\|roadwarrior\|/home/martinm" research/sessions/YYYY-MM-DD_*.md
+
+# Anonymize if needed
+sed -i 's|/home/martinm/programme/Projekte/|$HOME/workspace/|g' research/sessions/YYYY-MM-DD_*.md
+sed -i 's|/home/martinm/|$HOME/|g' research/sessions/YYYY-MM-DD_*.md
+sed -i 's|martinm|user|g' research/sessions/YYYY-MM-DD_*.md
+sed -i 's|roadwarrior|host|g' research/sessions/YYYY-MM-DD_*.md
+```
+
+**Golden Rule:** When documenting anonymization procedures (like in session logs about privacy work), those documents must also be anonymized. Meta-documentation is not exempt.
+
+### Reference
+
+See `2025-12-28_repository-anonymization-security-cleanup.md` for complete anonymization process and security audit.
+
 ## Relationship to RE-KB
 
 Session logs are **complementary** to RE-KB:
