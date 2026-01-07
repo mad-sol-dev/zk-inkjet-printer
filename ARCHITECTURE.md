@@ -8,17 +8,18 @@ Instead of simply asking an LLM to "analyze this file," we expose specific tools
 
 ```mermaid
 graph TD
-    User[User / Orchestrator] --> Agent[LLM Agent (Claude/GPT)]
-    
-    subgraph "MCP Toolchain"
-        Agent <-->|Read/Scan| Ghidra[GhidraMCPd<br>(Binary Analysis)]
-        Agent <-->|Query/Update| RE_KB[re-kb-mcp<br>(Knowledge Base)]
-        Agent <-->|Lookup| PDF[pdf-reader-mcp<br>(Datasheets)]
+    U["User / Orchestrator"] --> A["LLM Agent (Claude/GPT)"]
+
+    subgraph MCP_TC["MCP Toolchain"]
+        A <--> |Read/Scan| G["GhidraMCPd<br/>(Binary Analysis)"]
+        A <--> |Query/Update| KB["re-kb-mcp<br/>(Knowledge Base)"]
+        A <--> |Lookup| P["pdf-reader-mcp<br/>(Datasheets)"]
     end
-    
-    Ghidra -->|Disassembly| Firmware[APP.bin / BOOT.bin]
-    PDF -->|Specs| Datasheets[N3290x PDF]
-    RE_KB -->|JSON| Findings[.re_kb/findings/]
+
+    G --> |Disassembly| F["Firmware<br/>APP.bin / BOOT.bin"]
+    P --> |Specs| D["Datasheets<br/>N3290x PDF"]
+    KB --> |JSON| FI["Findings<br/>.re_kb/findings/"]
+
 ```
 
 ### 1. GhidraMCPd (The Eyes)
