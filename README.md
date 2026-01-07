@@ -40,7 +40,7 @@ The goal is to understand the hardware and firmware well enough to enable **cust
 *   [**tools/**](tools/) - Custom Python scripts and utilities.
 
 **📚 Key Documentation:**
-*   [**ARCHITECTURE.md**](ARCHITECTURE.md) - System architecture and MCP workflow overview
+*   [**ANALYSIS_WORKFLOW.md**](ANALYSIS_WORKFLOW.md) - Analysis workflow and MCP architecture overview
 *   [**HISTORY.md**](HISTORY.md) - Project timeline and major milestones
 *   [**research/README.md**](research/README.md) - Research documentation index and Phase A results
 *   [**research/system_understanding.md**](research/system_understanding.md) - Comprehensive system reference
@@ -48,7 +48,7 @@ The goal is to understand the hardware and firmware well enough to enable **cust
 ## ⚡ Quick Start
 
 **New to this project?** Start here:
-1. Read [ARCHITECTURE.md](ARCHITECTURE.md) for system overview
+1. Read [ANALYSIS_WORKFLOW.md](ANALYSIS_WORKFLOW.md) for analysis workflow overview
 2. Check [research/README.md](research/README.md) for Phase A findings and current status
 3. Review [research/phase_a_sd_analysis/SUMMARY.md](research/phase_a_sd_analysis/SUMMARY.md) for latest ground truth
 
