@@ -1,0 +1,43 @@
+{
+  "findings": [
+    {
+      "component": "firmware",
+      "confidence": 1.0,
+      "created_at": "2025-12-27T22:29:22.720461Z",
+      "file": "findings/finding-0001.json",
+      "id": "finding-0001",
+      "severity": null,
+      "status": "verified",
+      "tags": [
+        "architecture",
+        "thumb",
+        "arm",
+        "foundation"
+      ],
+      "title": "Firmware uses ARM/Thumb Mixed-Mode Code",
+      "type": "behavior",
+      "updated_at": "2025-12-27T22:29:22.720461Z"
+    },
+    {
+      "component": "hardware",
+      "confidence": 1.0,
+      "created_at": "2025-12-27T22:30:15.032287Z",
+      "file": "findings/finding-0002.json",
+      "id": "finding-0002",
+      "severity": null,
+      "status": "in_progress",
+      "tags": [
+        "hardware",
+        "mmio",
+        "bsp",
+        "foundation",
+        "usb"
+      ],
+      "title": "N32903 MMIO Register Map Extracted from BSP",
+      "type": "behavior",
+      "updated_at": "2025-12-27T22:30:15.032287Z"
+    }
+  ],
+  "project_id": "zk-inkjet-printer",
+  "schema_version": "2.0"
+}

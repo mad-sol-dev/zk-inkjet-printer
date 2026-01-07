@@ -1,0 +1,12 @@
+{
+  "project_id": "zk-inkjet-printer",
+  "name": "re zk inkjet printer",
+  "description": "Reverse engineering chiky tech ZK1696 handheld inkjet (DWIN M5/Nuvoton SoC).",
+  "tags": [
+    "chiky-tech",
+    "zk1696",
+    "hp45si"
+  ],
+  "auth_token": "15876la191",
+  "session_token": "mwcxiu_o9brvEVqz1GVEUyv6ET3qYWnsY9WxTkEN5vw"
+}

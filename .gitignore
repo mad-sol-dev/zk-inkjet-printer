@@ -1,0 +1,113 @@
+# ============================================================================
+# Python
+# ============================================================================
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# ============================================================================
+# OS & IDE
+# ============================================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ============================================================================
+# Aider (AI coding assistant)
+# ============================================================================
+.aider*
+.aider-desk/
+
+# ============================================================================
+# Claude (AI assistant)
+# ============================================================================
+.claude/
+
+# ============================================================================
+# MCP (Model Context Protocol)
+# ============================================================================
+**/.mcp.json
+.mcp.json
+.mcp-stdio.json
+
+# ============================================================================
+# Firmware (large binaries)
+# ============================================================================
+# Keep tracked: APP.bin, BOOT.bin, UI-QVGA.bin, etc.
+# Ignore: SD card images (too large, except compressed via LFS)
+firmware/sdcard.img
+firmware/*.work.img
+firmware/image/*.img
+!firmware/image/*.img.xz
+*.extracted.bin
+
+# ============================================================================
+# Ghidra Projects
+# ============================================================================
+# Keep: .gpr project files
+# Ignore: Large repository data
+ghidra_projects/**/*.rep/
+ghidra_projects/**/*.lock
+ghidra_projects/**/*.log
+
+# ============================================================================
+# Research & Findings
+# ============================================================================
+# RE-KB temporary files
+research/findings/.re_kb/.id_lock
+research/findings/.re_kb.backup.*
+research/findings/.re_kb.zip
+research/findings/re_kb_archive/
+
+# Session backups (from anonymization)
+research/sessions/.backup_*/
+research/sessions/PRIVACY_SCAN_REPORT.md
+research/sessions/ANONYMIZATION_COMPLETE.md
+
+# Analysis outputs (large/generated)
+research/docs_rebuild/
+research/docs_rebuild/analysis/*.tmp
+research/docs_rebuild/analysis/temp_*
+
+# FAT volume extracts (temporary, too large)
+research/fat_volumes/
+
+# ============================================================================
+# Vendor Documentation (GITIGNORED - too large)
+# ============================================================================
+vendor/
+
+# ============================================================================
+# Tools & Scripts
+# ============================================================================
+tools/legacy/*.bak
+tools/**/*.tmp
+
+# ============================================================================
+# Temporary & Generated Files
+# ============================================================================
+SENSITIVE_DATA_SCAN_REPORT.md
+MIGRATION_PLAN.md
+*.tmp
+*.bak
+*.log
+*.cache
+.cache/
+
+# ============================================================================
+# Export/Build Artifacts
+# ============================================================================
+export/
+build/
+dist/
+*.tgz
+*.tar.gz
+.mcp.json
+firmware/image/sdcard.work.img.xz

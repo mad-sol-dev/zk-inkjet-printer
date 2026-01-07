@@ -1,0 +1,5 @@
+[mcp_servers.ghidra-bridge]
+# exakt das Python der GhidraMCPd-venv
+command = "/home/user/dev/GhidraMCPd/.venv/bin/python"
+args    = ["scripts/bridge_stdio.py", "--transport", "stdio"]
+cwd     = "/home/user/dev/GhidraMCPd"
