@@ -1,0 +1,47 @@
+{
+  "component": "hardware",
+  "confidence": 1.0,
+  "created_at": "2025-12-27T22:30:15.032287Z",
+  "evidence": [
+    {
+      "description": "Automated extraction via scripts/extract_bsp_mmio_registers.py from BSP headers in docs/vendor/N32901-3_NonOS_BSP/. Output file: research/findings/n32903_registers.json (9616 lines, 1544 register definitions).",
+      "document_id": null,
+      "domain_file_id": null,
+      "file": null,
+      "function_address": null,
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": null,
+      "result": null,
+      "source_type": "other",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0002",
+  "next_steps": [
+    "Import register map into Ghidra as Memory Map labels",
+    "Create C structs for USB/GPIO/ADC peripherals",
+    "Apply structs to decompiler for improved readability"
+  ],
+  "project_id": "zk-inkjet-printer",
+  "provenance": null,
+  "raw_note": null,
+  "schema_version": "2.0",
+  "severity": null,
+  "status": "in_progress",
+  "summary": "Extracted 1544 hardware register definitions from N32901-3 NonOS BSP headers. Key peripherals: USB_BA=0xB1008000, GPIO_BA=0xB8001000, ADC_BA=0xB800E000, TMR_BA=0xB8002000, SPI0_BA=0xB800C000. Register map stored in research/findings/n32903_registers.json for Ghidra import.",
+  "tags": [
+    "hardware",
+    "mmio",
+    "bsp",
+    "foundation",
+    "usb"
+  ],
+  "title": "N32903 MMIO Register Map Extracted from BSP",
+  "type": "behavior",
+  "updated_at": "2025-12-27T22:30:15.032287Z"
+}

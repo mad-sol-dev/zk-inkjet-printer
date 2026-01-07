@@ -1,0 +1,83 @@
+FAT Volume Inspection
+
+Volume | Offset | Size | Files | Dirs | Used Space | Status
+------ | ------ | ---- | ----- | ---- | ---------- | ------
+1 | 0x04000000 | 536870912 | 28 | 2 | 167.64 MiB | Populated
+2 | 0x24007E00 | 268435456 | 3 | 4 | 450.09 KiB | Populated
+3 | 0x2A61BE00 | 67108864 | 2 | 1 | 88 B | Populated
+
+Volume 1
+Offset: 0x04000000
+Size: 536870912 bytes (512.00 MiB)
+Files: 28
+Directories: 2
+Used space: 175779908 bytes (167.64 MiB)
+Status: Populated
+
+Directory tree (first 2 levels):
+::/
+  arial
+  DROIDS~1
+  DZPMYD
+  FZFSJW
+  FZHTJW
+  FZKTJW
+  FZSSJW
+  MONTSE~1
+  msyh
+  OPENSA~1
+  QISIAA~1
+  simfang
+  simhei
+  simkai
+  SIMLI
+  simsun
+  SIMYOU
+  SOURCE~1
+  SOURCE~2
+  SYMBOL
+  times
+  user/
+    font/
+  calibri
+  micross
+  ZK-INK~1
+  LEELAWUI
+  NIRMALA
+  segoeui
+  seguihis
+  seguisym
+
+
+Volume 2
+Offset: 0x24007E00
+Size: 268435456 bytes (256.00 MiB)
+Files: 3
+Directories: 4
+Used space: 460888 bytes (450.09 KiB)
+Status: Populated
+
+Directory tree (first 2 levels):
+::/
+  user/
+    font/
+    record/
+  SYSTEM~1/
+    WPSETT~1
+    INDEXE~1
+  ZK-INK~3
+
+
+Volume 3
+Offset: 0x2A61BE00
+Size: 67108864 bytes (64.00 MiB)
+Files: 2
+Directories: 1
+Used space: 88 bytes (88 B)
+Status: Populated
+
+Directory tree (first 2 levels):
+::/
+  SYSTEM~1/
+    WPSETT~1
+    INDEXE~1

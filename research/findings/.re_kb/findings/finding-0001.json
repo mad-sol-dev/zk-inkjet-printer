@@ -1,0 +1,42 @@
+{
+  "component": "firmware",
+  "confidence": 1.0,
+  "created_at": "2025-12-27T22:29:22.720461Z",
+  "evidence": [
+    {
+      "description": "Disassembly analysis at 0x00210000 shows clean Thumb instructions (ldr, mov, blx). Codex agent verified 18% Thumb / 82% ARM instruction ratio across sampled regions.",
+      "document_id": null,
+      "domain_file_id": null,
+      "file": null,
+      "function_address": null,
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": null,
+      "result": null,
+      "source_type": "other",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0001",
+  "next_steps": [],
+  "project_id": "zk-inkjet-printer",
+  "provenance": null,
+  "raw_note": null,
+  "schema_version": "2.0",
+  "severity": null,
+  "status": "verified",
+  "summary": "APP.bin firmware contains both ARM (32-bit) and Thumb (16-bit) instruction sets. Region 0x00210000-0x0021FFFF uses Thumb mode (2-byte instructions), while other regions use ARM mode (4-byte instructions). Ghidra correctly detected and disassembled both modes.",
+  "tags": [
+    "architecture",
+    "thumb",
+    "arm",
+    "foundation"
+  ],
+  "title": "Firmware uses ARM/Thumb Mixed-Mode Code",
+  "type": "behavior",
+  "updated_at": "2025-12-27T22:29:22.720461Z"
+}
