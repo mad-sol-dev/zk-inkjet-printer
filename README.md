@@ -25,13 +25,12 @@ The goal is to understand the hardware and firmware well enough to enable **cust
 
 ## 🚴 The "Nerd Cascade"
 
-How we got here:
-📉  **Goal:** Label lithium cells for an E-recumbent bike battery.
-📉  **Tool:** Bought a cheap handheld inkjet printer.
-📉  **Problem:** Manual data entry is tedious.
-📉  **Solution:** Reverse engineer the firmware to inject data via USB.
-📉  **Reality:** Built custom Ghidra MCP tooling and forced AI agents to read datasheets.
-📉  *...the bike is still waiting.*
+↳ **Goal:** Label lithium cells for an E-recumbent bike battery.  
+&emsp;↳ **Tool:** Bought a cheap handheld inkjet printer.  
+&emsp;&emsp;↳ **Problem:** Manual data entry is tedious.  
+&emsp;&emsp;&emsp;↳ **Solution:** Reverse engineer the firmware to inject data via USB.  
+&emsp;&emsp;&emsp;&emsp;↳ **Reality:** Built custom Ghidra MCP tooling and forced AI agents to read datasheets.  
+&emsp;&emsp;&emsp;&emsp;&emsp;↳ *...the bike is still waiting.*
 
 ## 📂 Repository Layout
 
