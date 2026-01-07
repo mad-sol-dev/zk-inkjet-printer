@@ -9,7 +9,7 @@
 Confirmed via datasheet analysis and pinout verification.
 *   **U5DN Variant:** Includes 8MB stacked DDR (verified via datasheet p.62).
 *   **Non-OS BSP:** The firmware is a bare-metal loop, not Linux.
-*   **Datasheet:** See `docs/vendor/N3290x_Design_Guide_A1.pdf` (local copy).
+*   **Datasheet:** See `docs/vendor/N3290x_Design_Guide_A1.pdf` (local copy - online see [N3290x_Design_Guide_A1.pdf](http://file.whycan.com/files/members/3907/N3290x_Design_Guide_A1.pdf) and [N3290x_DataSheet_Revision_A6.2.pdf](https://www.nuvoton.com/resource-files/N3290x_DataSheet_Revision_A6.2.pdf).
 
 ## Peripheral Mapping
 
