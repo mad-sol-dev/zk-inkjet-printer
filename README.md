@@ -1,8 +1,9 @@
 # ZK-Inkjet Printer Reverse Engineering
 
-> Photo gallery: see **hardware/images/index.md**  
-> Example image: ![DP20 front](hardware/images/processed/dp20_printer_front_display.jpg)
+![DP20 front](hardware/images/processed/dp20_printer_front_display.jpg)
 
+> Photo gallery: see [**Galllary**](hardware/images/index.md)
+  
 **Status:** 🚧 Active Analysis | **Chip:** Nuvoton N32903U5DN | **Firmware:** Non-OS / Bare Metal
 
 This repository documents the reverse engineering of the "ZK-1696" class handheld inkjet printers (often sold as **Luqeeg**, **Chiky Tech**, or generic **DP20**). These devices use HP45 (Si) thermal inkjet cartridges to print text, QR codes, and bitmaps on packaging.
@@ -20,7 +21,7 @@ The goal is to understand the hardware and firmware well enough to enable **cust
 | **Update System** | ✅ Verified | **Unsafe.** No CRC/Signature checks. Flashes raw data from SD card. |
 | **Pinout** | ✅ Verified | GPIOs mapped. UART console is **blocked** by printhead usage. |
 | **UI Decoding** | 🚧 In Progress | 480x480 framebuffer partially decoded (BGR565 scrambled). |
-| **USB CDC** | 🔄 Planning | Goal: Replace Mass Storage Class with Virtual Serial Port. |
+| **USB CDC** | 🔄 Planning | Goal: Add a Virtual Serial Port mode or swap the Mass Storage Class with a Virtual Serial Port class.  |
 
 ## 🚴 The "Nerd Cascade"
 
