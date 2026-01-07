@@ -147,7 +147,7 @@ dbd5944 2025-12-28 04:25:22 Update memory in CLAUDE.md
 ## Technical Details
 
 ### Files Committed (52 total)
-- Documentation: `CLAUDE.md`, `README.md`, `CONTRIBUTING.md`, `ARCHITECTURE.md`
+- Documentation: `CLAUDE.md`, `README.md`, `CONTRIBUTING.md`, `ANALYSIS_WORKFLOW.md`
 - Session logs: 18 anonymized .md files
 - RE-KB: 2 findings, `project.json`, schemas
 - Firmware docs: `memory_map.md`, `update_protocol.md`, `update_system.md`
