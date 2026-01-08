@@ -28,7 +28,7 @@ The system is built around a Nuvoton N32903U5DN SoC in LQFP-128 package. This is
 - Package: LQFP-128 (U-series pinout)
 - GPIO: 72 pins with alternate functions documented
 
-⚠️ **Open Question:** The USB descriptor string "W55FA93" appears in firmware. This is legacy Winbond naming from before Nuvoton's acquisition and refers to the same chip family.
+⚠️ The USB descriptor string "W55FA93" appears in firmware. This is legacy Winbond naming from before Nuvoton's acquisition and refers to the same chip family.
 
 ### Memory Architecture
 
@@ -196,7 +196,7 @@ The printer uses an HP45/HP45SI printhead with a 22x14 nozzle matrix (300 active
 - After level shifting, the HP path is driven through **MOSFET stages** to generate the firing pulses
 
 **Thermal / analog feedback:**
-- C10X, CTSR feedback pins for thermal sensing
+- C10X, CTSR feedback pins for thermal sensing - no connection traced out (yet)
 - VADJ rail: ~9.09 V supplies printhead power
 
 ### Encoder Integration
