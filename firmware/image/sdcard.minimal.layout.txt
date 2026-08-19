@@ -1,0 +1,18 @@
+file: sdcard.minimal.img
+built_from: sdcard.work.img
+built_by: tools/scripts/build_clean_image.py
+note: Minimalimage. Nur die Regionen, die nach aktuellem Stand zum Booten
+note: gebraucht werden. Alles andere Null - insbesondere:
+note:   0x00100000  Vorgaenger-APP.bin (~3 MB, Firmware-Set A)  siehe CL-BOOT-REC-104
+note:   0x00179DCC / 0x0247AA68 / 0x0306CFA8 / 0x03C7BD70  IBR-Lookup-Header  CL-BOOT-REC-101
+note:   0x24007E00 .. 0x2A61BDFF  geloeschte Dateien, Settings, Kalibrierung, ext4-Reste
+note: Zweck: nach dem Flashen und Benutzen ein Re-Dump gegen dieses Image diffen.
+note: Jedes Nicht-Null-Byte im Diff ist etwas, das die Firmware selbst geschrieben hat.
+size_bytes: 778157568
+regions:
+- boot_sector: offset=0x00000000 size=512
+- boot_bin: offset=0x00000200 size=12768
+- app_bin: offset=0x03000000 size=2576940
+- ui_frames: offset=0x03800000 size=460800
+- vol0_fonts: offset=0x04000000 size=536870912
+- vol3_mini: offset=0x2A61BE00 size=67108864
