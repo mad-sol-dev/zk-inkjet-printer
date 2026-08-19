@@ -1,4 +1,10 @@
 # Count functions by size
+#@author
+#@category ZK-Inkjet
+#@keybinding
+#@menupath
+#@toolbar
+
 from ghidra.program.model.address import AddressSet
 
 program = currentProgram()

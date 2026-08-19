@@ -1,0 +1,74 @@
+%%{init: {'theme':'dark'}}%%
+graph TB
+    subgraph SD["SD Card (3.8 GB)"]
+        subgraph BOOT_SECTOR["Boot Sector<br/>0x00000000 - 0x000001FF"]
+            BS["Empty (512 bytes)<br/>No MBR / No Partition Table<br/>✅ VERIFIED"]
+        end
+        
+        subgraph RAW_BOOT["RAW Boot Area<br/>0x00000200 - 0x03FFFFFF"]
+            IBR1["IBR Header #1<br/>0x00000200 (32 bytes)<br/>✅ VERIFIED"]
+            BOOT_CODE["BOOT.bin Code<br/>0x00000220 (12,736 bytes)<br/>✅ VERIFIED"]
+            
+            UNKNOWN["Unknown Stub<br/>0x00100000 (3 MB)<br/>Residual junk<br/>✅ VERIFIED"]
+            
+            IBR2["IBR Header #2<br/>0x00179DCC<br/>Set A: BOOT/CUTE/TIJSPS<br/>✅ VERIFIED"]
+            
+            APP["APP.bin<br/>0x03000000 (2.5 MB)<br/>Active Firmware<br/>✅ VERIFIED"]
+            IBR6_EMBEDDED["└─ IBR Header #6<br/>   +0x6CFA8<br/>   Set B: TINY/PUNY/NANO<br/>   ✅ VERIFIED"]
+            
+            UI_RAW["UI Frame Storage (RAW)<br/>0x03800000<br/>Pre-decoded BGR565<br/>✅ VERIFIED"]
+            FRAME0["Frame 0: Leon Logo<br/>0x03800000 (153,600 bytes)<br/>✅ VERIFIED"]
+            FRAME1["Frame 1: Unknown<br/>0x03825800 (153,600 bytes)<br/>✅ VERIFIED"]
+            FRAME2["Frame 2: Thanks...<br/>0x0384B000 (153,600 bytes)<br/>✅ VERIFIED"]
+        end
+        
+        subgraph RAW_HEADERS["RAW IBR Headers<br/>0x02000000 - 0x04000000"]
+            IBR3["IBR Header #3<br/>0x0247AA68<br/>Set A (dup)<br/>✅ VERIFIED"]
+            IBR4["IBR Header #4<br/>0x0306CFA8<br/>Set B<br/>✅ VERIFIED"]
+            IBR5["IBR Header #5<br/>0x03C7BD70<br/>Set A (dup)<br/>✅ VERIFIED"]
+        end
+        
+        subgraph VOL1["FAT Volume 1<br/>0x04000000 - 0x23FFFFFF<br/>512 MB"]
+            FONTS["Fonts/Resources<br/>28 TrueType fonts<br/>168 MB used<br/>✅ VERIFIED"]
+        end
+        
+        subgraph VOL2["FAT Volume 2<br/>0x24007E00 - 0x2A61BDFF<br/>256 MB"]
+            VOL2_START["System/Staging Area<br/>✅ VERIFIED"]
+            BOOT_DEL["BOOT.bin (DELETED)<br/>0x24028000 (12,736 bytes)<br/>9-Dec-2022<br/>✅ VERIFIED"]
+            APP_DEL["APP.bin (DELETED)<br/>0x2402C000 (2.5 MB)<br/>9-Dec-2022<br/>✅ VERIFIED"]
+            UI_DEL["UI-QVGA.bin (DELETED)<br/>0x242A2000 (460,800 bytes)<br/>5-Dec-2022<br/>✅ VERIFIED"]
+        end
+        
+        subgraph VOL3["FAT Volume 3 'MINI'<br/>0x2A61BE00 - 0x2E61BDFF<br/>64 MB"]
+            USB_DRIVE["User USB Drive<br/>EMPTY (88 bytes metadata)<br/>Update INPUT area<br/>✅ VERIFIED"]
+        end
+        
+        POST_VOL["Post-Volume RAW<br/>0x2E61BE00 - EOF<br/>❓ UNKNOWN"]
+    end
+    
+    IBR1 --> BOOT_CODE
+    APP --> IBR6_EMBEDDED
+    UI_RAW --> FRAME0
+    UI_RAW --> FRAME1
+    UI_RAW --> FRAME2
+    
+    style BS fill:#333,stroke:#666
+    style IBR1 fill:#2d5,stroke:#4f7
+    style BOOT_CODE fill:#25d,stroke:#47f
+    style UNKNOWN fill:#666,stroke:#888
+    style IBR2 fill:#d52,stroke:#f74
+    style APP fill:#25d,stroke:#47f
+    style IBR6_EMBEDDED fill:#d52,stroke:#f74
+    style UI_RAW fill:#5d2,stroke:#7f4
+    style FRAME0 fill:#5d2,stroke:#7f4
+    style FRAME1 fill:#5d2,stroke:#7f4
+    style FRAME2 fill:#5d2,stroke:#7f4
+    style IBR3 fill:#d52,stroke:#f74
+    style IBR4 fill:#d52,stroke:#f74
+    style IBR5 fill:#d52,stroke:#f74
+    style FONTS fill:#d5d,stroke:#f7f
+    style BOOT_DEL fill:#555,stroke:#777,stroke-dasharray: 5 5
+    style APP_DEL fill:#555,stroke:#777,stroke-dasharray: 5 5
+    style UI_DEL fill:#555,stroke:#777,stroke-dasharray: 5 5
+    style USB_DRIVE fill:#dd5,stroke:#ff7
+    style POST_VOL fill:#333,stroke:#666

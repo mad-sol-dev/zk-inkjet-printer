@@ -1,0 +1,41 @@
+{
+  "component": null,
+  "confidence": null,
+  "created_at": "2026-01-08T06:15:19.031596Z",
+  "evidence": [
+    {
+      "description": "USBD register definitions in vendor/N32901-3_NonOS_BSP/SYSLIB/Lib/W55FA93_reg.h show USBD_BA+0x178 (EPF_HEAD_CNT) then USBD_BA+0x700 (AHB_DMA_ADDR) and +0x704 (PHY_CTL); no +0x190/+0x2B0 offsets defined.",
+      "document_id": null,
+      "domain_file_id": null,
+      "file": null,
+      "function_address": null,
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": null,
+      "result": null,
+      "source_type": "other",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0004",
+  "next_steps": [],
+  "project_id": "zk-inkjet-printer",
+  "provenance": null,
+  "raw_note": null,
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "verified",
+  "summary": "In vendor BSP W55FA93_reg.h, USBD_BA register definitions cover offsets up to EPF_HEAD_CNT (+0x178) and then jump to AHB_DMA_ADDR (+0x700) and PHY_CTL (+0x704). There are no USBD register definitions at +0x190 or +0x2B0, so absolute addresses 0x00008190/0x000082B0 seen in APP.bin are not USBD_BA offsets and likely point into RAM or other data structures.",
+  "tags": [
+    "usb",
+    "bsp",
+    "registers"
+  ],
+  "title": "BSP USBD register map has no +0x190/+0x2B0 offsets",
+  "type": "behavior",
+  "updated_at": "2026-01-08T06:15:19.031596Z"
+}

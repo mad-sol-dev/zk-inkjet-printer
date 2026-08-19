@@ -36,6 +36,174 @@
       "title": "N32903 MMIO Register Map Extracted from BSP",
       "type": "behavior",
       "updated_at": "2025-12-27T22:30:15.032287Z"
+    },
+    {
+      "component": "usb",
+      "confidence": null,
+      "created_at": "2026-01-08T05:40:07.253167Z",
+      "file": "findings/finding-0003.json",
+      "id": "finding-0003",
+      "severity": null,
+      "status": "open",
+      "tags": [
+        "usb",
+        "interrupts",
+        "usbd",
+        "app.bin"
+      ],
+      "title": "USB IRQ registration in APP.bin: ISR pointer at 0x00109ac4, handler table base 0x00000890",
+      "type": "behavior",
+      "updated_at": "2026-01-08T05:40:07.253167Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2026-01-08T06:15:19.031596Z",
+      "file": "findings/finding-0004.json",
+      "id": "finding-0004",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "usb",
+        "bsp",
+        "registers"
+      ],
+      "title": "BSP USBD register map has no +0x190/+0x2B0 offsets",
+      "type": "behavior",
+      "updated_at": "2026-01-08T06:15:19.031596Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2026-01-08T06:30:02.642205Z",
+      "file": "findings/finding-0005.json",
+      "id": "finding-0005",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "usb",
+        "init",
+        "usbd",
+        "app.bin"
+      ],
+      "title": "USBD init routine at FUN_002af9c0 uses USBD PHY/CEP registers; RAM flags at 0x8190/0x82B0",
+      "type": "behavior",
+      "updated_at": "2026-01-08T06:30:02.642205Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2026-01-08T17:24:08.740480Z",
+      "file": "findings/finding-0006.json",
+      "id": "finding-0006",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "update",
+        "sd",
+        "raw-write",
+        "app.bin",
+        "boot"
+      ],
+      "title": "APP update chain writes raw SD at 0x03000000 via sd_fmi_block_io",
+      "type": "behavior",
+      "updated_at": "2026-01-08T17:24:08.740480Z"
+    },
+    {
+      "component": "display",
+      "confidence": 1.0,
+      "created_at": "2026-01-13T19:38:44.346206Z",
+      "file": "findings/finding-0007.json",
+      "id": "finding-0007",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "ui",
+        "display",
+        "spi",
+        "ili9341",
+        "decode",
+        "rebranding"
+      ],
+      "title": "UI Blob Decode Algorithm (XOR 0x4949 + BGR565 Color Swap)",
+      "type": "behavior",
+      "updated_at": "2026-01-13T21:40:08.300539Z"
+    },
+    {
+      "component": "boot",
+      "confidence": 1.0,
+      "created_at": "2026-01-13T23:31:12.822127Z",
+      "file": "findings/finding-0008.json",
+      "id": "finding-0008",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "boot",
+        "update",
+        "ibr",
+        "firmware-variants",
+        "sd-layout"
+      ],
+      "title": "IBR Header Locations & Firmware Update Lookup Tables",
+      "type": "behavior",
+      "updated_at": "2026-01-13T23:31:12.822127Z"
+    },
+    {
+      "component": "settings",
+      "confidence": 1.0,
+      "created_at": "2026-01-14T01:56:38.346723Z",
+      "file": "findings/finding-0009.json",
+      "id": "finding-0009",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "settings",
+        "persistence",
+        "touch-calibration",
+        "ui-config",
+        "sd-raw"
+      ],
+      "title": "Settings Persistence Layer: RAW SD Storage @ 0x28000000",
+      "type": "behavior",
+      "updated_at": "2026-01-14T01:56:38.346723Z"
+    },
+    {
+      "component": "filesystem",
+      "confidence": 1.0,
+      "created_at": "2026-01-14T13:46:57.015804Z",
+      "file": "findings/finding-0010.json",
+      "id": "finding-0010",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "fat",
+        "filesystem",
+        "nvtfat",
+        "volumes",
+        "mount-points"
+      ],
+      "title": "FAT Volume Mount Points: Only 0:/ and 3:/ exist in firmware",
+      "type": "behavior",
+      "updated_at": "2026-01-14T14:02:59.866340Z"
+    },
+    {
+      "component": "sd-storage",
+      "confidence": 0.9,
+      "created_at": "2026-01-14T13:47:56.044693Z",
+      "file": "findings/finding-0011.json",
+      "id": "finding-0011",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "sd-layout",
+        "fat",
+        "ghost-volume",
+        "raw-writes",
+        "settings"
+      ],
+      "title": "SD Region 0x24000000-0x2A61BDFF: No Active FAT Volume",
+      "type": "hypothesis",
+      "updated_at": "2026-01-14T14:02:13.703524Z"
     }
   ],
   "project_id": "zk-inkjet-printer",

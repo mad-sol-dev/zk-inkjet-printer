@@ -24,3 +24,14 @@ For documentation format and purpose, see [README.md](README.md).
 | 2025-12-27 | 2025-12-27_bsp-mmio-registers.md | BSP header MMIO base and register extraction. |
 | 2025-12-27 | 2025-12-27_repository-restructure-planning.md | Repository restructure planning and CLAUDE.md update. |
 | 2025-12-28 | 2025-12-28_repository-anonymization-security-cleanup.md | Repository anonymization, security leak remediation, Git identity. |
+| 2026-01-02 | 2026-01-02_incremental-claims-strategy-usb-prototype.md | Incremental claims strategy and USB prototype direction. |
+| 2026-01-03 | 2026-01-03_incremental-claims-completion-all-clusters.md | Incremental claims completion across all clusters. |
+| 2026-01-03 | 2026-01-03_phase-2c-multi-tier-evidence-integration.md | Phase 2c: multi-tier evidence integration summary. |
+| 2026-01-04 | 2026-01-04_phase-2d-sessions-integration.md | Phase 2d: session log integration and alignment. |
+| 2026-01-04 | 2026-01-04_phase-2e-old-docs-extraction.md | Phase 2e: extraction and consolidation of older docs. |
+| 2026-01-08 | 2026-01-08_usb-session-sd-image-integrity.md | USB init/IRQ notes, SD image carve validation, checksum hygiene. |
+| 2026-01-08 | 2026-01-08_update-chain-sd-raw-mapping.md | Update-chain mapping, raw SD offsets, APP integrity fix, unknown stub characterization. |
+| 2026-01-13 | 2026-01-13_ui-blob-decode-analysis.md | UI blob decode algorithm (XOR 0x4949 + BGR565 swap), rebranding timeline, finding-0008. |
+| N/A | ANALYSIS_red-threads-IMPROVED.md | Red-thread overview for analysis topics. |
+| N/A | ANONYMIZATION_COMPLETE.md | Anonymization completion marker for repository cleanup. |
+| N/A | PRIVACY_SCAN_REPORT.md | Privacy scan report and findings summary. |

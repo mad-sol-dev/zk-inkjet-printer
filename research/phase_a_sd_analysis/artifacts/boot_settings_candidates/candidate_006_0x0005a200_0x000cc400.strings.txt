@@ -1,0 +1,406 @@
+M=U^U]M
+3*2"r".
+3"t"6+.
+z<{4{,
+Y$Y,w+
+)R2R*-
+"R*2*j
+$8,8$9$9$9$Y$Y$y$Y$Y$Y,z$z$
+1"1"R2
+s2s2s2.
+r"V+6+S
+#w#6+.
+r"r*S2
+#9<5+N
+R"R"R2
+35#v+w3
+2s*2"l
+L?f?w_^
+bad req_comp
+bad SOS component count
+bad SOS len
+bad DC huff
+bad AC huff
+bad SOS
+bad DNL len
+bad DNL height
+outofmem
+UUUU3333
+562: Input data too long
+563: Invalid character in input data
+Kanji block (length %d)
+0x%4X 
+Byte block (length %d)
+Alpha block (length %d)
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:
+Number block (length %d)
+0123456789
+0x%4X (%d)
+564: Input data too long
+565: Input data too long
+566: Error correction level H not available
+567: Input data too long
+568: Input data too long
+570: Input too long for selected symbol size
+00010001
+11101100
+VUUUP+
+EXFAT   
+FAT32   
+RRaArrAa 
+20170606
+N3290 MSC Library (%s)
+SPI Disk
+ole2_open: %s
+File not found
+END OF CHAIN
+rcnicinu
+Initial block pattern:
+Len: %d  Type: 
+Number
+472: Invalid ECI
+Compressed data stream:
+460: Security value out of range
+461: Number of columns out of range
+462: No such file or file unreadable
+463: Input string too long
+464: Number of codewords per row too small
+465: Data too long for specified number of columns
+466: Something strange happened
+ A658: Insufficient memory for pixel buffer
+PA659: Insufficient memory for pixel buffer
+657: Insufficient memory for pixel buffer
+655: Insufficient memory for pixel buffer
+656: Insufficient memory for pixel buffer
+darkening-parameters
+hinting-engine
+no-stem-darkening
+darkening-parameters
+hinting-engine
+no-stem-darkening
+random-seed
+Kanji block (length %d)
+0x%4X 
+Byte block (length %d)
+0x%2X(%d) 
+Alpha block (length %d)
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:
+Number block (length %d)
+0123456789
+0x%4X (%d)
+Resulting codewords:
+0x%2X 
+561: Input too long for selected error correction level
+560: Invalid character in input data
+569: Input too long for selected symbol size
+fylgacolaehhdaeh
+xtmhpxamFPON
+204: Invalid characters in input data
+380: Input too long
+0123456789
+381: Invalid characters in data
+10000000000000
+4537077
+Choosing Mehod 2
+Choosing Method 1
+Checking for other methods
+BNow using method %d
+01100XX
+01101XX
+Setting binary = %s
+385: Invalid characters in input data
+Proceeding to encode data
+General field data = %s
+General field type: %s
+386: Invalid characters in input data
+Processing character %d 
+as NUMERIC:
+<NUMERIC LATCH>
+  %c%c > 
+as ALPHA
+Resultant binary = %s
+Length: %d
+as ISOIEC
+Adding extra (odd) numeric digit
+387: Input too long
+382: Input too long
+0123456789
+383: Invalid characters in data
+384: Input out of range
+2015133531096
+2013571
+183063
+820063
+1000775
+1491020
+1979844
+1996938
+183064
+820064
+1000776
+1491021
+1979845
+1996939
+650: Insufficient memory for pixel buffer
+651: Malformed foreground colour target
+652: Malformed background colour target
+0123456789ABCDEF
+653: Malformed foreground colour target
+654: Malformed background colour target
+CHARSET_REGISTRY
+CHARSET_ENCODING
+R#a A"
+postscript-cmaps
+truetype
+multi-masters
+metrics-variations
+FFOwfcttOTTOeurt1pyt
+fylg2FFC FFC0
+fpgifylg FFC2FFCxibsCLBCTDBC
+ravgcinu
+[ATSHA204A] Send Muti-Byte Data Failed: %d, %d.
+\#a B"
+VUUUbad offset
+invalid
+too large
+outofmem
+bad bpp
+UUUU3333
+bad masks
+not BMP
+unknown BMP
+BMP JPEG/PNG
+BMP RLE
+bad BMP
+outofmem
+not enough pixels
+outofmem
+too large
+invalid filter
+invalid width
+no SOI
+no SOF
+bad huffman code
+bad req_comp
+bad bits_per_channel
+unknown image type
+can't merge dc and ac
+bad huffman code
+bad png sig
+first not IHDR
+bad IHDR len
+multiple IHDR
+1/2/4/8/16-bit only
+bad ctype
+bad comp method
+bad filter method
+bad interlace method
+too large
+0-pixel image
+invalid PLTE
+tRNS after IDAT
+tRNS before PLTE
+bad tRNS len
+tRNS with alpha
+no PLTE
+outofmem
+outofdata
+no IDAT
+outofmem
+bad zlib header
+no preset dict
+bad compression
+zlib corrupt
+read past buffer
+bad codelengths
+output buffer limit
+bad dist
+only 8-bit
+too large
+no header height
+0 width
+bad component count
+bad SOF len
+bad TQ
+unknown marker
+expected marker
+bad DRI len
+bad DQT type
+bad DQT table
+bad DHT header
+bad code lengths
+bad COM len
+bad APP len
+bad sizes
+bad codelengths
+can't fopen
+?fff?33s
+postscript-cmaps
+Dec  9 2022
+17:13:09
+%s %d %d
+%d:%d:%d
+csahcsdhpglh
+ FDBp@-
+fylgacol
+mgpfperp.notdef
+xtmhdaehdehbGNISATEM
+psagp@-
+xtmvxtmh
+gfffp@-
+CLBCCLBEcolbxibs
+TDBCTDBEtadb
+ gnpepudE
+interpreter-version
+interpreter-version
+20180315
+N3290 UDC Library (%s)
+261: ugs1_verify overflow
+setlocale failed: %d
+wcstombs failed (%lu)
+270: Invalid check digit
+0123456789
+271: Invalid UPC-E data
+272: Invalid UPC-E data
+273: Invalid UPC-E data
+0123456789
+111111
+274: Invalid check digit
+Unplug(S)!!
+0:/user/font/%s
+0:/user
+0:/user/font
+0:/user/font
+240: Corrupt Unicode data
+241: Overlong encoding not supported
+242: Unicode sequences of more than 3 bytes not supported
+FFOwfctt
+*failed to decode utf16*
+xls_close
+xls_getWorkSheet
+Y@%.2f
+%.0lf%%
+%.2lf%%
+xls_open_ole
+SummaryInformation
+DocumentSummaryInformation
+Workbook
+xls_parseWorkBook
+READ WORKBOOK filePos=%ld
+  OLE: start=%d pos=%u size=%u fatPos=%u
+    Not Processed in parseWoorkBook():  BOF=0x%4.4X size=%d
+WINDOW1: 
+xWn    : %d
+yWn    : %d
+dxWn   : %d
+dyWn   : %d
+grbit  : %d
+itabCur: %d
+itabFi : %d
+ctabSel: %d
+wTabRat: %d
+xls_addSST
+xls_addSheet[0x%x]
+85: Microsoft Excel 4.0 macro sheet
+85: Chart sheet
+85: Visual Basic sheet
+visible: %x
+    Pos: %Xh
+   type: %.4Xh
+   name: %s
+85: Worksheet or dialog sheet
+xls_addXF
+   font: %d
+ format: %d
+   type: %.4x
+  align: %.4x
+rotatio: %.4x
+  ident: %.4x
+usedatt: %.4x
+linesty: %.4x
+xls_addFont
+ height: %d
+   flag: 0x%x
+  color: 0x%x
+ weight: %d
+escapem: 0x%x
+underln: 0x%x
+ family: 0x%x
+charset: 0x%x
+xls_addFormat
+    idx: 0x%x
+  ident: 0x%x
+  level: 0x%x
+  name=%s
+   Index=0x%2.2x %2.2x%2.2x%2.2x
+   mode: 0x%x
+   DEFINEDNAME: 
+%2.2x 
+xls_parseWorkSheet
+xls_preparseWorkSheet
+xls_addColinfo
+xls_makeTable
+LASTPOS=%ld pos=%d filePos=%d filePos=%d
+Merged Cells Count out of range
+Merged Cells
+ROW: %x at pos=%ld
+DEFAULT COL WIDTH: %d
+DEFAULT ROW Height: 0x%x %d
+DBCELL: size %d
+DBCELL OFFSET=%4.4u -> ROW %ld
+goo[%d]=%4.4x %u
+INDEX: size %d
+FOO[%d]=%4.4x %u
+xls_addCell
+----------------------------------------------
+   ID: %.4Xh %s (%s)
+   Size: %i
+  -----------
+     ID: %.4Xh %s (%s)
+   Cell: %c:%u  [%u:%u]
+     xf: %i
+ double: %f
+    int: %d
+    str: %s
+First col: %i 
+ Last col: %i 
+    Width: %i (1/256 px)
+       XF: %i 
+    Flags: %i (
+hidden 
+outline 
+collapsed 
+----------------------------------------------
+    index : %u
+     value: %s
+    Index: %i 
+First col: %i 
+ Last col: %i 
+   Height: %i (1/20 px)
+    Flags: %.4X 
+       xf: %i 
+----------------------------------------------
+      Index: %u
+       Font: %u
+     Format: %u
+       Type: 0x%x
+      Align: 0x%x
+   Rotation: 0x%x
+      Ident: 0x%x
+   UsedAttr: 0x%x
+  LineStyle: 0x%x
+  Linecolor: 0x%x
+GroundColor: 0x%x
+UUUU3333
+%-*.*s
+0:/ZK-INKJET-RES-HW.zkml
+.`hFl`
+0 `)h2
+RGBJFIF
+#*1892+$
+%,3:;4-&
+'.5<=6/7>????????????????
+p `    pp
+p     p8
+      
+`     p

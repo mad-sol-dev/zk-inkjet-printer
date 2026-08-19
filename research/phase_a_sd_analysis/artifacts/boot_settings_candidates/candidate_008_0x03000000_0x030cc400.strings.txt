@@ -1,0 +1,712 @@
+ahi`!h@
+#`@hP` 
+%#XTKh
+0m8C0e0
+C eT!8
+%m/%d/%y
+%Y-%m-%d
+%H:%M:%S
+pGpGpGpG8
+%d bytes in %d free blocks (avge size %d)
+%d blocks 2^%d+1 to 2^%d
+#\b\cT"T@
+jF. Pr
+`"K{D"JzD
+ JzDkF
+`!i`h@
+` i```i
+@H<I=K@J
+e<H5J:
+$HxD\8
+ HxD\8
+`e(e`Q
+3HxDlF
+.HxDv0
+  IxCyDL9A
+SIGABRT: Abnormal termination
+CCA*@#@
+INFINITY
+SIGRTRED: Redirect: can't open: 
+SIGRTMEM: Out of heap memory
+: Heap memory corrupted
+~}|{zyxwvvutsrqqponnmllkjjihhgffeddccbaa``__^^]]\\[[ZZYYXXWWVVUUUTTSSRRRQQPPPOOONNMMMLLLKKKJJJIIIHHHGGGGFFFEEEDDDDCCCCBBBBAAA
+3:/inkjet-ui-%04d%02d%02d %02d%02d%02d %d.bmp
+[%s] Print Screen: %s.
+[%s] System timeout auto shutdown @ %d.
+font-format
+glyph-dict
+ltuostib
+Type 1
+stibltuoH
+stibltuo
+cinup@-
+FREETYPE_PROPERTIES
+,@2z B2
+@a*p@-
+ravg2FFCravf
+RAVMthgwhtdwzspotnlsWeight
+OpticalSize
+stibltuopmocJ
+228: Invalid rotation angle
+000000
+ffffff
+out.png
+205: No input data
+out.gif
+206: Symbology out of range, using Code 128
+207: Codabar 18 not supported, using Codabar
+208: UPCD1 not supported
+210: General Parcel Code not supported, using Code 128
+212: Symbology out of range, using Code 128
+213: Symbology out of range, using Code 128
+214: Symbology out of range, using Code 128
+215: Symbology out of range, using Code 128
+216: Symbology out of range, using Code 128
+217: Symbology does not support ECI switching
+218: Invalid ECI mode
+219: NULL characters not permitted in GS1 mode
+220: Selected symbology does not support GS1 mode
+A221: Invalid dot size
+222: Encoded data includes ECI
+Data ECI %d
+0H0`,N
+RWSTDERR
+Exception: %s.
+unknown exception
+unexpected exception
+bad_alloc: out of memory
+`0` h)
+EIaa v
+%c%d, %c%d
+IUUUUU
+zfsrxjZFSRXJ
+gfff`F
+0123456789
+StartFontMetrics
+VUUUH*
+gfff0@-
+322: Input too long
+323: Input too long
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%abcd
+1211212111
+324: Invalid characters in data
+/121121211
+*yxxxgfff
+440: Invalid AI 90 data
+BDHIJKLNPQRSTVWZ
+441: Invalid characters in input data
+11101000
+11101001
+11101010
+11101011
+11101100
+11101101
+11101110
+11101111
+11110000
+11110001
+11110010
+11110011
+11110100
+11110101
+11110110
+11110111
+11111000
+11111001
+11111010
+11111011
+11111100
+442: Input too long for selected 2d component
+443: Input too long
+444: Input too long for selected 2d component
+postscript-cmaps
+pshinter
+cff-load
+OTTOdaeh2FFC FFC0
+Regular
+BODAEBDA
+tt-cmaps
+glyph-dict
+postscript-cmaps
+glyph-dict
+postscript-font-name
+/FSType
+pshinter
+pshinter
+340: Input too long
+pB341: Input too long
+446: 2D component input data too long
+445: No primary (linear) message in 2D composite
+448: Invalid data
+ in linear component 
+522: Input too long for selected symbol size
+520: Data too long to fit in symbol
+521: Can not force square symbols when symbol size is selected
+523: Data too long to fit in symbol
+ECI %d 
+Macro06 
+Macro05 
+A%02X 
+[%d %d %d] 
+[%d %d %d %d] 
+B%02X 
+524: Older Data Matrix standards are no longer supported
+275: Invalid check digit
+0123456789+
+0123456789
+276: Invalid check digit
+342: Input too long
+343: NULL character in input data
+pB344: Input too long
+283: Input too long
+0123456789+
+284: Invalid characters in data
+0123456789Xx
+285: Invalid characters in input
+292: Invalid length input
+286: Invalid length input
+287: Invalid length EAN input
+288: Input wrong length (C6I)
+289: UPCA input wrong length
+290: Input wrong length
+291: UPCE input wrong length
+0123456789X
+277: Invalid characters in input
+278: Input wrong length
+282: Incorrect SBN check
+279: Invalid ISBN
+280: Incorrect ISBN check
+281: Incorrect ISBN check
+Error 
+Warning 
+234: Unrecognised escape character in input data
+232: Incomplete escape character in input data
+233: Corrupt escape character in input data
+EXFAT   
+MSDOS5.0
+NO NAME    FAT     
+NO NAME    FAT32   
+*:<>|"?
++,;=[]
+ltuop@-
+ltuo, 
+ltuop@-
+properties
+8psg3psgthpc
+RAVVRAVH
+`!Tp@-
+LLLLLLLLL
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 
+ABCDEFGHIJKLMNOPQRSTUVWXYZ 
+533: Invalid ECI
+530: Invalid character in input data
+531: Input data too long
+534: Input data too long for selected symbol size
+532: Input data too long
+250: Extended ASCII characters are not supported by GS1
+251: Control characters are not supported by GS1 
+252: Data does not start with an AI
+253: Malformed AI in input data (brackets don't match)
+254: Found nested brackets in input data
+255: Invalid AI in input data (AI too long)
+256: Invalid AI in input data (AI too short)
+257: Invalid AI in input data (non-numeric characters in AI)
+258: Empty data field in input data
+gfff|{
+259: Invalid data length for AI 
+260: Invalid AI value
+%Y/%m/%d
+Please release the print key!
+0:/simhei.ttf
+ChikyTech
+system
+Handwriting Resources
+0:/ZK-INKJET-RES-HW.zkml
+3:/obds/res/ZK-INKJET-RES-HW.zkml
+3:/obds/fonts/%s
+SYMBOL
+0:/SYMBOL.TTF
+3:/obds/fonts/SYMBOL.TTF
+GT32L24M0140
+3:/obds/res/GT32L24M0140.spiflash
+GT30L24A3W
+3:/obds/res/GT30L24A3W.ZB25VQ32.spiflash
+%02d:%02d:%02d
+(%4.1f V)%-28s
+W>33S@
+%02d/%02d/%04d
+%04d/%02d/%02d
+%04d-%02d-%02d
+0:/simhei.ttf
+DC-MINI PRINTER
+fffff'
+%d.%m.%Y
+%d.%m.%y
+%H %M %S
+0:/SYMBOL.TTF
+%.2fGB
+%.2fMB
+%.2fKB
+%04d-%02d-%02d %02d:%02d:%02d
+%2d/%-2d
+%.2fGB
+%s: %s?
+%.2fMB
+%.2fKB
+%04d-%02d-%02d %02d:%02d:%02d
+%s: %s
+zD%5.2f V, %d
+43S@233
+%5.2f V 
+%5.2f V
+?%s|%.1f/%.1fGB
+B%lld pl
+yE>%.3f ml
+%-7lld
+%s|M%d|A%d
+%s| %5.1fGB
+Checking...
+%02d-%02d-%02d %02d:%02d:%02d
+%s| %5.1fMB
+%s| %08llX
+%16llX
+SD Card
+0:/user/font
+%02d-%02d-%02d %02d:%02d,%dM,%.2f/%.0fM,%dK(%dx%dK),%dK
+GPIO-4xPIN
+ZK3311
+%s, N: %d(45:%s, 308:%s), %s, ENC:%s
+0:/simhei.ttf
+%s: %-9d
+%-s    
+3:/%d-%s
+0:/user
+0:/user/font
+%s: %lld, %s: %lld.
+Please enter your PIN:
+%s: %.1f, %s: %.1f.
+%lld%s
+%.*f%s
+%.*lf%s
+NANO BOOT
+3:/ZK-INKJET-NANO-BOOT.bin
+3:/ZK-INKJET-NANO-APP.bin
+%04d-%02d-%02d %02d:%02d:%02d
+%lld%s
+%.*f%s
+%.*lf%s
+%s-%03lld.zkml
+%s.zkml
+%s-%03lld
+%Y/%m/%d
+v@%-32s
+gfffHG
+3:/ZK-INKJET-UI-QVGA.bin
+                                          
+L>3:/ZK-INKJET-TINY-BOOT.bin
+3:/ZK-INKJET-PUNY-BOOT.bin
+3:/ZK-INKJET-NANO-BOOT.bin
+3:/ZK-INKJET-UI.bin
+3:/ZK-INKJET-UI-QVGA.bin
+3:/ZK-TIJSPS-800x480-UI.bin
+A: %.2fV,E: %.2fV
+%.3f,%d
+@3:\inkjet-lite-vadj-sample.csv
+[%s] Cursor overflow: %d, %d.
+%-16.16s
+%-9.9s
+309: Input too long
+0123456789
+310: Invalid characters in data
+311: Input too long
+0123456789
+312: Invalid character in data
+Qgfff)
+bad req_comp
+bad SOS component count
+bad SOS len
+bad DC huff
+bad AC huff
+bad SOS
+bad DNL len
+bad DNL height
+outofmem
+UUUU3333
+562: Input data too long
+563: Invalid character in input data
+Kanji block (length %d)
+0x%4X 
+Byte block (length %d)
+Alpha block (length %d)
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:
+Number block (length %d)
+0123456789
+0x%4X (%d)
+564: Input data too long
+565: Input data too long
+566: Error correction level H not available
+567: Input data too long
+568: Input data too long
+570: Input too long for selected symbol size
+00010001
+11101100
+VUUUP+
+EXFAT   
+FAT32   
+RRaArrAa 
+20170606
+N3290 MSC Library (%s)
+SPI Disk
+ole2_open: %s
+File not found
+END OF CHAIN
+rcnicinu
+Initial block pattern:
+Len: %d  Type: 
+Number
+472: Invalid ECI
+Compressed data stream:
+460: Security value out of range
+461: Number of columns out of range
+462: No such file or file unreadable
+463: Input string too long
+464: Number of codewords per row too small
+465: Data too long for specified number of columns
+466: Something strange happened
+ A658: Insufficient memory for pixel buffer
+PA659: Insufficient memory for pixel buffer
+657: Insufficient memory for pixel buffer
+655: Insufficient memory for pixel buffer
+656: Insufficient memory for pixel buffer
+darkening-parameters
+hinting-engine
+no-stem-darkening
+darkening-parameters
+hinting-engine
+no-stem-darkening
+random-seed
+Kanji block (length %d)
+0x%4X 
+Byte block (length %d)
+0x%2X(%d) 
+Alpha block (length %d)
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:
+Number block (length %d)
+0123456789
+0x%4X (%d)
+Resulting codewords:
+0x%2X 
+561: Input too long for selected error correction level
+560: Invalid character in input data
+569: Input too long for selected symbol size
+fylgacolaehhdaeh
+xtmhpxamFPON
+204: Invalid characters in input data
+380: Input too long
+0123456789
+381: Invalid characters in data
+10000000000000
+4537077
+Choosing Mehod 2
+Choosing Method 1
+Checking for other methods
+BNow using method %d
+01100XX
+01101XX
+Setting binary = %s
+385: Invalid characters in input data
+Proceeding to encode data
+General field data = %s
+General field type: %s
+386: Invalid characters in input data
+Processing character %d 
+as NUMERIC:
+<NUMERIC LATCH>
+  %c%c > 
+as ALPHA
+Resultant binary = %s
+Length: %d
+as ISOIEC
+Adding extra (odd) numeric digit
+387: Input too long
+382: Input too long
+0123456789
+383: Invalid characters in data
+384: Input out of range
+2015133531096
+2013571
+183063
+820063
+1000775
+1491020
+1979844
+1996938
+183064
+820064
+1000776
+1491021
+1979845
+1996939
+650: Insufficient memory for pixel buffer
+651: Malformed foreground colour target
+652: Malformed background colour target
+0123456789ABCDEF
+653: Malformed foreground colour target
+654: Malformed background colour target
+CHARSET_REGISTRY
+CHARSET_ENCODING
+R#a A"
+postscript-cmaps
+truetype
+multi-masters
+metrics-variations
+FFOwfcttOTTOeurt1pyt
+fylg2FFC FFC0
+fpgifylg FFC2FFCxibsCLBCTDBC
+ravgcinu
+[ATSHA204A] Send Muti-Byte Data Failed: %d, %d.
+\#a B"
+VUUUbad offset
+invalid
+too large
+outofmem
+bad bpp
+UUUU3333
+bad masks
+not BMP
+unknown BMP
+BMP JPEG/PNG
+BMP RLE
+bad BMP
+outofmem
+not enough pixels
+outofmem
+too large
+invalid filter
+invalid width
+no SOI
+no SOF
+bad huffman code
+bad req_comp
+bad bits_per_channel
+unknown image type
+can't merge dc and ac
+bad huffman code
+bad png sig
+first not IHDR
+bad IHDR len
+multiple IHDR
+1/2/4/8/16-bit only
+bad ctype
+bad comp method
+bad filter method
+bad interlace method
+too large
+0-pixel image
+invalid PLTE
+tRNS after IDAT
+tRNS before PLTE
+bad tRNS len
+tRNS with alpha
+no PLTE
+outofmem
+outofdata
+no IDAT
+outofmem
+bad zlib header
+no preset dict
+bad compression
+zlib corrupt
+read past buffer
+bad codelengths
+output buffer limit
+bad dist
+only 8-bit
+too large
+no header height
+0 width
+bad component count
+bad SOF len
+bad TQ
+unknown marker
+expected marker
+bad DRI len
+bad DQT type
+bad DQT table
+bad DHT header
+bad code lengths
+bad COM len
+bad APP len
+bad sizes
+bad codelengths
+can't fopen
+?fff?33s
+postscript-cmaps
+Dec  9 2022
+17:13:09
+%s %d %d
+%d:%d:%d
+csahcsdhpglh
+ FDBp@-
+fylgacol
+mgpfperp.notdef
+xtmhdaehdehbGNISATEM
+psagp@-
+xtmvxtmh
+gfffp@-
+CLBCCLBEcolbxibs
+TDBCTDBEtadb
+ gnpepudE
+interpreter-version
+interpreter-version
+20180315
+N3290 UDC Library (%s)
+261: ugs1_verify overflow
+setlocale failed: %d
+wcstombs failed (%lu)
+270: Invalid check digit
+0123456789
+271: Invalid UPC-E data
+272: Invalid UPC-E data
+273: Invalid UPC-E data
+0123456789
+111111
+274: Invalid check digit
+Unplug(S)!!
+0:/user/font/%s
+0:/user
+0:/user/font
+0:/user/font
+240: Corrupt Unicode data
+241: Overlong encoding not supported
+242: Unicode sequences of more than 3 bytes not supported
+FFOwfctt
+*failed to decode utf16*
+xls_close
+xls_getWorkSheet
+Y@%.2f
+%.0lf%%
+%.2lf%%
+xls_open_ole
+SummaryInformation
+DocumentSummaryInformation
+Workbook
+xls_parseWorkBook
+READ WORKBOOK filePos=%ld
+  OLE: start=%d pos=%u size=%u fatPos=%u
+    Not Processed in parseWoorkBook():  BOF=0x%4.4X size=%d
+WINDOW1: 
+xWn    : %d
+yWn    : %d
+dxWn   : %d
+dyWn   : %d
+grbit  : %d
+itabCur: %d
+itabFi : %d
+ctabSel: %d
+wTabRat: %d
+xls_addSST
+xls_addSheet[0x%x]
+85: Microsoft Excel 4.0 macro sheet
+85: Chart sheet
+85: Visual Basic sheet
+visible: %x
+    Pos: %Xh
+   type: %.4Xh
+   name: %s
+85: Worksheet or dialog sheet
+xls_addXF
+   font: %d
+ format: %d
+   type: %.4x
+  align: %.4x
+rotatio: %.4x
+  ident: %.4x
+usedatt: %.4x
+linesty: %.4x
+xls_addFont
+ height: %d
+   flag: 0x%x
+  color: 0x%x
+ weight: %d
+escapem: 0x%x
+underln: 0x%x
+ family: 0x%x
+charset: 0x%x
+xls_addFormat
+    idx: 0x%x
+  ident: 0x%x
+  level: 0x%x
+  name=%s
+   Index=0x%2.2x %2.2x%2.2x%2.2x
+   mode: 0x%x
+   DEFINEDNAME: 
+%2.2x 
+xls_parseWorkSheet
+xls_preparseWorkSheet
+xls_addColinfo
+xls_makeTable
+LASTPOS=%ld pos=%d filePos=%d filePos=%d
+Merged Cells Count out of range
+Merged Cells
+ROW: %x at pos=%ld
+DEFAULT COL WIDTH: %d
+DEFAULT ROW Height: 0x%x %d
+DBCELL: size %d
+DBCELL OFFSET=%4.4u -> ROW %ld
+goo[%d]=%4.4x %u
+INDEX: size %d
+FOO[%d]=%4.4x %u
+xls_addCell
+----------------------------------------------
+   ID: %.4Xh %s (%s)
+   Size: %i
+  -----------
+     ID: %.4Xh %s (%s)
+   Cell: %c:%u  [%u:%u]
+     xf: %i
+ double: %f
+    int: %d
+    str: %s
+First col: %i 
+ Last col: %i 
+    Width: %i (1/256 px)
+       XF: %i 
+    Flags: %i (
+hidden 
+outline 
+collapsed 
+----------------------------------------------
+    index : %u
+     value: %s
+    Index: %i 
+First col: %i 
+ Last col: %i 
+   Height: %i (1/20 px)
+    Flags: %.4X 
+       xf: %i 
+----------------------------------------------
+      Index: %u
+       Font: %u
+     Format: %u
+       Type: 0x%x
+      Align: 0x%x
+   Rotation: 0x%x
+      Ident: 0x%x
+   UsedAttr: 0x%x
+  LineStyle: 0x%x
+  Linecolor: 0x%x
+GroundColor: 0x%x
+UUUU3333
+%-*.*s
+0:/ZK-INKJET-RES-HW.zkml
+.`hFl`
+0 `)h2
+RGBJFIF
+#*1892+$
+%,3:;4-&
+'.5<=6/7>????????????????
+p `    pp
+p     p8
+      
+`     p

@@ -1,0 +1,42 @@
+{
+  "component": null,
+  "confidence": null,
+  "created_at": "2026-01-08T06:30:02.642205Z",
+  "evidence": [
+    {
+      "description": "USBD init writes: USBD_BA+0x704 = 0x220; USBD_BA+0x58 = 0x7f; REG_AHBCLK |= 0x50000; uses RAM pointers 0x00008190/0x000082B0 (+0x10e..+0x111, +0x4) based on USB_PHY_CTL bit 31.",
+      "document_id": null,
+      "domain_file_id": "7f011b29394182027168923",
+      "file": null,
+      "function_address": "0x2af9c0",
+      "function_name": "FUN_002af9c0",
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": "APP.bin",
+      "result": null,
+      "source_type": "ghidra",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0005",
+  "next_steps": [],
+  "project_id": "zk-inkjet-printer",
+  "provenance": null,
+  "raw_note": null,
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "verified",
+  "summary": "In APP.bin, FUN_002af9c0 directly writes to USBD registers: USBD_BA+0x704 (USB_PHY_CTL) is set to 0x220 and USBD_BA+0x58 (CEP_END_ADDR) set to 0x7f with a readback loop. It also enables USBD/HCLK3 via REG_AHBCLK (0xB0000204 |= 0x50000). The same function uses literals 0x00008190 and 0x000082B0 as RAM base pointers: bytes at +0x10e..+0x111 and a word at +0x4 are set based on USB_PHY_CTL bit 31. BSP USBD register map has no +0x190/+0x2B0 offsets, so these are RAM structures, not USBD regs.",
+  "tags": [
+    "usb",
+    "init",
+    "usbd",
+    "app.bin"
+  ],
+  "title": "USBD init routine at FUN_002af9c0 uses USBD PHY/CEP registers; RAM flags at 0x8190/0x82B0",
+  "type": "behavior",
+  "updated_at": "2026-01-08T06:30:02.642205Z"
+}
