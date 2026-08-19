@@ -1,0 +1,12 @@
+file: sdcard.clean-raw.img
+built_from: sdcard.work.img
+built_by: tools/scripts/build_clean_image.py (raw regions, gaps zeroed)
+size_bytes: 778157568
+regions:
+- boot_sector: offset=0x00000000 size=512 sha256=076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560
+- boot_bin: offset=0x00000200 size=12768 sha256=7c5cd04a2946f239584748105ca80d80d765ba5cc5e8fcd05089af20f3ceed26
+- app_bin: offset=0x03000000 size=2576940 sha256=3be9028b01c0007aab9192877341918a0bc155beef55ac17e7e8f3bcc95151ea
+- ui_frames: offset=0x03800000 size=460800 sha256=e63d525f3452f5426c61af7cb080fa378530167c26bfc39d42717fc35c3cff95
+- vol0_fonts: offset=0x04000000 size=536870912 sha256=2127edeed5be081dc534a2bf437e929f2c1fc5e833f55f2873493ffaa832758b
+- unmounted_region: offset=0x24007E00 size=106921984 sha256=5fa4774c4150728f1f85b51ea75a25655dc4106bb1d64e31b075116993f3d42f
+- vol3_mini: offset=0x2A61BE00 size=67108864 sha256=e3ed6215a75dba7c8b8b23e100131e5f2daba22257d3bd6499ad340f8025ca02

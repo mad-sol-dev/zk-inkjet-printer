@@ -1,2 +1,11 @@
+# sha256, verifiziert 2026-08-19
+# Der frueher hier stehende Wert fuer sdcard.work.img.xz (ff64f1bd...) war veraltet
+# und widersprach sdcard.work.img.xz.sha256 sowie dem GitHub-Release SD-Card-clone.
+#
+# sdcard.clean.BROKEN-truncated.img: unvollstaendiges Januar-Artefakt, siehe CL-STORAGE-REC-107.
+# sdcard.clean-raw.img: reproduzierbarer Nachbau, siehe tools/scripts/build_clean_image.py.
 6c19248aa79b6f990b45aa1d4f18c58c92d1317a23d0bd36c285d83cadb8b95b  sdcard.work.img
-ff64f1bd8f80632162afc8106ad2ec1995215b8f331bfd8abd0475d507ee0510  sdcard.work.img.xz
+7d0b2466b71955b710b8e4ac17ca66a52f87ee03f16723d30fd1b0aee52cf747  sdcard.work.img.xz
+fb2b1cda43d26ee92a4a48f36acf175730492ac2f357500bb1003db45455d5e4  sdcard.clean-raw.img
+51aa24ec528b653ef08b7b005d5a4c0e49a4552c53534cb5be6db57d28dfa187  sdcard.clean.BROKEN-truncated.img
+8ea53796a0549d30208efb3ad5fea85cdccc448ccfb650a65d118143e280509a  sdcard.clean_after_boot.img
