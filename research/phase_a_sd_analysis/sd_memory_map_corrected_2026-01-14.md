@@ -1,5 +1,10 @@
 # SD Card Memory Map - Corrected (2026-01-14)
 
+> **Nicht autoritativ.** Abgeleiteter bzw. historischer Stand vom 2026-01-14.
+> Autoritativ ist ausschliesslich `research/TRUTH.csv` (siehe `research/TRUTH.md`).
+> Widersprueche zwischen diesem Dokument und TRUTH.csv werden zugunsten von
+> TRUTH.csv aufgeloest.
+
 **Date:** 2026-01-14  
 **Status:** Facts vs. Hypotheses separated  
 **SD Image:** firmware/image/sdcard.work.img (3.8 GB)  

@@ -1,5 +1,10 @@
 # ZK-Inkjet Printer - System Understanding
 
+> **Nicht autoritativ.** Abgeleiteter bzw. historischer Stand vom 2026-01-07.
+> Autoritativ ist ausschliesslich `research/TRUTH.csv` (siehe `research/TRUTH.md`).
+> Widersprueche zwischen diesem Dokument und TRUTH.csv werden zugunsten von
+> TRUTH.csv aufgeloest.
+
 **Date:** 2026-01-07 (Updated with Phase A ground truth)  
 **Based on:** Phase 1 Reconciliation (152 claims, 9 subsystems) + Phase A SD Analysis  
 **Confidence Level:** High (85% system understood, key unknowns identified)

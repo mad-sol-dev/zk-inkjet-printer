@@ -1,7 +1,7 @@
 # CONTRADICTION-USB-001: USB Device Controller Base Address
 
-**Status:** ACTIVE
-**Severity:** CRITICAL (blocks USB-CDC implementation)
+**Status:** RESOLVED 2026-08-19
+**Severity:** was CRITICAL (blocks USB-CDC implementation) -- no longer blocking
 **Discovered:** 2026-01-03 (Phase 2C RE-KB Integration)
 
 ---
@@ -74,3 +74,41 @@ USB-CDC implementation remains blocked until firmware references to the actual U
 1. Confirm active program identity and load `ZK-INKJET-NANO-APP.bin` if distinct from `.orig`.
 2. Use Ghidra to search for UDC register offsets (EPA_CFG, EPB_CFG, EP*_MPS) to identify base via offset usage.
 3. Check for references to USBH_BA (0xB1009000) to locate the USB controller block and adjacent device base.
+
+
+---
+
+## Resolution 2026-08-19 (see CL-USB-REC-101, CL-TOOL-REC-101)
+
+The "0 refs found" result for both 0xB1008000 and 0xB8007000 was an artifact of
+the search method, not a property of the firmware.
+
+On ARM, 0xB1008000 cannot be encoded as an immediate operand and is therefore
+placed in the literal pool and loaded with LDR. Ghidra's *scalar* search does
+not match literal-pool words. 0xB0000000 by contrast *is* encodable, which is
+why GCR accesses produced scalar hits and USBD accesses did not.
+
+Evidence from the working database (ZK-INKJET-NANO-APP.bin.orig):
+
+    0x002AF9D8  mov r0,#0xb0000000        ; GCR, immediate -> scalar hit
+    0x002AF9DC  ldr r0,[r0,#0x214]
+    0x002AFA38  ldr r0,[0x2afb40]         ; literal pool -> no scalar hit
+    0x002AFA3C  ldr r0,[r0,#0x0]
+    0x002AFA40  and r0,r0,#0x80000000
+
+Literal pool from 0x002AFB34:
+
+    0x002AFB34  0xFF9FFFDF   mask for GCR+0x214
+    0x002AFB40  0xB1008704   USBD_BA + 0x704 = USB_PHY_CTL
+    0x002AFB44  0x00008190   RAM flag (finding-0005)
+    0x002AFB48  0x000082B0   RAM flag (finding-0005)
+    0x002AFB4C  0xB1008000   USBD_BA
+
+USBD_BA = 0xB1008000 is used by usbd_init_phy_cep (0x002AF9C0). This also
+independently confirms finding-0005 (2026-01-08), which had already stated it --
+without that ever propagating into this file or into
+research/system_understanding.md.
+
+The action item "re-run against the non-.orig program if available" was
+unachievable: .orig is the raw input filename, and this is the only and current
+program in the project. See CL-TOOL-REC-102.

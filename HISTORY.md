@@ -1,5 +1,10 @@
 # Project History
 
+> **Nicht autoritativ.** Abgeleiteter bzw. historischer Stand vom 2026-01-08.
+> Autoritativ ist ausschliesslich `research/TRUTH.csv` (siehe `research/TRUTH.md`).
+> Widersprueche zwischen diesem Dokument und TRUTH.csv werden zugunsten von
+> TRUTH.csv aufgeloest.
+
 **Timeline:** October 2025 - January 2026  
 **Goal:** Enable USB-CDC interface for automatic lithium cell labeling  
 **Hardware:** ZK-INKJET handheld printer (CHIKY ZK-1696 clone)

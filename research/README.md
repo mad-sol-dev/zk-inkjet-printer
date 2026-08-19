@@ -1,4 +1,24 @@
-# ZK-Inkjet Printer - Research Documentation
+# ZK-Inkjet Printer — Research
+
+## Autoritativ
+
+- **[TRUTH.csv](./TRUTH.csv)** — der Stand des Projekts. 168 Aussagen mit Status,
+  Konfidenz, Evidenzstufe, Autoritaet, Entscheidungsstand und naechstem Test.
+- **[TRUTH.md](./TRUTH.md)** — wie die Datei zu lesen und zu pflegen ist.
+
+Alles Uebrige in diesem Verzeichnis ist Rohmaterial, Herleitung oder Archiv und
+traegt einen entsprechenden Hinweis im Kopf. Bei Widerspruch gewinnt TRUTH.csv.
+
+## Archiv und Herleitung
+
+- `docs_rebuild/` — Phase-1-Reconciliation (189 Claims -> 152 Aussagen), Quelle
+  von TRUTH.csv. Enthaelt die Entscheidungsprotokolle je Subsystem.
+- `findings/.re_kb/` (11) und `findings/re_kb_archive/` (31) — beide eingefroren.
+  Achtung: kollidierende IDs, siehe CL-TOOL-REC-103.
+- `sessions/` — chronologische Sitzungsprotokolle.
+- `phase_a_sd_analysis/` — SD-Image-Analyse inkl. Artefakt-Reproduktionstabelle.
+
+---
 
 **Project:** USB-CDC Implementation for ZK-Inkjet Printer  
 **Hardware:** Nuvoton N32903U5DN SoC, HP45 Printhead  
