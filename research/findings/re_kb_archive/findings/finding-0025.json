@@ -1,0 +1,58 @@
+{
+  "component": null,
+  "confidence": null,
+  "created_at": "2025-12-20T19:04:00.481491Z",
+  "evidence": [
+    {
+      "description": "LCD init sequence writes data values (0x0/0xa/0x10/0x11/\u20260x22), then issues CMD 0x3A with 0x55, CMD 0x36 with 0xb4, and CMD 0x29; uses same GPIO bit 0x2000 for D/C",
+      "document_id": null,
+      "domain_file_id": "7f011b6c592307498348432",
+      "file": null,
+      "function_address": "0x1d5a4",
+      "function_name": "FUN_0001d5a4",
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": "ZK-INKJET-NANO-APP.bin",
+      "result": null,
+      "source_type": "ghidra",
+      "test_id": null
+    },
+    {
+      "description": "Hardware init enabling SPI0 and PWM backlight; sets *_b0000208 clock bits, calls FUN_00080b7c (SPI0 setup), manipulates PWM base 0xb8007000 offsets 0x40/0x30/0x34 with duty constants",
+      "document_id": null,
+      "domain_file_id": "7f011b6c592307498348432",
+      "file": null,
+      "function_address": "0x5c1a0",
+      "function_name": "FUN_0005c1a0",
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": "ZK-INKJET-NANO-APP.bin",
+      "result": null,
+      "source_type": "ghidra",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0025",
+  "next_steps": [],
+  "project_id": "zk-inkjet-printer",
+  "provenance": "LLM+Ghidra MCP session",
+  "raw_note": null,
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "open",
+  "summary": "ST7789V init sequence lives in FUN_0001d5a4: it drives the LCD over SPI0 using the LCD helpers and pushes a command/data stream ending in COLMOD=0x55 (16bpp), MADCTL=0xb4, and DISPON (0x29) after SLPOUT (0x11). Intermediate writes include parameters 0x0a/0x10/0x1a/0x3b/0x34/0x4e/0x17/0x16/0x21/0x22 before enabling display. D/C toggles the same GPIO bit 0x2000 at base 0xb8003000. Board-level init in FUN_0005c1a0 enables SPI0 clocks/pinmux, calls FUN_00080b7c (SPI0 setup at 0xb800c000), and configures PWM block at 0xb8007000 (backlight) by manipulating registers at offsets 0x40/0x30/0x34 and setting duty values from constants at 0x0005c3dc..0x0005c3e4.",
+  "tags": [
+    "display",
+    "spi",
+    "hardware"
+  ],
+  "title": "ST7789V display bring-up and backlight enable",
+  "type": "behavior",
+  "updated_at": "2025-12-20T19:04:00.481491Z"
+}

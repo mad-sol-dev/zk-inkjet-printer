@@ -1,0 +1,607 @@
+{
+  "findings": [
+    {
+      "component": "soc",
+      "confidence": null,
+      "created_at": "2025-11-26T22:28:18.267624Z",
+      "file": "findings/finding-0001.json",
+      "id": "finding-0001",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "soc",
+        "hardware",
+        "nuvoton",
+        "m5",
+        "dwin",
+        "pcb-marking"
+      ],
+      "title": "SoC Marking Discrepancy - DWIN M5 vs Nuvoton N32903K5DN",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:04:42.934515Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-11-27T00:12:43.881101Z",
+      "file": "findings/finding-0002.json",
+      "id": "finding-0002",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "soc",
+        "hardware",
+        "nuvoton",
+        "n32903k5dn",
+        "arm926ej-s",
+        "verified"
+      ],
+      "title": "N32903K5DN SoC Identification and Architecture",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:04:49.282868Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-11-27T00:13:09.758396Z",
+      "file": "findings/finding-0003.json",
+      "id": "finding-0003",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "gpio",
+        "hardware",
+        "pin-mux",
+        "portb",
+        "verified"
+      ],
+      "title": "GPIO Port B Configuration - Pins GPB[2-5] Unconfigured",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:04:57.066108Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-11-27T00:13:42.090459Z",
+      "file": "findings/finding-0004.json",
+      "id": "finding-0004",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "mmio",
+        "gcr",
+        "system-control",
+        "verified"
+      ],
+      "title": "MMIO Global Control Registers (GCR_BA @ 0xB0000000)",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:05:06.692196Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-11-27T00:13:42.231909Z",
+      "file": "findings/finding-0005.json",
+      "id": "finding-0005",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "mmio",
+        "doorbell",
+        "display",
+        "verified"
+      ],
+      "title": "MMIO Doorbell/Parameter Block (0xB800C000)",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:05:16.214764Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-11-27T00:14:06.741544Z",
+      "file": "findings/finding-0006.json",
+      "id": "finding-0006",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "mmio",
+        "display",
+        "gpio",
+        "verified"
+      ],
+      "title": "MMIO Display Controller (0xB100D000) and GPIO Base (0xB8001000)",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:05:27.684680Z"
+    },
+    {
+      "component": "uart",
+      "confidence": 1.0,
+      "created_at": "2025-11-27T00:14:06.870516Z",
+      "file": "findings/finding-0007.json",
+      "id": "finding-0007",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "mmio",
+        "uart",
+        "verified"
+      ],
+      "title": "MMIO UART Controller (UA_BA @ 0xB8008000)",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:05:37.617664Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-11-27T00:14:39.627081Z",
+      "file": "findings/finding-0008.json",
+      "id": "finding-0008",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "gpio",
+        "functions",
+        "pin-mux",
+        "verified"
+      ],
+      "title": "GPIO Helper Functions - Pin Configuration, Read, and Write",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:05:50.622635Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-11-27T00:14:39.774507Z",
+      "file": "findings/finding-0009.json",
+      "id": "finding-0009",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "upgrade",
+        "message-handler",
+        "functions",
+        "verified"
+      ],
+      "title": "Firmware Upgrade Orchestrator and Message Handler Table",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:05:54.308322Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-11-27T00:15:15.176921Z",
+      "file": "findings/finding-0010.json",
+      "id": "finding-0010",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "upgrade",
+        "ui",
+        "queue",
+        "verified",
+        "dispatch-table"
+      ],
+      "title": "Upgrade UI Handler Functions (Queue Maintenance)",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:06:03.218323Z"
+    },
+    {
+      "component": "firmware",
+      "confidence": 0.9,
+      "created_at": "2025-11-27T00:15:15.329971Z",
+      "file": "findings/finding-0011.json",
+      "id": "finding-0011",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "functions",
+        "hypothesis",
+        "needs-verification",
+        "medium-confidence"
+      ],
+      "title": "Additional Firmware Functions Requiring Verification",
+      "type": "hypothesis",
+      "updated_at": "2025-12-02T03:06:10.592069Z"
+    },
+    {
+      "component": "hp45",
+      "confidence": 0.9,
+      "created_at": "2025-11-27T22:30:20.979463Z",
+      "file": "findings/finding-0012.json",
+      "id": "finding-0012",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "hp45",
+        "cartridge",
+        "nozzle",
+        "gpio",
+        "hardware",
+        "pin-mapping",
+        "cm504b",
+        "verified"
+      ],
+      "title": "HP45 Cartridge Control - Complete Pin Mapping and Driver Architecture",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:06:23.085378Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-11-27T23:43:16.059760Z",
+      "file": "findings/finding-0013.json",
+      "id": "finding-0013",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "usb",
+        "trigger",
+        "boot",
+        "upgrade",
+        "firmware",
+        "bmp",
+        "printing",
+        "msc",
+        "verified"
+      ],
+      "title": "USB File Scanning Trigger - Boot-Time Hold-Key Detection",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:06:30.458673Z"
+    },
+    {
+      "component": "hp45",
+      "confidence": 1.0,
+      "created_at": "2025-12-01T17:49:44.528505Z",
+      "file": "findings/finding-0014.json",
+      "id": "finding-0014",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "hp45",
+        "cartridge",
+        "hardware",
+        "matrix",
+        "nozzles",
+        "printhead"
+      ],
+      "title": "HP45 Cartridge Architecture - 22\u00d714 Nozzle Matrix Control",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:06:41.517560Z"
+    },
+    {
+      "component": "hp45",
+      "confidence": 1.0,
+      "created_at": "2025-12-01T17:50:12.135045Z",
+      "file": "findings/finding-0015.json",
+      "id": "finding-0015",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "hp45",
+        "gpio",
+        "pin-mapping",
+        "ha-lines",
+        "address",
+        "cm504b",
+        "level-shifter"
+      ],
+      "title": "HP45 Address Lines (HA0-HA21) - Pin Mapping to Nuvoton SoC",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:06:51.040853Z"
+    },
+    {
+      "component": "hp45",
+      "confidence": 0.85,
+      "created_at": "2025-12-01T17:51:02.722108Z",
+      "file": "findings/finding-0016.json",
+      "id": "finding-0016",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "hp45",
+        "gpio",
+        "pin-mapping",
+        "hp-lines",
+        "primitive",
+        "mosfet",
+        "high-side",
+        "cm504b"
+      ],
+      "title": "HP45 Primitive Lines (HP0-HP13) - Pin Mapping and High-Side MOSFET Drivers",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:07:01.384215Z"
+    },
+    {
+      "component": "hp45",
+      "confidence": 1.0,
+      "created_at": "2025-12-01T17:51:32.301894Z",
+      "file": "findings/finding-0017.json",
+      "id": "finding-0017",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "hp45",
+        "hardware",
+        "cm504b",
+        "level-shifter",
+        "mosfet",
+        "high-side",
+        "driver"
+      ],
+      "title": "HP45 Driver Hardware Components - CM504B Level Shifters and Dual N-MOSFETs",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:07:11.130519Z"
+    },
+    {
+      "component": "firmware",
+      "confidence": 0.7,
+      "created_at": "2025-12-01T18:11:18.573574Z",
+      "file": "findings/finding-0018.json",
+      "id": "finding-0018",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "firmware",
+        "ghidra",
+        "hp45",
+        "mmio",
+        "gpio",
+        "arm",
+        "analysis"
+      ],
+      "title": "Firmware Analysis - HP45 Control Code Patterns and MMIO References",
+      "type": "behavior",
+      "updated_at": "2025-12-02T03:07:23.297624Z"
+    },
+    {
+      "component": "usb",
+      "confidence": null,
+      "created_at": "2025-12-02T14:03:24.855936Z",
+      "file": "findings/finding-0019.json",
+      "id": "finding-0019",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "usb",
+        "msc",
+        "cdc",
+        "udc",
+        "mmio",
+        "firmware",
+        "ghidra"
+      ],
+      "title": "USB Stack Architecture for CDC Extension",
+      "type": "behavior",
+      "updated_at": "2025-12-10T13:18:10.127634Z"
+    },
+    {
+      "component": "storage",
+      "confidence": null,
+      "created_at": "2025-12-02T15:01:20.471324Z",
+      "file": "findings/finding-0020.json",
+      "id": "finding-0020",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "sd-card",
+        "fat",
+        "filesystem",
+        "boot",
+        "usb",
+        "msc",
+        "volumes"
+      ],
+      "title": "SD Card Volume Management",
+      "type": "behavior",
+      "updated_at": "2025-12-02T15:01:20.471324Z"
+    },
+    {
+      "component": "storage",
+      "confidence": null,
+      "created_at": "2025-12-02T15:18:41.427414Z",
+      "file": "findings/finding-0021.json",
+      "id": "finding-0021",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "boot",
+        "filesystem",
+        "firmware",
+        "loader",
+        "app.bin",
+        "size-limit"
+      ],
+      "title": "APP.bin load mechanism and size constraints",
+      "type": "behavior",
+      "updated_at": "2025-12-02T15:50:39.573781Z"
+    },
+    {
+      "component": "usb",
+      "confidence": 0.95,
+      "created_at": "2025-12-07T21:57:14.077257Z",
+      "file": "findings/finding-0022.json",
+      "id": "finding-0022",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "usb",
+        "cdc",
+        "descriptors",
+        "patch",
+        "memory-layout",
+        "endpoints"
+      ],
+      "title": "USB Descriptor Locations and CDC Patch Strategy",
+      "type": "behavior",
+      "updated_at": "2025-12-07T21:57:14.077257Z"
+    },
+    {
+      "component": "storage",
+      "confidence": 1.0,
+      "created_at": "2025-12-15T00:18:03.039777Z",
+      "file": "findings/finding-0023.json",
+      "id": "finding-0023",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "sd-card",
+        "storage",
+        "firmware",
+        "boot",
+        "raw-binary",
+        "update-workflow",
+        "hypothesis"
+      ],
+      "title": "SD Card Raw Binary Storage Layout and Firmware Update Workflow",
+      "type": "behavior",
+      "updated_at": "2025-12-15T19:57:59.040762Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-12-20T19:03:43.888434Z",
+      "file": "findings/finding-0024.json",
+      "id": "finding-0024",
+      "severity": "info",
+      "status": "open",
+      "tags": [
+        "display",
+        "spi",
+        "hardware"
+      ],
+      "title": "SPI0 LCD command/data wrappers (ST7789V path)",
+      "type": "behavior",
+      "updated_at": "2025-12-20T19:03:43.888434Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-12-20T19:04:00.481491Z",
+      "file": "findings/finding-0025.json",
+      "id": "finding-0025",
+      "severity": "info",
+      "status": "open",
+      "tags": [
+        "display",
+        "spi",
+        "hardware"
+      ],
+      "title": "ST7789V display bring-up and backlight enable",
+      "type": "behavior",
+      "updated_at": "2025-12-20T19:04:00.481491Z"
+    },
+    {
+      "component": null,
+      "confidence": null,
+      "created_at": "2025-12-20T19:04:15.680837Z",
+      "file": "findings/finding-0026.json",
+      "id": "finding-0026",
+      "severity": "info",
+      "status": "open",
+      "tags": [
+        "display",
+        "ui",
+        "spi"
+      ],
+      "title": "LCD rendering primitives (window set, blit, pixel read/write)",
+      "type": "behavior",
+      "updated_at": "2025-12-20T19:04:15.680837Z"
+    },
+    {
+      "component": "display",
+      "confidence": 1.0,
+      "created_at": "2025-12-20T19:19:36.008655Z",
+      "file": "findings/finding-0027.json",
+      "id": "finding-0027",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "st7789v",
+        "spi",
+        "display",
+        "lcd",
+        "gpio",
+        "rendering"
+      ],
+      "title": "ST7789V SPI Display Driver - Core Functions and Init Sequence",
+      "type": "behavior",
+      "updated_at": "2025-12-20T19:19:36.008655Z"
+    },
+    {
+      "component": "display",
+      "confidence": 1.0,
+      "created_at": "2025-12-20T19:20:11.130499Z",
+      "file": "findings/finding-0028.json",
+      "id": "finding-0028",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "st7789v",
+        "rendering",
+        "blitter",
+        "graphics"
+      ],
+      "title": "ST7789V Display Rendering Primitives - Blitter and Fill Functions",
+      "type": "behavior",
+      "updated_at": "2025-12-20T19:20:11.130499Z"
+    },
+    {
+      "component": "ui",
+      "confidence": 1.0,
+      "created_at": "2025-12-20T19:21:19.702534Z",
+      "file": "findings/finding-0029.json",
+      "id": "finding-0029",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "ui",
+        "menu",
+        "about-screen",
+        "touch",
+        "adc"
+      ],
+      "title": "UI Architecture - Menu System and About Screen",
+      "type": "behavior",
+      "updated_at": "2025-12-20T19:21:19.702534Z"
+    },
+    {
+      "component": "display",
+      "confidence": 0.9,
+      "created_at": "2025-12-20T19:21:55.285503Z",
+      "file": "findings/finding-0030.json",
+      "id": "finding-0030",
+      "severity": "info",
+      "status": "in_progress",
+      "tags": [
+        "pwm",
+        "backlight",
+        "display",
+        "mmio"
+      ],
+      "title": "Display Backlight and PWM Control",
+      "type": "behavior",
+      "updated_at": "2025-12-20T19:21:55.285503Z"
+    },
+    {
+      "component": "adc",
+      "confidence": null,
+      "created_at": "2025-12-20T21:58:02.202200Z",
+      "file": "findings/finding-0031.json",
+      "id": "finding-0031",
+      "severity": "info",
+      "status": "verified",
+      "tags": [
+        "hardware",
+        "adc",
+        "touch",
+        "voltage",
+        "soc"
+      ],
+      "title": "ADC Architecture: Voltage Monitoring & Touch Screen Controller",
+      "type": "behavior",
+      "updated_at": "2025-12-20T23:24:02.435551Z"
+    }
+  ],
+  "project_id": "zk-inkjet-printer",
+  "schema_version": "2.0"
+}

@@ -1,0 +1,45 @@
+{
+  "component": "hp45",
+  "confidence": 1.0,
+  "created_at": "2025-12-01T17:51:32.301894Z",
+  "evidence": [
+    {
+      "description": "Visual PCB inspection, component markings, datasheet cross-reference",
+      "document_id": null,
+      "domain_file_id": null,
+      "file": null,
+      "function_address": null,
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": null,
+      "result": null,
+      "source_type": "other",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0017",
+  "next_steps": [],
+  "project_id": "zk-inkjet-printer",
+  "provenance": "PCB component identification from weekend work 2025-12-01",
+  "raw_note": "Hardware Component Breakdown:\n\nCM504B Level Shifters (6 total):\n- Function: Hex bidirectional voltage level shifter (6 channels per IC)\n- VCC: MCU logic level (~3.3V)\n- VDD: Head supply voltage (~9-13V, typically 12V)\n- Channels: AIN\u2192AOUT, BIN\u2192BOUT, CIN\u2192COUT, DIN\u2192DOUT, EIN\u2192EOUT, FIN\u2192FOUT\n- CD4504B compatible\n\nAssignment:\n- IC1: HP primitive gates (HP00-HP05)\n- IC2: HP primitive gates (HP06-HP11)\n- IC3: HA address lines (HA00-HA05)\n- IC4: HA address lines (HA06-HA11)\n- IC5: HA address lines (HA12-HA17)\n- IC6: Mixed - HA address lines (HA18-HA21) + HP primitive gates (HP12-HP13)\n\nDual N-MOSFET Packages (7 total: Q7-Q13):\n- Package: SOT-23-6\n- Marking: 'DS01'\n- Pinout:\n  * Pin 1: Gate 1 (G1)\n  * Pin 2: Common Drain (D12) \u2192 connected to VDD\n  * Pin 3: Gate 2 (G2)\n  * Pin 4: Source 1 (S1) \u2192 HP line to cartridge\n  * Pin 5: Common Drain (D12) \u2192 connected to VDD (internally connected to pin 2)\n  * Pin 6: Source 2 (S2) \u2192 HP line to cartridge\n- Function: High-side switches for HP primitive lines\n- Each package drives 2 HP lines\n\nMOSFET Assignment:\n- Q7:  HP00 (S1), HP01 (S2)\n- Q8:  HP02 (S1), HP03 (S2)\n- Q9:  HP04 (S1), HP05 (S2)\n- Q10: HP06 (S1), HP07 (S2)\n- Q11: HP08 (S1), HP09 (S2)\n- Q12: HP10 (S1), HP11 (S2)\n- Q13: HP12 (S1), HP13 (S2)\n\nSignal Flow:\n  SoC GPIO \u2192 CM504B (VCC\u2192VDD shift) \u2192 MOSFET Gate \u2192 MOSFET Source \u2192 HP line \u2192 HP45 cartridge\n\nPower Requirements:\n- VDD must support 14 \u00d7 0.3-0.4A = ~4-6A peak current (if all HP lines fire simultaneously)\n- Typical operation fires fewer nozzles per pulse to stay within current limits",
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "verified",
+  "summary": "The printer uses 6\u00d7 CM504B (CD4504B-compatible) hex level shifters and 7\u00d7 dual N-MOSFET packages (marking 'DS01', SOT-23-6) to interface between the Nuvoton SoC and HP45 cartridge. CM504B chips convert 3.3V MCU logic to ~12V head voltage (VDD). IC1/IC2/IC6 drive HP primitive MOSFETs, IC3-IC6 drive HA address lines. The dual MOSFETs (Q7-Q13) act as high-side switches for the 14 HP lines.",
+  "tags": [
+    "hp45",
+    "hardware",
+    "cm504b",
+    "level-shifter",
+    "mosfet",
+    "high-side",
+    "driver"
+  ],
+  "title": "HP45 Driver Hardware Components - CM504B Level Shifters and Dual N-MOSFETs",
+  "type": "behavior",
+  "updated_at": "2025-12-02T03:07:11.130519Z"
+}

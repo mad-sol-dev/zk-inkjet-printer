@@ -1,0 +1,44 @@
+{
+  "component": "hp45",
+  "confidence": 1.0,
+  "created_at": "2025-12-01T17:49:44.528505Z",
+  "evidence": [
+    {
+      "description": "HP45 cartridge datasheet analysis and hardware reverse engineering",
+      "document_id": null,
+      "domain_file_id": null,
+      "file": null,
+      "function_address": null,
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": null,
+      "result": null,
+      "source_type": "other",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0014",
+  "next_steps": [],
+  "project_id": "zk-inkjet-printer",
+  "provenance": "Hardware analysis from weekend work 2025-12-01",
+  "raw_note": "HP45 Matrix Control Mechanism:\n\nPhysical Structure:\n- 300 nozzles total, arranged internally as 22\u00d714 matrix\n- Each nozzle: MOSFET switch + heating resistor (~30\u03a9)\n- MOSFET gate \u2192 one of 22 HA address lines (HA0-HA21)\n- Heater 'upper' side \u2192 one of 14 HP primitive lines (HP0-HP13)\n- Heater 'lower' side \u2192 common HGND (multiple pins)\n\nOperating Parameters:\n- VDD (head supply): 9-13V (typically ~12V)\n- Pulse duration: 1.5-2.0\u00b5s (typically ~1.8\u00b5s)\n- Nozzle current during pulse: ~0.3-0.4A (I = V/R = 12V/30\u03a9)\n- Only ONE HA address should be active at a time\n- Multiple HP primitives can fire simultaneously (current limits permitting)\n\nFiring Sequence (per line phase):\nfor address in 0..21:  # 22 address phases\n    set_HA(address)              # exactly one HA line active (12V)\n    hp_mask = bitmap[address]    # 14-bit mask: which HPx should fire?\n    set_HP_mask(hp_mask)         # High-side MOSFETs switch 10-12V on HP lines\n    wait ~1.8\u00b5s\n    clear_HP_mask()\n    clear_HA(address)\n\nSensor Pins (optional):\n- 10X (C10X): Reference resistor (~300\u03a9)\n- TSR (CTSR): Temperature-dependent resistor (~300\u03a9, ~11\u03a9 per 10\u00b0C step)\n- Used for temperature estimation and pulse duration adjustment\n- May be ignored in minimal implementations",
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "verified",
+  "summary": "The HP45(SI) cartridge contains 300 nozzles arranged as a 22\u00d714 matrix with 22 address lines (HA0-HA21), 14 primitive lines (HP0-HP13), and common heater ground (HGND). Each nozzle has an internal MOSFET (gate on HAx) and heating resistor (~30\u03a9, on HPx line). Nozzles fire when both the HA address is active and the HP primitive receives a ~1.8\u00b5s pulse at VDD (~12V), drawing ~0.3-0.4A per nozzle.",
+  "tags": [
+    "hp45",
+    "cartridge",
+    "hardware",
+    "matrix",
+    "nozzles",
+    "printhead"
+  ],
+  "title": "HP45 Cartridge Architecture - 22\u00d714 Nozzle Matrix Control",
+  "type": "behavior",
+  "updated_at": "2025-12-02T03:06:41.517560Z"
+}

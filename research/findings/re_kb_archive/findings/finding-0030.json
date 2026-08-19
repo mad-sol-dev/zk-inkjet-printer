@@ -1,0 +1,45 @@
+{
+  "component": "display",
+  "confidence": 0.9,
+  "created_at": "2025-12-20T19:21:55.285503Z",
+  "evidence": [
+    {
+      "description": "Enables backlight/PWM and SPI0 clocks, programs PWM base 0xb8007000, calls SPI0 setup at 0x80b7c",
+      "document_id": null,
+      "domain_file_id": "7f011b6c592307498348432",
+      "file": null,
+      "function_address": "0x5c1a0",
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": "ZK-INKJET-NANO-APP.bin",
+      "result": null,
+      "source_type": "ghidra",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0030",
+  "next_steps": [
+    "Map PWM registers at 0xb8007000 to N32903 PWM peripheral",
+    "Verify backlight GPIO pin connection"
+  ],
+  "project_id": "zk-inkjet-printer",
+  "provenance": null,
+  "raw_note": null,
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "in_progress",
+  "summary": "Display backlight controlled via PWM at base address 0xb8007000. Initialization function enables backlight/PWM and SPI0 clocks, calls SPI0 setup at 0x80b7c.",
+  "tags": [
+    "pwm",
+    "backlight",
+    "display",
+    "mmio"
+  ],
+  "title": "Display Backlight and PWM Control",
+  "type": "behavior",
+  "updated_at": "2025-12-20T19:21:55.285503Z"
+}

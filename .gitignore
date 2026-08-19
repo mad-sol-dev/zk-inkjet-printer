@@ -64,7 +64,14 @@ ghidra_projects/**/*.log
 research/findings/.re_kb/.id_lock
 research/findings/.re_kb.backup.*
 research/findings/.re_kb.zip
-research/findings/re_kb_archive/
+# Altes RE-KB (31 Findings) und die Reconciliation-Arbeit werden versioniert.
+# Ausgenommen bleiben Rohmaterial und Grossdateien:
+research/docs_rebuild/Chats/
+research/docs_rebuild/old_docs/
+research/docs_rebuild/research.zip
+research/docs_rebuild/2026-01-02-*.txt
+research/docs_rebuild/analysis/*.tmp
+research/docs_rebuild/analysis/temp_*
 
 # Session backups (from anonymization)
 research/sessions/.backup_*/
@@ -72,10 +79,7 @@ research/sessions/PRIVACY_SCAN_REPORT.md
 research/sessions/ANONYMIZATION_COMPLETE.md
 
 # Analysis outputs (large/generated)
-research/docs_rebuild/
 research/DOCUMENTATION_CONSISTENCY_REPORT.md
-research/docs_rebuild/analysis/*.tmp
-research/docs_rebuild/analysis/temp_*
 
 # FAT volume extracts (temporary, too large)
 research/fat_volumes/

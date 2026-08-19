@@ -1,0 +1,59 @@
+{
+  "component": null,
+  "confidence": null,
+  "created_at": "2025-11-27T00:14:39.774507Z",
+  "evidence": [
+    {
+      "description": "Upgrade orchestrator function (~1500 bytes, Thumb mode). Manages firmware upgrade: walks free-block list, accumulates memory stats, bins block sizes by bit-width, dispatches logging callbacks. Verified through call graph analysis and systematic disassembly.",
+      "document_id": null,
+      "domain_file_id": "7f011b6c592307498348432",
+      "file": null,
+      "function_address": "0x20eaec",
+      "function_name": "upgrade_orchestrator",
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": "legacy-missing-program",
+      "program_name": "ZK-INKJET-NANO-APP.bin",
+      "result": null,
+      "source_type": "ghidra",
+      "test_id": null
+    },
+    {
+      "description": "Message handler table at 0x003D3E00. Array of 12-byte entries (287 total parsed). Structure: {uint32_t handler_addr; uint32_t string_addr; uint32_t flag;}. Verified through structure analysis.",
+      "document_id": null,
+      "domain_file_id": "7f011b6c592307498348432",
+      "file": null,
+      "function_address": "0x3d3e00",
+      "function_name": "message_handler_table",
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": "legacy-missing-program",
+      "program_name": "ZK-INKJET-NANO-APP.bin",
+      "result": null,
+      "source_type": "ghidra",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0009",
+  "next_steps": [],
+  "project_id": "zk-inkjet-printer",
+  "provenance": "migrated from schema v1.0",
+  "raw_note": "Migrated from docs/findings/firmware_functions.md (High Confidence Functions section)\n\nUpgrade Orchestrator:\n- Original confidence: 95%\n- Size: ~1500 bytes\n- Mode: Thumb\n- Operations: free-block list walking, memory statistics, block size binning, logging callbacks\n\nMessage Handler Table:\n- Original confidence: 95%\n- Location: 0x003D3E00\n- Structure: 12-byte entries\n- Entries parsed: 287\n- Format verified through systematic analysis",
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "verified",
+  "summary": "Upgrade orchestrator @ 0x0020EAEC (~1500 bytes, Thumb mode) manages firmware upgrade process by walking free-block list, accumulating memory statistics, binning block sizes, and dispatching logging callbacks. Message handler table @ 0x003D3E00 contains 287 entries in 12-byte format: handler_addr (4 bytes), string_addr (4 bytes), flag (4 bytes).",
+  "tags": [
+    "upgrade",
+    "message-handler",
+    "functions",
+    "verified"
+  ],
+  "title": "Firmware Upgrade Orchestrator and Message Handler Table",
+  "type": "behavior",
+  "updated_at": "2025-12-02T03:05:54.308322Z"
+}

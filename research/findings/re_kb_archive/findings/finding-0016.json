@@ -1,0 +1,50 @@
+{
+  "component": "hp45",
+  "confidence": 0.85,
+  "created_at": "2025-12-01T17:51:02.722108Z",
+  "evidence": [
+    {
+      "description": "PCB trace analysis, MOSFET pinout verification, CM504B routing",
+      "document_id": null,
+      "domain_file_id": null,
+      "file": null,
+      "function_address": null,
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": null,
+      "result": null,
+      "source_type": "other",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0016",
+  "next_steps": [
+    "Verify HP04 source pin in firmware GPIO code",
+    "Clarify HP07/HP10 pin overlap (both show GPA7)",
+    "Confirm HP09 exact pin (GPA10 vs GPA11)"
+  ],
+  "project_id": "zk-inkjet-printer",
+  "provenance": "PCB reverse engineering from weekend work 2025-12-01",
+  "raw_note": "Complete HP Primitive Line Mapping:\n\nQ7-Q13: Dual N-MOSFETs (SOT-23-6, marking 'DS01')\n  Pinout: Pin 2/5=common drain (D12), Pins 4/6=sources (S1,S2), Pins 1/3=gates (G1,G2)\n  Common drain (pin 2/5) \u2192 VDD (~12V)\n  Sources (pin 4/6) \u2192 HP lines to cartridge\n  Gates (pin 1/3) \u2192 CM504B outputs\n\nIC1 (CM504B) - HP00-HP05:\n  HP00: GPA0 (SoC pin 79) \u2192 IC1.AIN\u2192AOUT \u2192 Q7.G1 \u2192 HP00\n  HP01: GPA1 (SoC pin 78) \u2192 IC1.BIN\u2192BOUT \u2192 Q7.G2 \u2192 HP01\n  HP02: GPA4 (SoC pin 75) \u2192 IC1.CIN\u2192COUT \u2192 Q8.G1 \u2192 HP02\n  HP03: GPA2 (SoC pin 77) \u2192 IC1.DIN\u2192DOUT \u2192 Q8.G2 \u2192 HP03\n  HP04: [TBD]            \u2192 IC1.EIN\u2192EOUT \u2192 Q9.G1 \u2192 HP04\n  HP05: GPA5 (SoC pin 74) \u2192 IC1.FIN\u2192FOUT \u2192 Q9.G2 \u2192 HP05\n  Reserve: GPA3 (SoC pin 76) \u2192 IC1.DIN (data line, exact function TBD)\n\nIC2 (CM504B) - HP06-HP11:\n  HP06: GPA6 (SoC pin 73)  \u2192 IC2.AIN\u2192AOUT \u2192 Q10.G1 \u2192 HP06\n  HP07: GPA7 (SoC pin 103) \u2192 IC2.BIN\u2192BOUT \u2192 Q10.G2 \u2192 HP07\n  HP08: GPD5 (SoC pin 113) \u2192 IC2.CIN\u2192COUT \u2192 Q11.G1 \u2192 HP08\n  HP09: GPA11/GPA10 (SoC pin 123/122) \u2192 IC2.DIN\u2192DOUT \u2192 Q11.G2 \u2192 HP09\n  HP10: GPA7 (SoC pin 103) \u2192 IC2.EIN\u2192EOUT \u2192 Q12.G1 \u2192 HP10\n  HP11: GPD6 (SoC pin 112) \u2192 IC2.FIN\u2192FOUT \u2192 Q12.G2 \u2192 HP11\n\nIC6 (CM504B) - HP12-HP13 (shared with HA18-HA21):\n  HP12: GPD7 (SoC pin 115) \u2192 IC6.EIN\u2192EOUT \u2192 Q13.G1 \u2192 HP12\n  HP13: GPD8 (SoC pin 114) \u2192 IC6.FIN\u2192FOUT \u2192 Q13.G2 \u2192 HP13\n\nKey Points:\n- HP lines carry actual heating current (~0.3-0.4A per active nozzle)\n- High-side MOSFETs switch VDD to HP lines when gates are driven high\n- Multiple HP lines can be active simultaneously (respecting current limits)\n- Firmware should configure GPA0-7, GPA10-11, GPD5-8 as outputs\n- Each HP line connects to 22 nozzles (one per HA address)\n\nNote: Some pin assignments (HP04, HP07/HP10 overlap, HP09 exact pin) require verification against actual firmware GPIO patterns.",
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "in_progress",
+  "summary": "The 14 HP45 primitive lines (HP0-HP13) control which nozzles fire within the selected HA address. Each HP line is driven by a dual N-MOSFET (Q7-Q13, marking 'DS01') configured as high-side switches with common drain at VDD (~12V). Gates are driven by three CM504B level shifters (IC1, IC2, IC6) from SoC pins GPA0-GPA11, GPD5-GPD8. Multiple HP lines can be active simultaneously to fire multiple nozzles in parallel.",
+  "tags": [
+    "hp45",
+    "gpio",
+    "pin-mapping",
+    "hp-lines",
+    "primitive",
+    "mosfet",
+    "high-side",
+    "cm504b"
+  ],
+  "title": "HP45 Primitive Lines (HP0-HP13) - Pin Mapping and High-Side MOSFET Drivers",
+  "type": "behavior",
+  "updated_at": "2025-12-02T03:07:01.384215Z"
+}

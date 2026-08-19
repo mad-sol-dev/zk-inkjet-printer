@@ -1,0 +1,250 @@
+# Documentation Overview and Status (research/old_docs)
+
+## Overview of documentation structure and scope
+- `research/old_docs/README.md` is the old navigation hub and embeds an auto-generated verification table for four findings (chip identification, firmware functions, GPIO configuration, MMIO map).
+- `research/old_docs/VERIFICATION_STATUS.md` mirrors the same table and defines the verification legend used by findings (VERIFIED, PARTIALLY VERIFIED, LIKELY, HYPOTHESIS).
+- `research/old_docs/analysis_traceability.md` is the compact index of MCP tool calls and sessions; it explicitly states it uses MCP commands rather than shell commands.
+- `research/old_docs/CONVENTIONS.md` sets address notation (VA vs file offset vs MMIO) and is referenced by multiple analysis/reference documents.
+- `research/old_docs/vendor_resources.md` is a link-only vendor index; it documents the shift from early DWIN/T5L assumptions to confirmed Nuvoton N32903 focus.
+- `research/old_docs/uart_control_consolidated.md` consolidates UART plans and DGUS serial framing notes; it is still operationally useful but is explicitly tied to legacy DWIN assumptions.
+- `research/old_docs/update_file_rules.md` is a deep dive into firmware update filename matching and queue/validator flow; it includes literal tables, handler addresses, and a pseudo pipeline.
+- `research/old_docs/analysis/` houses deep-dive notes: `gpio_pins_analysis.md`, `app_message_handlers.md`, `boot_analysis_methodology.md`, and contradiction tracking files.
+- `research/old_docs/findings/` contains the canonical findings with YAML front matter and confidence, in the style later mirrored by the re-kb structure.
+- `research/old_docs/reference/` captures cheat sheets and register/offset catalogs (N32903 quick reference, MMIO fingerprint, offset catalog).
+- `research/old_docs/methodology/mcp_workflow.md` documents the MCP-centric analysis process (Ghidra-bridge queries, verification patterns, manual equivalents).
+- `research/old_docs/guide/` contains audience-specific guides (orientation, operations, research notebook, MCP-assisted workflow draft).
+- `research/old_docs/archive/` preserves pre-restructure content, tooling artifacts, and historical narrative (including German originals and subagent templates).
+- `research/old_docs/archive/old-structure/` is a snapshot of the 2025-10 documentation layout, including large traceability logs and workflow dashboards.
+- Several files in `research/old_docs/archive/` are JSON artifacts (JT scan results, subagent profiles) that serve as provenance for automation experiments.
+- The old docs reference `.re_kb/findings/` in contradiction analyses, but the `.re_kb` directory is not present in this repo snapshot.
+- The old docs assume data files under `data/raw/` and `data/processed/` that are referenced but not part of this summary.
+- The old docs emphasize reproducibility and separation of “findings” vs “analysis logs,” reflecting the restructure documented in `research/old_docs/archive/RESTRUCTURE_COMPLETE.md`.
+- `research/old_docs/analysis/contradictions_by_severity.md` summarizes conflicts by priority, while `research/old_docs/analysis/contradictions_quick_reference.txt` is a compact matrix of the same conflicts.
+- `research/old_docs/analysis/documentation_contradictions_map.md` is the narrative contradiction audit with sources and action items.
+- `research/old_docs/archive/README.md` is the archive index and a key orientation file for historical materials.
+- `research/old_docs/archive/RESTRUCTURE_COMPLETE.md` is the authoritative “restructure done” record; it enumerates files moved and kept.
+- `research/old_docs/archive/documentation_reorg_proposal_legacy.md` is the pre-restructure proposal and documents the reasons for the new guide layout.
+- `research/old_docs/archive/CLEANUP_PLAN_legacy.md` is a superseded plan that now only serves as historical context.
+- `research/old_docs/archive/PROJECT_STATUS_legacy.md` and `research/old_docs/archive/firmware_mod_plan_legacy.md` are status/roadmap snapshots from 2025-10/11.
+- `research/old_docs/archive/ghidra_headless_cli.md` and `research/old_docs/archive/tools/ghidra_headless.sh` document the deprecated headless analysis pipeline.
+- `research/old_docs/archive/uiqvga_bruteforce_notes.md` is explicitly archived and labeled “partial success,” separate from current decode expectations.
+- `research/old_docs/archive/old-structure/documentation.md` and `research/old_docs/archive/old-structure/analysis_traceability_FULL_ARCHIVE.md` are large, pre-restructure artifacts kept for provenance.
+- `research/old_docs/archive/old-structure/status_dashboard.md` and `research/old_docs/archive/old-structure/session_status.md` document a pre-guide status workflow.
+- `research/old_docs/archive/old-structure/storage_probe_notes.md` captures early SD/FAT probing before the update pipeline was fully mapped.
+- `research/old_docs/archive/old-structure/subagent-profiles-reverse-engineering.md` and `research/old_docs/archive/old-structure/subagent-orchestration-guide.md` capture early agent prompts and orchestration patterns.
+- `research/old_docs/archive/aiderdesk-subagent-profiles.json` is a serialized version of early prompt presets.
+- `research/old_docs/archive/jt-scan-batch-0-4.json` and `research/old_docs/archive/jt-scan-subagent-test-results.json` are raw JT scan outputs, not narrative docs.
+- `research/old_docs/reference/N32903_cheat_sheet.md` is the translated quick reference for N32903 and supersedes German originals in the archive.
+- `research/old_docs/findings/chip_identification.md` and `research/old_docs/findings/gpio_configuration.md` are the two fully verified findings in the old docs set.
+- `research/old_docs/findings/mmio_map.md` and `research/old_docs/findings/firmware_functions.md` are partially verified and include open verification notes.
+- `research/old_docs/analysis/gpio_pins_analysis.md` is the detailed backing for the GPIO finding (register map + function disassembly).
+- `research/old_docs/analysis/app_message_handlers.md` is the detailed backing for the update UI handler analysis (queue behavior and string mapping).
+- `research/old_docs/analysis/boot_analysis_methodology.md` provides a step-by-step recipe to reproduce BOOT.bin analysis and disassembly anchors.
+- `research/old_docs/reference/mmio_fingerprint.md` is the MMIO access register list derived from disassembly and USB descriptor evidence.
+- `research/old_docs/reference/offset_catalog.md` is a long index of addresses and behaviors that connect the update pipeline end-to-end.
+- `research/old_docs/guide/orientation.md` is the onboarding map for new contributors and references the verification status workflow.
+- `research/old_docs/guide/operations.md` is the runbook for UI decoding and firmware flashing, with a note that UI decode is still imperfect.
+- `research/old_docs/guide/research_notebook.md` is the meta-index for analysis, methodology, and traceability links.
+
+## Technical Red Threads (recurring topics across documents)
+- Boot/loader analysis repeats across `analysis/boot_analysis_methodology.md`, `archive/old-structure/documentation.md`, and `reference/offset_catalog.md` (stack setup, relocation, ARM mode, display init constants).
+- Update pipeline analysis appears in `update_file_rules.md`, `analysis/app_message_handlers.md`, `reference/offset_catalog.md`, and `findings/firmware_functions.md` (filename literal pools, memcmp loops, handlers, validator, flash writer).
+- Queue/orchestrator terminology is consistent across `analysis_traceability.md`, `reference/offset_catalog.md`, and `archive/old-structure/status_dashboard.md` (queue controller, prefill, validator gating).
+- GPIO/MMIO mapping is a central theme in `analysis/gpio_pins_analysis.md`, `findings/gpio_configuration.md`, `findings/mmio_map.md`, and `reference/mmio_fingerprint.md`.
+- SoC identification and architecture fingerprinting recur in `findings/chip_identification.md`, `reference/N32903_cheat_sheet.md`, `analysis_traceability.md`, and `archive/old-structure/analysis_traceability_FULL_ARCHIVE.md`.
+- UI graphics decoding is a long-running thread in `archive/old-structure/documentation.md`, `archive/uiqvga_bruteforce_notes.md`, and `guide/operations.md` (legacy UI decode workflow).
+- Resource container analysis appears in `archive/PROJECT_STATUS_legacy.md`, `archive/firmware_mod_plan_legacy.md`, and `reference/offset_catalog.md` (RES-HW probes, GUI-RES as TTF).
+- Storage and volume mapping (0:/ vs 3:/) shows up in `update_file_rules.md`, `analysis_traceability.md`, and is flagged as inconsistent in `analysis/documentation_contradictions_map.md`.
+- UART/serial protocol interest is captured in `uart_control_consolidated.md`, legacy DWIN references in `vendor_resources.md`, and roadmap notes in `archive/firmware_mod_plan_legacy.md`.
+- MCP tooling adoption is a recurring theme in `methodology/mcp_workflow.md`, `guide/mcp_firmware_analysis_workflow.md`, and the archived `archive/ghidra_headless_cli.md` showing the older headless workflow.
+- “Traceability first” is repeated: `analysis_traceability.md` → `guide/research_notebook.md` → `methodology/mcp_workflow.md`, with a large older index in `archive/old-structure/analysis_traceability_FULL_ARCHIVE.md`.
+- The addressing convention (VA vs file offset) is referenced repeatedly (`CONVENTIONS.md`, `analysis/app_message_handlers.md`, `reference/offset_catalog.md`).
+- Vendor documentation usage is a cross-cutting thread in `vendor_resources.md`, `analysis/boot_analysis_methodology.md`, and `guide/mcp_firmware_analysis_workflow.md` (PDF references for MMIO and display commands).
+- Confidence and verification levels recur in `findings/*`, `VERIFICATION_STATUS.md`, `reference/mmio_fingerprint.md`, and `archive/old-structure/documentation.md` (explicitly labeling verified vs hypothesized claims).
+- “Update mechanism first” appears in multiple places: upgrade filename matching in `update_file_rules.md`, UI handler behavior in `analysis/app_message_handlers.md`, and validator gating in `reference/offset_catalog.md`.
+- The display controller base `0xB100D000` is a repeated anchor (chip identification, MMIO map, app message handlers, offset catalog).
+- Address `0xB800C000` as the doorbell/parameter block is repeated in `findings/mmio_map.md`, `reference/mmio_fingerprint.md`, and `analysis_traceability.md`.
+- The message handler table at `VA 0x003D3E00` appears in `analysis/app_message_handlers.md` and `reference/offset_catalog.md`, connecting UI messages to handler logic.
+- The “resource update via U-disk” thread is woven through `analysis_traceability.md` (2025-11-05 session), `update_file_rules.md`, and `analysis/app_message_handlers.md`.
+- The boot process methodology strongly emphasizes manual reproducibility via `objdump` and `hexdump` (`analysis/boot_analysis_methodology.md`), later mirrored by MCP-based workflows.
+- The archive captures “subagent” automation experiments (`archive/old-structure/subagent-*` and `archive/aiderdesk-subagent-profiles.json`), which relate to modern MCP agent workflows.
+- The “queue controller + prefill hooks” theme appears in `reference/offset_catalog.md` (queue_ctrl+0x8, +0x10) and `archive/old-structure/status_dashboard.md` (one-shot prefill hook unknown).
+- “Validator gating flash writes” is repeated in `reference/offset_catalog.md`, `findings/firmware_functions.md`, and `archive/old-structure/status_dashboard.md` (caller `0x002C1C10` gates `0x002BFC34`).
+- “File path literals drive behavior” shows up in `update_file_rules.md` (3:/ firmware files), `reference/offset_catalog.md` (0:/ resource paths), and `analysis/app_message_handlers.md` (strings tied to UI messages).
+- “Localization strings as functional clues” appears in `analysis/app_message_handlers.md` (Dutch/German error strings) and `guide/mcp_firmware_analysis_workflow.md` (string reconnaissance phase).
+- “Evidence-first methodology” is reinforced by `analysis/boot_analysis_methodology.md` (no assumptions without disassembly) and `methodology/mcp_workflow.md` (verify before document).
+- “Display controller interactions” appear across `findings/mmio_map.md`, `analysis/app_message_handlers.md` (status rendering), and `reference/offset_catalog.md` (hardware update routine at `0x00230E04`).
+- “Resource containers are opaque but structured” appears in `archive/PROJECT_STATUS_legacy.md` (RES-HW entropy analysis) and `reference/offset_catalog.md` (candidate RES-HW chunk offsets).
+- “Update UI vs update execution split” appears in `analysis/app_message_handlers.md` (UI-only staging) and `update_file_rules.md` (pipeline stages leading to flash).
+- “Boot code as evidence anchor” appears in `analysis/boot_analysis_methodology.md` and `archive/old-structure/documentation.md` (stage-2 loader hypothesis).
+- “Legacy DWIN/T5L context vs Nuvoton evidence” is threaded through `vendor_resources.md`, `analysis/boot_analysis_methodology.md`, and `findings/chip_identification.md`.
+- “Brute-force graphics decoding is a stopgap” repeats in `archive/uiqvga_bruteforce_notes.md` and `guide/operations.md` (pending firmware-derived decode).
+- “MCP tool usage patterns” repeat across `methodology/mcp_workflow.md`, `analysis_traceability.md`, and `guide/mcp_firmware_analysis_workflow.md` (search_strings, disassemble_at, search_scalars).
+- “Flash programming guardrails” are described in `reference/offset_catalog.md`, `analysis_traceability.md`, and the status dashboard (`archive/old-structure/status_dashboard.md`).
+- “Filename-driven update scanning” is repeated in `update_file_rules.md` and the handler/path notes in `analysis/app_message_handlers.md`.
+- “Evidence in literal pools” is a recurring technique documented in `update_file_rules.md`, `reference/offset_catalog.md`, and `analysis_traceability.md`.
+- “String reconnaissance as functional mapping” appears in `analysis_traceability.md` and `guide/mcp_firmware_analysis_workflow.md`.
+- “MMIO base address confirmation” runs through `reference/N32903_cheat_sheet.md`, `findings/mmio_map.md`, and `analysis/gpio_pins_analysis.md`.
+- “Queue structure as a shared substrate” appears in `analysis/app_message_handlers.md`, `reference/offset_catalog.md`, and `archive/old-structure/storage_probe_notes.md`.
+
+## Key Technical Findings (important discoveries documented here)
+- `findings/chip_identification.md` confirms the SoC as Nuvoton N32903K5DN (ARM926EJ-S) with 98% confidence; it anchors on USB descriptor strings at `0x00475140` and `0x00475180` and ARM926-specific CP15 instructions.
+- `findings/gpio_configuration.md` verifies that GPB[2-5] are not configured in firmware; only GPB[0] and GPB[6] are configured via the pin-mux function at `0x00031f34`.
+- `analysis/gpio_pins_analysis.md` identifies the pin-mux function `FUN_00031f34`, GPIO read `FUN_00031ec4`, and GPIO write `FUN_0003224c`, including register bases `GCR_BA = 0xB0000000` and `GP_BA = 0xB8001000`.
+- `findings/mmio_map.md` validates GCR_BA usage and confirms `0xB800C000` as the doorbell/parameter block; it corrects an earlier false positive for `0xB1006800`.
+- `reference/mmio_fingerprint.md` corroborates clock/bus register toggles (`0xB0000204`, `0xB0000014`, `0xB0000018`) and the doorbell base literal at `0x00270188`.
+- `analysis/app_message_handlers.md` details update status handlers (e.g., `0x002C2048`, `0x002C47F0`, `0x002C28D0`) and shows their queue maintenance logic and UI formatting chains.
+- `reference/offset_catalog.md` captures the update filename literal table at `VA 0x0037E820` and the `memcmp` loops at `VA 0x0045A930`, `0x0045A990`, `0x0045A9F0`.
+- `update_file_rules.md` enumerates upgrade filenames under `3:/` and provides evidence for the match → classify → manifest → queue → validate → flash pipeline.
+- `analysis_traceability.md` logs a 2025-11-05 finding that `udisk_bulk_asset_update` copies `0:/ZK-INKJET-RES-HW.zkml` and related font resources using `update_copy_or_flash`.
+- `reference/offset_catalog.md` identifies the message handler table at `VA 0x003D3E00` with 12-byte entries and links it to parsed JSON in `data/processed/app_message_table.json`.
+- `analysis/boot_analysis_methodology.md` demonstrates ARM mode startup, stack initialization, relocation, and a display command sequence in BOOT.bin.
+- `reference/N32903_cheat_sheet.md` consolidates the N32903 memory map and peripheral bases used across MMIO and GPIO findings.
+- `archive/old-structure/documentation.md` documents the UI-QVGA tile layout (9 tiles of 160x160), XOR `0xAAAA`, and the BGR565 pixel format, which later informs brute-force decoding scripts.
+- `archive/uiqvga_bruteforce_notes.md` confirms brute-force decoding produces a usable 480x480 PNG but still has seam and text drift artifacts.
+- `archive/PROJECT_STATUS_legacy.md` confirms GUI resource file `ZK-INKJET-GUI-RES.zkml` is a full TTF (Leelawadee UI) and that `ZK-INKJET-RES-HW.zkml` has candidate chunks by entropy.
+- `analysis_traceability.md` (2025-11-03 entries) records the MMIO correction for `0xB800C000` and documents the pin-mux analysis for GPB[2-5].
+- `findings/firmware_functions.md` documents verified core functions (pin mux, GPIO read/write, upgrade orchestrator) and partial-confidence functions (flash writer, queue controller, notifier).
+- `reference/offset_catalog.md` indicates the validator at `VA 0x002BFDDC` gates flash writing, referenced by both the update pipeline and the status dashboard.
+- `update_file_rules.md` documents that firmware binaries are only searched on `3:/` (U-disk), while `0:/` is used for resource files like `.ttf` and `.zkml`.
+- `update_file_rules.md` lists specific filenames (`ZK-INKJET-NANO-BOOT.bin`, `ZK-INKJET-NANO-APP.bin`, `ZK-INKJET-UI.bin`, `ZK-INKJET-UI-QVGA.bin`, `ZK-TIJSPS-800x480-UI.bin`) and notes legacy names still present.
+- `analysis/app_message_handlers.md` links `VA 0x002C47F0` to “Geen upgradebestand gevonden” and details queue compaction on failure.
+- `analysis/app_message_handlers.md` identifies `VA 0x002A17C8` as the upgrade status formatter that writes counters into a UI buffer and triggers display updates.
+- `analysis/app_message_handlers.md` records the unresolved relocation placeholder at `VA 0x00208592` and highlights the need for a RAM dump.
+- `reference/offset_catalog.md` documents queue-related routines (`VA 0x0021138A`, `VA 0x002113E4`, `VA 0x00429C80`, `VA 0x00429D78`) used by the update orchestration path.
+- `archive/old-structure/storage_probe_notes.md` identifies the “direct: can't open” error path at `VA 0x00211A88` and its relation to storage callbacks.
+- `analysis/boot_analysis_methodology.md` confirms CP15 cache toggling and relocation via PC-relative copies in BOOT.bin.
+- `analysis/boot_analysis_methodology.md` reports a display init sequence (constants `0x2A..0xE0`) suggesting vendor display commands.
+- `reference/mmio_fingerprint.md` captures USB descriptor evidence (“W55FA93 USB Card Reader 1.00”, “Nuvoton”) even though code xrefs are absent.
+- `archive/PROJECT_STATUS_legacy.md` notes that `data/processed/boot_static_notes.md` captured stack setup and relocation helpers, which later informed the offset catalog.
+- `archive/old-structure/documentation.md` introduces the hypothesis of a split SD layout with a late “MINI” FAT partition and ext4 remnants (needs revalidation).
+- `analysis/gpio_pins_analysis.md` explicitly reports 54 GCR_BA uses and 10 GPIO_BA uses, reinforcing the GCR/GPIO base identification.
+- `findings/firmware_functions.md` documents the upgrade orchestrator at `0x0020EAEC` and notes it is Thumb mode and ~1500 bytes.
+- `reference/offset_catalog.md` links `VA 0x00230E04` to a display hardware update routine with MMIO `0xB100D000`.
+- `analysis/app_message_handlers.md` describes the “upgrade found” path as UI staging with no checksum logic observed in that path.
+- `analysis/boot_analysis_methodology.md` shows the relocation helper at `0x60–0x90` and identifies the `__aeabi_uidivmod` style helper at `0x348`.
+- `reference/N32903_cheat_sheet.md` lists system memory map ranges used as context for MMIO and SRAM locations in other docs.
+- `findings/mmio_map.md` asserts the doorbell is a display-related command/parameter block, consistent with handler/UI operations in other docs.
+- `analysis_traceability.md` ties the update pipeline to specific MCP calls (e.g., `search_strings(\"RES\")`, `string_xrefs`, `analyze_function_complete`) used to locate `udisk_bulk_asset_update`.
+
+## Evolution of Understanding (how knowledge progressed)
+- Early analysis (2025-10) focused on file carving and UI decoding, captured in `archive/old-structure/documentation.md` and the UI method section appended to that file.
+- The 2025-10 era treated the SD card layout as unusual (no partition table, late FAT area) and hypothesized an ext4 rootfs remnant; this appears only in `archive/old-structure/documentation.md`.
+- 2025-10 status tracking consolidated in `archive/old-structure/status_dashboard.md` with action items around queue hooks, validator behavior, and RES-HW parsing.
+- The 2025-10-11 “Project Status” snapshot (`archive/PROJECT_STATUS_legacy.md`) confirms UI decode tooling, string scanning, and bootloader mapping, but predates the MCP workflow.
+- The switch from headless Ghidra automation to MCP tooling is documented in `archive/ghidra_headless_cli.md` and `archive/tools/ghidra_headless.sh`, then superseded by `methodology/mcp_workflow.md`.
+- 2025-11-03 marks the documentation restructure (`archive/RESTRUCTURE_COMPLETE.md`) and formalizes findings/analysis/reference/methodology separation.
+- The 2025-11-03 session logs in `analysis_traceability.md` correspond to the first high-confidence GPIO/MMIO findings and the new verification table in `README.md` and `VERIFICATION_STATUS.md`.
+- `guide/orientation.md` and `guide/operations.md` (2025-11-03) codify onboarding and operational runbooks, replacing ad hoc status pages.
+- 2025-11-26 introduces a broader MCP workflow in `guide/mcp_firmware_analysis_workflow.md`, adding re-kb and PDF reader steps on top of the Ghidra MCP focus from `methodology/mcp_workflow.md`.
+- `analysis_traceability.md` (2025-11-05) extends update-path understanding to U-disk resource updates (RES-HW and font tables) and identifies `update_copy_or_flash` usage.
+- `analysis_traceability.md` (2025-12-27) adds BSP MMIO register extraction for USB-CDC and references a newer session file, showing the documentation continued to evolve post-restructure.
+- Contradiction tracking appears in December 2025 (`analysis/documentation_contradictions_map.md`, `analysis/contradictions_by_severity.md`, `analysis/contradictions_quick_reference.txt`), indicating a shift to active reconciliation of divergent assumptions.
+- The SoC identity narrative moved from early DWIN/T5L speculation (`vendor_resources.md` legacy links; `archive/old-structure/documentation.md` mentions T5L commands) to Nuvoton N32903 confirmation (`findings/chip_identification.md`, `reference/N32903_cheat_sheet.md`).
+- The update mechanism narrative matured from string discovery to full pipeline mapping, culminating in the detailed steps in `update_file_rules.md` and the address catalog in `reference/offset_catalog.md`.
+- UI decoding remained partially unresolved; `archive/uiqvga_bruteforce_notes.md` and `guide/operations.md` both label the brute-force decode as imperfect and call for firmware-derived decoding routines.
+- The documentation shows a shift from “single long report” (`archive/old-structure/documentation.md`) to structured findings with explicit verification metadata.
+- `archive/README.md` and `archive/RESTRUCTURE_COMPLETE.md` show the deliberate archiving of old navigation files and the introduction of a stable doc map.
+- The 2025-11 shift introduced YAML front matter in findings and the auto-generated tables in `README.md` and `VERIFICATION_STATUS.md`.
+- The contradiction files (2025-12-15) show the project actively revising earlier assumptions, especially around SoC identity and storage mapping.
+- The 2025-11-05 update-path sessions added explicit `update_copy_or_flash` behavior that earlier docs only implied.
+- The “MCP power tools” in `methodology/mcp_workflow.md` were framed as replacements for earlier shell-only workflows (noted in `archive/ghidra_headless_cli.md`).
+- The mid-2025 period saw subagent and JT-scan experiments (`archive/old-structure/subagent-*`, `archive/jt-scan-*.json`) which later faded as MCP calls became primary.
+- The tone shifts from exploratory hypotheses (UI decoding, SD layout, DWIN commands) to evidence-tracked findings and verification tables.
+- `analysis_traceability.md` ends with a 2025-12-27 update, showing that the “old docs” set still received updates after the restructure.
+- The guide layer (`guide/operations.md`, `guide/research_notebook.md`) added new expectations about documenting commands and evidence in sessions and traceability logs.
+- The old docs show an explicit pivot away from long German notes into concise English findings plus a translated cheat sheet.
+- The revision history suggests a cycle: exploratory findings → structured findings → contradiction audit → planned reconciliation.
+
+## Documented Contradictions (from contradiction analysis files)
+- `analysis/documentation_contradictions_map.md` identifies five main conflict clusters and provides file-level sources and recommendations.
+- SoC identity conflict: `findings/chip_identification.md` (N32903K5DN) vs `docs/sessions/2025-12-15-raw-write-chain-discovery.md` (N9H26) vs legacy README T5L/M5 references (noted in the contradiction map).
+- RAM size conflict: `findings/chip_identification.md` claims no SDRAM (8 KB SRAM only) vs `.re_kb/findings/finding-0021.json` claiming APP at `0x03000000` implying >48 MB.
+- Volume mapping conflict: `.re_kb/findings/finding-0020.json` vs `docs/sessions/2025-12-15-raw-write-chain-discovery.md` vs `scripts/ZK_TEST_README.md`, summarized in `analysis/contradictions_by_severity.md`.
+- Partition size conflict: about-screen 0.8/3.8 GB vs 256/64 MB from test notes, highlighted in `analysis/contradictions_quick_reference.txt`.
+- Update checksum conflict: `update_file_rules.md` says “no checksum/CRC routines found” but later refers to “CRC & size guards”; this inconsistency is explicitly noted in the contradiction map.
+- Terminology conflict: mixed platform naming (N3290X, N32903, N9H26, T5L) is called out as a low-severity inconsistency.
+- USB base address naming conflict: `findings/mmio_map.md` lists `0xB800C000` as doorbell, while a session note uses `0xB8007000` for UDC; the contradiction map calls for explicit clarification.
+- The contradiction files recommend consolidating the primary SoC and RAM narrative and updating README-level notes to match the verified findings.
+- The contradiction files treat `.re_kb` findings as part of the authoritative corpus, but the referenced `.re_kb` path is not present in this repo snapshot and needs relocation or activation.
+- `analysis/contradictions_by_severity.md` prioritizes SoC identity, RAM size, and volume mapping as the highest-risk inconsistencies.
+- `analysis/documentation_contradictions_map.md` explicitly recommends updating README-level SoC notes and archiving the older T5L/M5 hypothesis.
+- `analysis/documentation_contradictions_map.md` flags that the validator description in `update_file_rules.md` mixes “no CRC” with “CRC/size guards,” and suggests aligning on “no checksum” until proven otherwise.
+- `analysis/contradictions_quick_reference.txt` is a concise list of conflicts with file references, intended for fast triage or checklist creation.
+- The contradiction set includes a “minor inconsistency” for USB controller base naming (doorbell vs UDC) and notes it may be a labeling issue rather than a real conflict.
+- The contradiction analysis cites `docs/sessions/storage-topics-inventory.md` and `docs/sessions/2025-12-15-raw-write-chain-discovery.md`, both outside `research/old_docs/`, implying the contradictions rely on external session files not archived here.
+
+## Relevance Assessment (which docs are still valuable)
+- `findings/chip_identification.md` remains highly relevant but must be reconciled with later RAM and SoC contradictions.
+- `findings/gpio_configuration.md` and `analysis/gpio_pins_analysis.md` are still highly relevant and appear internally consistent with the MCP workflows.
+- `findings/mmio_map.md` and `reference/mmio_fingerprint.md` remain relevant as the base for MMIO reasoning; they should be updated to clarify UDC vs doorbell bases.
+- `findings/firmware_functions.md` is valuable as a consolidated map of key routines; it still lists open verification needs.
+- `analysis/boot_analysis_methodology.md` is still useful for reproducible BOOT.bin analysis; it remains a solid methodology reference.
+- `update_file_rules.md` remains critical for update mechanics but needs its checksum/validator language corrected per contradictions.
+- `analysis/app_message_handlers.md` is still valuable for update UI path mapping and should be preserved.
+- `reference/offset_catalog.md` is a key technical index; it should be kept current as new evidence arrives.
+- `methodology/mcp_workflow.md` is still relevant for Ghidra MCP workflows; it is narrower than the newer MCP workflow in `guide/mcp_firmware_analysis_workflow.md`.
+- `guide/mcp_firmware_analysis_workflow.md` is relevant as the most complete MCP workflow document, but it is marked Draft and should be updated or integrated into the main methodology.
+- `guide/orientation.md`, `guide/operations.md`, and `guide/research_notebook.md` remain relevant as onboarding and operational lenses, assuming they are updated to align with the current repo layout.
+- `vendor_resources.md` remains relevant for provenance tracking and vendor link policy, but must be updated to reflect confirmed SoC and to prune outdated DWIN-focused assumptions.
+- `uart_control_consolidated.md` remains useful for UART exploration but is partially obsolete due to DWIN assumptions and should be revalidated against N32903 documentation.
+- `archive/ghidra_headless_cli.md` is historically useful but operationally obsolete in the MCP era.
+- `archive/uiqvga_bruteforce_notes.md` is a valuable historical note but should be treated as a legacy path; the main docs now call for firmware-derived decoding.
+- `archive/PROJECT_STATUS_legacy.md` is useful for historical progress tracking but should not be treated as current.
+- `archive/old-structure/analysis_traceability_FULL_ARCHIVE.md` is still relevant as provenance but should not be edited directly; it is a historical record.
+- `archive/old-structure/documentation.md` is historically valuable for early UI decode reasoning but obsolete for current state tracking.
+- `archive/old-structure/subagent-*` documents are useful context for early agent workflows but are superseded by MCP tooling.
+- `archive/old-structure/storage_probe_notes.md` is still relevant for storage path discovery but should be treated as preliminary until reconciled with the later update pipeline.
+- `archive/old-structure/status_dashboard.md` is relevant for understanding early focus areas but should not be used as a current TODO list.
+- `archive/ghidra_headless_cli.md` is still relevant as a cautionary record about ARM/Thumb analysis pitfalls, even if the workflow is obsolete.
+- `analysis_traceability.md` remains the best index for MCP command reproducibility but should be reconciled with any updated session paths.
+- `archive/README.md` remains relevant as a map to what is historical and why it is preserved.
+- `analysis/contradictions_by_severity.md` remains relevant as a prioritization tool for reconciliation work.
+- `analysis/contradictions_quick_reference.txt` is useful as a lightweight checklist but should be kept in sync with any resolved items.
+- `archive/old-structure/documentation.md` is relevant only for UI decoding heuristics and should be scoped to that use.
+- `archive/old-structure/storage_probe_notes.md` is relevant only insofar as it matches the current update/storage pipeline; otherwise treat it as superseded.
+
+## Migration Recommendations (what should move to new structure)
+- Promote `analysis/documentation_contradictions_map.md` into the current analysis area as an active reconciliation checklist, with updates tied to new findings.
+- Convert the contradiction quick reference (`analysis/contradictions_quick_reference.txt`) into a table in the active documentation (possibly in the findings index or a dedicated “consistency” page).
+- Fold `guide/mcp_firmware_analysis_workflow.md` into `methodology/mcp_workflow.md`, retaining the re-kb and PDF reader sections but removing outdated tool namespaces.
+- Move the durable portions of `update_file_rules.md` into an “update mechanism” finding with explicit verification status, and keep the pipeline diagram in a reference appendix.
+- Extract the update-path handler mapping from `analysis/app_message_handlers.md` into a structured finding that can be verified (handler → behavior → evidence).
+- Ensure `reference/offset_catalog.md` is mirrored into a structured knowledge base (re-kb) once `.re_kb` is restored, with each offset as evidence-backed entries.
+- Reconcile `uart_control_consolidated.md` with Nuvoton UART bases from `reference/N32903_cheat_sheet.md` and migrate confirmed details into a new UART finding.
+- Migrate the boot methodology into a shared “boot analysis” guide and remove DWIN-only assumptions noted in `analysis/boot_analysis_methodology.md`.
+- Replace references to the legacy `scripts/uiqvga_*` paths in `guide/operations.md` with the new `scripts/legacy/uiqvga/` locations (if updated elsewhere), keeping legacy scripts clearly separated.
+- Update the `vendor_resources.md` provenance table with actual hashes and link targets once vendor docs are confirmed and moved into `docs/vendor/`.
+- Convert legacy headless workflow notes (`archive/ghidra_headless_cli.md`) into a short “history” section in methodology, then keep the script archived only.
+- Add a migration note in `guide/orientation.md` pointing to the contradiction map to avoid repeating outdated SoC or storage assumptions.
+- If `.re_kb` is restored, align `findings/*` metadata with re-kb entries and note the mapping in `analysis_traceability.md`.
+- Promote `analysis_traceability.md` entries into re-kb evidence so key tool calls are preserved as structured data.
+- Create a dedicated “storage mapping” finding that reconciles the 0:/ vs 3:/ role claims and references the contradiction sources.
+- Extract the UI-QVGA decoding details from `archive/old-structure/documentation.md` into a short “legacy decoding” appendix for transparency.
+- Move the queue/orchestrator details from `reference/offset_catalog.md` into a “firmware update pipeline” finding with explicit verification status.
+- Add a “legacy tooling” note to `guide/operations.md` that links to `archive/ghidra_headless_cli.md` for history while discouraging its use.
+
+## Obsolete Content (what can be archived/removed)
+- `archive/CLEANUP_PLAN_legacy.md` and `archive/documentation_reorg_proposal_legacy.md` are fully superseded by `archive/RESTRUCTURE_COMPLETE.md`.
+- `archive/old-structure/README_NEW_STRUCTURE.md` is a transitional document that has served its purpose post-restructure.
+- `archive/old-structure/session_status.md` is a pointer-only file superseded by `archive/old-structure/status_dashboard.md`.
+- `archive/old-structure/status_dashboard.md` is a historical task tracker; it should remain archived but no longer be updated.
+- `archive/ghidra_headless_cli.md` and `archive/tools/ghidra_headless.sh` are legacy tooling; keep for history or remove once MCP workflows cover all needs.
+- `archive/uiqvga_bruteforce_notes.md` is a legacy decode approach and should remain archived once firmware-derived decoding is implemented.
+- `archive/PROJECT_STATUS_legacy.md` is a historical snapshot and should not be used as a status source.
+- `archive/old-structure/documentation.md` is a historical long-form report; keep only as archival context.
+- `archive/old-structure/subagent-*` and `archive/aiderdesk-subagent-profiles.json` are obsolete with current MCP tooling, unless resurrecting the old subagent orchestration.
+- `archive/jt-scan-*.json` results are historical artifacts and can be moved to a tooling archive or removed if superseded by current analysis.
+- The German cheat sheet (`archive/old-structure/N32903U5DN_K5DN_CheatCheet.txt` and `archive/N32903U5DN_K5DN_CheatCheet.docx`) can remain archived now that `reference/N32903_cheat_sheet.md` exists.
+- `archive/old-structure/analysis_traceability_FULL_ARCHIVE.md` can be moved to a cold archive once key steps are captured in the compact traceability index.
+- `archive/old-structure/storage_probe_notes.md` should be archived as legacy unless its findings are reconciled with the current update/storage model.
+- `archive/old-structure/status_dashboard.md` and `archive/old-structure/session_status.md` can be retained only as frozen historical artifacts.
+- `archive/old-structure/README_NEW_STRUCTURE.md` is a transitional artifact and can be removed after a stable documentation map is in place.
+- `archive/old-structure/subagent-orchestration-guide.md` is obsolete unless the subagent system is resurrected.
+- `archive/old-structure/subagent-profiles-reverse-engineering.md` is obsolete as an active workflow document.
+- `archive/aiderdesk-subagent-profiles.json` is obsolete unless legacy prompts are still needed for reference.
+- `archive/ghidra_headless_cli.md` should remain archived; it is no longer a supported workflow.
+- `archive/tools/ghidra_headless.sh` should remain archived; it is no longer used in the MCP-first workflow.
+- `archive/uiqvga_bruteforce_notes.md` should remain archived as a historical log of the brute-force method.
+- `archive/PROJECT_STATUS_legacy.md` should remain archived; it should not be treated as a living status doc.
+- `archive/documentation_reorg_proposal_legacy.md` is obsolete as a plan; the restructure is complete.

@@ -1,0 +1,61 @@
+{
+  "component": "soc",
+  "confidence": null,
+  "created_at": "2025-11-26T22:28:18.267624Z",
+  "evidence": [
+    {
+      "description": "System architecture and peripheral documentation",
+      "document_id": "N3290x_Design_Guide_A1",
+      "domain_file_id": null,
+      "file": null,
+      "function_address": null,
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": 1,
+      "program_id": null,
+      "program_name": null,
+      "result": null,
+      "source_type": "pdf",
+      "test_id": null
+    },
+    {
+      "description": "Visual inspection of PCB confirmed M5 marking on the main SoC chip",
+      "document_id": null,
+      "domain_file_id": null,
+      "file": null,
+      "function_address": null,
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": null,
+      "result": null,
+      "source_type": "other",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0001",
+  "next_steps": [],
+  "project_id": "zk-inkjet-printer",
+  "provenance": "migrated from schema v1.0",
+  "raw_note": "PCB visual inspection: The chip clearly shows 'M5' and 'DWIN' markings. Cross-referenced with N3290x Design Guide confirms this is the N32903K5DN variant. The firmware strings and comments frequently reference 'M5' and 'T5L' family names, suggesting DWIN may rebrand or integrate these chips into their display modules.",
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "verified",
+  "summary": "The main SoC is marked 'DWIN M5' on the PCB, but the actual chip is a Nuvoton N32903K5DN. This naming discrepancy appears throughout the firmware and documentation. The M5 designation may refer to a DWIN display module family, while the underlying silicon is Nuvoton's N32903 series.",
+  "tags": [
+    "soc",
+    "hardware",
+    "nuvoton",
+    "m5",
+    "dwin",
+    "pcb-marking"
+  ],
+  "title": "SoC Marking Discrepancy - DWIN M5 vs Nuvoton N32903K5DN",
+  "type": "behavior",
+  "updated_at": "2025-12-02T03:04:42.934515Z"
+}

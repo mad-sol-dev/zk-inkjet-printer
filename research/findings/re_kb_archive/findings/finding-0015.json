@@ -1,0 +1,45 @@
+{
+  "component": "hp45",
+  "confidence": 1.0,
+  "created_at": "2025-12-01T17:50:12.135045Z",
+  "evidence": [
+    {
+      "description": "PCB trace analysis and CM504B pinout verification",
+      "document_id": null,
+      "domain_file_id": null,
+      "file": null,
+      "function_address": null,
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": null,
+      "program_name": null,
+      "result": null,
+      "source_type": "other",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0015",
+  "next_steps": [],
+  "project_id": "zk-inkjet-printer",
+  "provenance": "PCB reverse engineering from weekend work 2025-12-01",
+  "raw_note": "Complete HA Address Line Mapping:\n\nIC3 (CM504B) - HA00-HA05:\n  HA00: GPC0 (SoC pin 49) \u2192 IC3.AIN\u2192AOUT \u2192 HP45.HA00\n  HA01: GPC1 (SoC pin 48) \u2192 IC3.BIN\u2192BOUT \u2192 HP45.HA01\n  HA02: GPC2 (SoC pin 47) \u2192 IC3.CIN\u2192COUT \u2192 HP45.HA02\n  HA03: GPC3 (SoC pin 46) \u2192 IC3.DIN\u2192DOUT \u2192 HP45.HA03\n  HA04: GPC4 (SoC pin 45) \u2192 IC3.EIN\u2192EOUT \u2192 HP45.HA04\n  HA05: GPC5 (SoC pin 44) \u2192 IC3.FIN\u2192FOUT \u2192 HP45.HA05\n\nIC4 (CM504B) - HA06-HA11:\n  HA06: GPC6  (SoC pin 43) \u2192 IC4.AIN\u2192AOUT \u2192 HP45.HA06\n  HA07: GPC7  (SoC pin 42) \u2192 IC4.BIN\u2192BOUT \u2192 HP45.HA07\n  HA08: GPC8  (SoC pin 41) \u2192 IC4.CIN\u2192COUT \u2192 HP45.HA08\n  HA09: GPC9  (SoC pin 40) \u2192 IC4.DIN\u2192DOUT \u2192 HP45.HA09\n  HA10: GPC10 (SoC pin 39) \u2192 IC4.EIN\u2192EOUT \u2192 HP45.HA10\n  HA11: GPC11 (SoC pin 38) \u2192 IC4.FIN\u2192FOUT \u2192 HP45.HA11\n\nIC5 (CM504B) - HA12-HA17:\n  HA12: GPC12 (SoC pin 37) \u2192 IC5.AIN\u2192AOUT \u2192 HP45.HA12\n  HA13: GPC13 (SoC pin 36) \u2192 IC5.BIN\u2192BOUT \u2192 HP45.HA13\n  HA14: GPC14 (SoC pin 35) \u2192 IC5.CIN\u2192COUT \u2192 HP45.HA14\n  HA15: GPC15 (SoC pin 34) \u2192 IC5.DIN\u2192DOUT \u2192 HP45.HA15\n  HA16: GPE0  (SoC pin 33) \u2192 IC5.EIN\u2192EOUT \u2192 HP45.HA16\n  HA17: GPE1  (SoC pin 32) \u2192 IC5.FIN\u2192FOUT \u2192 HP45.HA17\n\nIC6 (CM504B) - HA18-HA21 (shared with HP12-HP13):\n  HA18: GPB15 (SoC pin 54) \u2192 IC6.AIN\u2192AOUT \u2192 HP45.HA18\n  HA19: GPD9  (SoC pin 52) \u2192 IC6.BIN\u2192BOUT \u2192 HP45.HA19\n  HA20: GPD10 (SoC pin 51) \u2192 IC6.CIN\u2192COUT \u2192 HP45.HA20\n  HA21: GPD11 (SoC pin 50) \u2192 IC6.DIN\u2192DOUT \u2192 HP45.HA21\n\nKey Points:\n- CM504B level shifters: VCC = MCU logic level, VDD = head voltage (~12V)\n- HA lines only drive FET gates (low current), no external MOSFETs needed\n- Only ONE HA line should be active at a time during printing\n- Firmware should configure GPC0-15, GPE0-1, GPB15, GPD9-11 as outputs",
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "verified",
+  "summary": "The 22 HP45 address lines (HA0-HA21) are driven by four CM504B level shifters (IC3-IC6) from Nuvoton SoC GPIO pins. IC3-IC5 use primarily GPC0-GPC15 and GPE0-GPE1 for HA0-HA17. IC6 uses GPB15, GPD9-GPD11 for HA18-HA21. All HA lines are level-shifted from MCU VCC (~3.3V) to VDD (~12V) and drive FET gates inside the HP45 cartridge.",
+  "tags": [
+    "hp45",
+    "gpio",
+    "pin-mapping",
+    "ha-lines",
+    "address",
+    "cm504b",
+    "level-shifter"
+  ],
+  "title": "HP45 Address Lines (HA0-HA21) - Pin Mapping to Nuvoton SoC",
+  "type": "behavior",
+  "updated_at": "2025-12-02T03:06:51.040853Z"
+}

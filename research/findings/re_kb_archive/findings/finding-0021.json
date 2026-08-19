@@ -1,0 +1,65 @@
+{
+  "component": "storage",
+  "confidence": null,
+  "created_at": "2025-12-02T15:18:41.427414Z",
+  "evidence": [
+    {
+      "description": "Boot updater copies APP from 3:/ to dest 0x03000000 via FUN_0006ccf8",
+      "document_id": null,
+      "domain_file_id": "7f011b6c592307498348432",
+      "file": null,
+      "function_address": "0x6887c",
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": "legacy-missing-program",
+      "program_name": "ZK-INKJET-NANO-APP.bin",
+      "result": null,
+      "source_type": "ghidra",
+      "test_id": null
+    },
+    {
+      "description": "File copy routine allocates 0x1000 buffer, reads file, writes to dest, checks bytes-read == file size; no checksum",
+      "document_id": null,
+      "domain_file_id": "7f011b6c592307498348432",
+      "file": null,
+      "function_address": "0x6ccf8",
+      "function_name": null,
+      "ghidra_ref": null,
+      "label": null,
+      "line": null,
+      "page": null,
+      "program_id": "legacy-missing-program",
+      "program_name": "ZK-INKJET-NANO-APP.bin",
+      "result": null,
+      "source_type": "ghidra",
+      "test_id": null
+    }
+  ],
+  "id": "finding-0021",
+  "next_steps": [
+    "Trace BOOT.bin caller after copy to find actual branch/jump to APP entry",
+    "Confirm actual DDR size (via MMIO or about-screen correction) to tighten max APP.bin size estimate",
+    "Check runtime heap/stack allocation to refine usable space above 0x03000000"
+  ],
+  "project_id": "zk-inkjet-printer",
+  "provenance": "LLM+Ghidra session 2025-12-02",
+  "raw_note": "MMU/CP15 decode (BOOT.bin):\n- TTBR (c2) set via mcr p15,0,r1, c2,c0,0 at 0x50c with r1=TTBR base = 0x00004000 (DAT_0000286c). Domain register (c3) set to 0x40000000 at 0x514. Control register (c1) read/modified: orr #0x1000 and orr #0x5 then written back at 0x524 (MMU + I-cache enabled). Bit13 was cleared earlier at reset (mrc/bic/mcr at 0x30).\n- Page table builder FUN_000027bc fills 1 MB section descriptors: entries 0x000\u20130x03F use 0xDFE|VA, entries 0x040\u20130x7FF use 0xDF2|VA (identity). Entries 0x800\u20130x83F map to (VA index * 1MB + 0x80000000 + 0xDF2) which wraps to low physical (alias of low memory), then 0x840\u20130xFFF again identity. This yields identity mapping for 0..2 GB and alias window at 0x80000000.\n- Conclusion: VA 0x03000000 maps 1:1 to PA 0x03000000; loader assumes >48 MB of RAM despite the 8 MB about-screen readout. Likely DDR is >=64 MB (N3290x supports larger), or the about-screen is misleading.\n\nEntry point: The APP update flow copies APP.bin to 0x03000000 (via FUN_0006ccf8) but jump/handoff is not in this snippet; expected direct branch to 0x03000000 entry after copy.\n\nSize limit: No checksum and no hard-coded cap; limit is contiguous RAM above 0x03000000. If DDR is 64 MB, headroom is ~0x01000000 (16 MB) minus stacks/heaps. Current APP.bin ~2.6 MB well below this. Increase is feasible; verify actual RAM size to set a firm cap.\n\nTo do: Trace BOOT handoff to APP (branch target) and confirm runtime RAM size/heap usage for exact maximum.",
+  "schema_version": "2.0",
+  "severity": "info",
+  "status": "in_progress",
+  "summary": "BOOT enables the MMU with a 1 MB section table at TTBR=0x00004000. The table identity-maps VA 0x00000000\u20130x7FF00000 (2 GB) with section descriptors 0xDF2/0xDFE and aliases VA 0x80000000\u20130x83F00000 back to low memory (wrap). Domain register is set to 0x40000000 and control register enables MMU+I-cache. Therefore VA 0x03000000 is mapped 1:1 to PA 0x03000000; the loader assumes physical RAM of at least ~48 MB. APP.bin is copied there by the BOOT flow (in APP update logic) with no checksum. Practical size limit is the RAM remaining above 0x03000000; if DDR is 64 MB, headroom is ~16 MB minus runtime stacks/heaps, so APP can be safely grown well beyond current ~2.6 MB.",
+  "tags": [
+    "boot",
+    "filesystem",
+    "firmware",
+    "loader",
+    "app.bin",
+    "size-limit"
+  ],
+  "title": "APP.bin load mechanism and size constraints",
+  "type": "behavior",
+  "updated_at": "2025-12-02T15:50:39.573781Z"
+}
