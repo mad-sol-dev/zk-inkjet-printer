@@ -8,6 +8,8 @@ note:   0x00179DCC / 0x0247AA68 / 0x0306CFA8 / 0x03C7BD70  IBR-Lookup-Header  CL
 note:   0x24007E00 .. 0x2A61BDFF  geloeschte Dateien, Settings, Kalibrierung, ext4-Reste
 note: Zweck: nach dem Flashen und Benutzen ein Re-Dump gegen dieses Image diffen.
 note: Jedes Nicht-Null-Byte im Diff ist etwas, das die Firmware selbst geschrieben hat.
+note: 2026-08-19: mini_mbr @0x2A614000 nachtraeglich ergaenzt - die USB-exponierte
+note: Platte beginnt dort, nicht erst beim FAT-Bootsektor (CL-USB-REC-105).
 size_bytes: 778157568
 regions:
 - boot_sector: offset=0x00000000 size=512
@@ -15,4 +17,5 @@ regions:
 - app_bin: offset=0x03000000 size=2576940
 - ui_frames: offset=0x03800000 size=460800
 - vol0_fonts: offset=0x04000000 size=536870912
+- mini_mbr: offset=0x2A614000 size=512
 - vol3_mini: offset=0x2A61BE00 size=67108864
