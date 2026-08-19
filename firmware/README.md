@@ -6,7 +6,7 @@ Binary files and images for ZK-Inkjet printer reverse engineering.
 
 ### bin/
 Firmware binary files (executable code):
-- `ZK-INKJET-NANO-BOOT.bin` - Bootloader (12,736 bytes code + 32-byte IBR header)
+- `ZK-INKJET-NANO-BOOT.bin` - Bootloader (12,736 bytes code only; IBR header is in raw SD @ 0x200)
 - `ZK-INKJET-NANO-APP.bin` - Main application firmware (~2.6 MB)
 
 ### resources/
@@ -28,7 +28,7 @@ SD card images and extracted components:
 ### Firmware Binaries (bin/)
 ```
 a651630c374c5441190cc35887baa814b4820c8ba2be100c9614f622cca6264d  ZK-INKJET-NANO-BOOT.bin
-cd9667d409abef2d029066fb1b05d9f7d12cdeaef7248541b74d372941612004  ZK-INKJET-NANO-APP.bin
+3be9028b01c0007aab9192877341918a0bc155beef55ac17e7e8f3bcc95151ea  ZK-INKJET-NANO-APP.bin
 ```
 
 ### Resource Files (resources/)
