@@ -1,0 +1,10 @@
+#!/bin/bash
+# Prueft TRUTH.csv vor jedem Commit. Umgehen mit --no-verify, wenn es sein muss.
+if [ -f tools/scripts/check_truth.py ]; then
+  python3 tools/scripts/check_truth.py || {
+    echo ""
+    echo "Commit gestoppt: TRUTH.csv verletzt die Regeln aus research/TRUTH.md."
+    echo "Beheben, oder bewusst umgehen mit: git commit --no-verify"
+    exit 1
+  }
+fi

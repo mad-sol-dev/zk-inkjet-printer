@@ -1,3 +1,34 @@
+<!-- ZK-TRUTH-RULES: Anfang. Diese Sitzungsregeln gelten fuer jede Sitzung,
+     unabhaengig davon, in welchem Chat sie stattfindet. -->
+
+# Regeln fuer jede Sitzung an diesem Projekt
+
+**Autoritativ ist `research/TRUTH.csv`. Sonst nichts.** Die Spielregeln stehen
+in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
+
+1. **Sitzungsanfang:** `python3 tools/scripts/check_truth.py` ausfuehren. Meldet
+   es einen Verstoss, wird das zuerst behoben.
+2. **Eine Sitzung darf** Zeilen in `TRUTH.csv` aendern oder hinzufuegen und
+   Rohartefakte erzeugen. **Eine Sitzung darf kein neues beschreibendes
+   Dokument anlegen.** `research/system_understanding.md` und alles daneben ist
+   abgeleitet und nicht autoritativ.
+3. **Keine Kopien** von `TRUTH.csv`. Git ist die Historie. Vor groesseren
+   Aenderungen committen, nicht kopieren.
+4. **Keine offene Zeile ohne `Next_Test`.** Eine Frage ohne definiertes
+   Experiment ist kein Arbeitspaket, sondern ein Thema.
+5. **Zeilen werden nie geloescht**, nur per `Superseded_By` abgeloest.
+6. **Ein Negativbefund aus einem Werkzeug ist erst dann ein Fakt, wenn die
+   Methode als tauglich belegt ist.** Ghidras Scalar-Suche findet keine
+   Konstantenpool-Worte (CL-TOOL-REC-101); eine Byte-Suche in der Datei findet
+   keine ARM-Immediates (CL-TOOL-REC-108). Beide Suchmodi laufen lassen.
+7. **Alte Dokumente sind Quellen, keine Autoritaeten.** Ihre Aussagen gelten
+   erst, wenn sie als Zeile in `TRUTH.csv` stehen -- mit Evidenzstufe.
+   Autoritaetshierarchie: E0 > E3-New > E1-Recent > E1 > E3-Old > E4.
+8. **Sitzungsende:** committen. Nicht committete Arbeit ist die haeufigste
+   Verlustursache in diesem Projekt gewesen.
+
+<!-- ZK-TRUTH-RULES: Ende -->
+
 # Agent & Repository Guidelines
 
 This repository is both a **real reverse-engineering project** (ZK1696 handheld inkjet printer) and a **reference template** for running LLM agents against firmware using the Model Context Protocol (MCP).
