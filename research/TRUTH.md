@@ -24,6 +24,13 @@ Neu hinzugekommen:
 | `Superseded_By` | Claim-ID, die diese Zeile abgelöst hat. Zeilen werden **nie gelöscht** — nur überschrieben markiert. |
 | `Updated` | Datum der letzten Änderung. |
 | `Source` | Woher die Zeile stammt. |
+| `Prio` | Nur bei `Decided=no`. `now` = Arbeitsfront (hoechstens 6 Zeilen, handverlesen), `next` = Nachruecker aus laufender Arbeit, `later` = Altlast aus der Phase-1-Reconciliation, `park` = betrifft unser Werkzeug, nicht das Geraet. Bei entschiedenen Zeilen leer. |
+
+`Prio` ist am 2026-08-20 eingefuehrt worden, weil 128 offene Zeilen keine Karte
+sind, sondern eine Wand. Die Vergaberegel ist mechanisch und jederzeit
+nachvollziehbar: `park` per Namensliste (Werkzeugzeilen) oder wenn `Next_Test`
+leer im Sinne von *None required* ist, `now` per Handauswahl, `later` fuer alles
+mit `Source = Phase-1-Reconciliation`, `next` fuer den Rest.
 
 `Open_Question` stand in allen 152 Altzeilen auf `YES` und war damit als Filter
 wertlos — deshalb `Decided`. Die alte Spalte bleibt zur Nachvollziehbarkeit stehen.
@@ -62,13 +69,25 @@ SPI0_BA korrigiert.
 
 ## Einstieg in eine neue Session
 
+Ein Befehl, immer derselbe, als erste Handlung:
+
 ```bash
-# Was ist offen?
-python3 - <<'P'
-import csv
-for r in csv.DictReader(open('research/TRUTH.csv')):
-    if r['Decided']=='no' and not r['Superseded_By']:
-        print(f"[{r['Claim_ID']}] {r['Subsystem']:9s} c={r['Confidence']}  {r['Topic']}")
-        print(f"    -> {r['Next_Test']}")
-P
+python3 tools/scripts/next.py
 ```
+
+Er prueft die Datei, druckt die Arbeitsfront mit dem jeweils naechsten Test und
+die Restmenge nach Prioritaet und Subsystem. Mehr braucht eine neue Sitzung
+nicht, um anzufangen. Wenn er einen Verstoss meldet, wird der zuerst behoben --
+danach erst inhaltlich gearbeitet.
+
+## Sitzungsende / Uebergabe
+
+1. `python3 tools/scripts/check_truth.py` muss sauber sein.
+2. Committen. Nicht committete Arbeit ist die haeufigste Verlustursache in
+   diesem Projekt gewesen.
+3. Die Front nachfuehren: erledigte `now`-Zeilen auf `Decided=yes` setzen, aus
+   `next` nachruecken, damit die naechste Sitzung nicht neu auswaehlen muss.
+4. Den Projektstand in der Projekt-Ablage aktualisieren (`claude/stand-*.md`),
+   falls sich die Front geaendert hat.
+
+Der naechste Chat braucht dann kein Gedaechtnis, nur das Repository.

@@ -6,8 +6,10 @@
 **Autoritativ ist `research/TRUTH.csv`. Sonst nichts.** Die Spielregeln stehen
 in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
 
-1. **Sitzungsanfang:** `python3 tools/scripts/check_truth.py` ausfuehren. Meldet
-   es einen Verstoss, wird das zuerst behoben.
+1. **Sitzungsanfang -- ein Befehl:** `python3 tools/scripts/next.py`. Er prueft
+   die Datei, druckt die Arbeitsfront (`Prio=now`, hoechstens 6 Zeilen) mit dem
+   jeweils naechsten Test und die Restmenge. Meldet er einen Verstoss, wird der
+   zuerst behoben. Sonst wird an der Front gearbeitet, nicht an etwas anderem.
 2. **Eine Sitzung darf** Zeilen in `TRUTH.csv` aendern oder hinzufuegen und
    Rohartefakte erzeugen. **Eine Sitzung darf kein neues beschreibendes
    Dokument anlegen.** `research/system_understanding.md` und alles daneben ist
@@ -24,8 +26,10 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
 7. **Alte Dokumente sind Quellen, keine Autoritaeten.** Ihre Aussagen gelten
    erst, wenn sie als Zeile in `TRUTH.csv` stehen -- mit Evidenzstufe.
    Autoritaetshierarchie: E0 > E3-New > E1-Recent > E1 > E3-Old > E4.
-8. **Sitzungsende:** committen. Nicht committete Arbeit ist die haeufigste
-   Verlustursache in diesem Projekt gewesen.
+8. **Sitzungsende:** `check_truth.py` sauber, committen, Front nachfuehren
+   (erledigte `now`-Zeilen schliessen, aus `next` nachruecken). Nicht
+   committete Arbeit ist die haeufigste Verlustursache in diesem Projekt
+   gewesen.
 
 <!-- ZK-TRUTH-RULES: Ende -->
 

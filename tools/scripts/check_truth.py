@@ -9,7 +9,7 @@ import csv, glob, os, sys
 P = "research/TRUTH.csv"
 COLS = ["Subsystem","Topic","Statement","Status","Confidence","Evidence_E0","Evidence_E3New",
         "Evidence_E1","Evidence_E3Old","Evidence_E4","Authority","Open_Question","Next_Test",
-        "Claim_ID","Decided","Superseded_By","Updated","Source"]
+        "Claim_ID","Decided","Superseded_By","Updated","Source","Prio"]
 
 def main():
     err = []
@@ -33,6 +33,16 @@ def main():
     dangling = [r["Claim_ID"] for r in rows if r["Superseded_By"] and r["Superseded_By"] not in sup]
     if dangling:
         err.append("Superseded_By zeigt ins Leere: %s" % dangling)
+    PRIO = ("now", "next", "later", "park")
+    bad_prio = [r["Claim_ID"] for r in rows
+                if (r["Decided"] == "no" and r.get("Prio") not in PRIO)
+                or (r["Decided"] == "yes" and r.get("Prio", "").strip())]
+    if bad_prio:
+        err.append("Prio fehlt bei offener Zeile oder steht bei entschiedener: %s" % bad_prio[:12])
+    front = [r["Claim_ID"] for r in rows if r["Decided"] == "no" and r.get("Prio") == "now"]
+    if len(front) > 6:
+        err.append("Arbeitsfront hat %d Zeilen, erlaubt sind hoechstens 6: %s" % (len(front), front))
+
     copies = [f for f in glob.glob("research/TRUTH.csv*") if f != P and not f.endswith(".md")]
     if copies:
         err.append("Kopien neben der autoritativen Datei (Git ist die Historie): %s" % copies)
@@ -40,9 +50,9 @@ def main():
     if locks:
         err.append("Office-Lockdatei offen -- Datei ist in Bearbeitung: %s" % locks)
 
-    print("TRUTH.csv: %d Zeilen, %d entschieden, %d offen, %d abgeloest"
+    print("TRUTH.csv: %d Zeilen, %d entschieden, %d offen, %d abgeloest | Front %d"
           % (len(rows), sum(1 for r in rows if r["Decided"] == "yes"),
-             len(open_rows), sum(1 for r in rows if r["Superseded_By"])))
+             len(open_rows), sum(1 for r in rows if r["Superseded_By"]), len(front)))
     for e in err:
         print("  VERSTOSS: %s" % e)
     return 1 if err else 0
