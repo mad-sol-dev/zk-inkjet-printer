@@ -172,20 +172,22 @@ aufrufen.
 ToolSearch: select:mcp__pdf-reader__pdf_read,mcp__pdf-reader__pdf_search
 ```
 
-Zwei Dinge, die man wissen muss, sonst haelt man ein funktionierendes Werkzeug
-faelschlich fuer kaputt:
+Der Server wurde am selben Tag nachgebessert; seither laufen alle acht
+Werkzeuge, `pdf_info`, `pdf_read`, `pdf_search`, `pdf_extract_image`,
+`pdf_vision`, `pdf_ocr`, `pdf_ocr_document` und der Cache-Reset. Zwei Dinge
+bleiben wissenswert:
 
 - **Pfade absolut angeben.** Das Arbeitsverzeichnis des Servers ist nicht das
   Repository.
-- **`pdf_search` und `pdf_read` ohne `pages` sehen nur die ersten fuenf
-  Seiten** und melden das als Warnung. Fuer eine Suche ueber das ganze Dokument
-  `allow_full_document: true` setzen -- sonst kommen null Treffer zurueck, die
-  wie ein Negativbefund aussehen und keiner sind.
-- `pdf_info` ist von diesem Client aus nicht benutzbar: der Parameter heisst
-  `source` (Einzahl, untypisiert im Schema) und kommt als String an, was der
-  Server mit `Expected object` ablehnt. Die Werkzeuge mit `sources` (Mehrzahl,
-  Array) funktionieren. Seitenzahl notfalls aus der Warnung von `pdf_search`
-  ablesen.
+- **`pdf_search` sucht das ganze Dokument** und meldet das jetzt nachpruefbar
+  mit `pages_searched` und `total_pages` im Ergebnis. Ein `total_hits: 0` ist
+  damit ein echter Negativbefund -- vorausgesetzt, `pages_searched` deckt das
+  Dokument ab. Bei gesetztem `max_hits` bricht die Suche frueher ab, dann ist
+  `pages_searched` kleiner und sagt genau, wie weit gesucht wurde.
+
+`pdf_read` liefert Text mit `[IMAGE n: BxHpx]`-Markern; `pdf_extract_image`
+holt das Bild dazu als PNG. Das UDC-Blockdiagramm auf Seite 485 ist so
+zugaenglich.
 
 Fundstellen im Design Guide (`N3290x_Design_Guide_A1.pdf`, 897 Seiten):
 
