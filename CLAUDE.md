@@ -158,7 +158,48 @@ Nach Regel 7 gelten Aussagen aus diesen Ablagen erst, wenn sie als Zeile in
 - `research/system_understanding.md`, `research/docs_rebuild/` und die
   Berichte daneben -- abgeleitet, teils veraltet.
 
-Vendor-PDFs liegen flach in `vendor/` (nicht in `vendor/datasheets/`), darunter
-`N3290x_Design_Guide_A1.pdf` (897 Seiten) und der BSP unter
-`vendor/N32901-3_NonOS_BSP/`. Der BSP ist fuer diesen Chip uebersetzt und
+## Vendor-Unterlagen und der PDF-Reader
+
+Die PDFs liegen **flach in `vendor/`**, nicht in `vendor/datasheets/`. Der BSP
+unter `vendor/N32901-3_NonOS_BSP/` ist fuer genau diesen Chip uebersetzt und
 schlaegt bei Konflikt den generischen Design Guide.
+
+Der `pdf-reader`-MCP ist angebunden und am 2026-08-21 nach dem Systemneuaufbau
+geprueft. Wie bei Ghidra gilt: Schemata erst per `ToolSearch` laden, dann
+aufrufen.
+
+```
+ToolSearch: select:mcp__pdf-reader__pdf_read,mcp__pdf-reader__pdf_search
+```
+
+Zwei Dinge, die man wissen muss, sonst haelt man ein funktionierendes Werkzeug
+faelschlich fuer kaputt:
+
+- **Pfade absolut angeben.** Das Arbeitsverzeichnis des Servers ist nicht das
+  Repository.
+- **`pdf_search` und `pdf_read` ohne `pages` sehen nur die ersten fuenf
+  Seiten** und melden das als Warnung. Fuer eine Suche ueber das ganze Dokument
+  `allow_full_document: true` setzen -- sonst kommen null Treffer zurueck, die
+  wie ein Negativbefund aussehen und keiner sind.
+- `pdf_info` ist von diesem Client aus nicht benutzbar: der Parameter heisst
+  `source` (Einzahl, untypisiert im Schema) und kommt als String an, was der
+  Server mit `Expected object` ablehnt. Die Werkzeuge mit `sources` (Mehrzahl,
+  Array) funktionieren. Seitenzahl notfalls aus der Warnung von `pdf_search`
+  ablesen.
+
+Fundstellen im Design Guide (`N3290x_Design_Guide_A1.pdf`, 897 Seiten):
+
+| Thema | Seiten |
+|---|---|
+| System Memory Map | 47-49 |
+| **USB 2.0 Device Controller (Kap. 6.13)** | **484 ff., Registeruebersicht 485** |
+| Interrupt Controller (AIC), Vektortabelle | 624-644, UDC_INT ist IRQ 16 auf S. 625 |
+| GPIO Controller | 645-668 |
+| Timer Controller | 669-680 |
+| UART Controller | 750-779 |
+| SPI Controller | 780-811 |
+
+Achtung, das Dokument widerspricht sich bei den Endpunkten: S. 11 nennt sechs
+konfigurierbare Endpunkte, S. 484 vier plus Control-Endpunkt. Fuer USB-CDC
+(zwei Bulk plus ein Interrupt) reicht beides, aber die Zahl ist nicht belegt,
+solange sie nicht am BSP oder am Geraet geprueft ist.
