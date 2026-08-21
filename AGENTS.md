@@ -14,8 +14,11 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
    Rohartefakte erzeugen. **Eine Sitzung darf kein neues beschreibendes
    Dokument anlegen.** `research/system_understanding.md` und alles daneben ist
    abgeleitet und nicht autoritativ.
-3. **Keine Kopien** von `TRUTH.csv`. Git ist die Historie. Vor groesseren
-   Aenderungen committen, nicht kopieren.
+3. **Keine Kopien** von `TRUTH.csv` -- und nie in place schreiben. Git ist die
+   Historie; vor groesseren Aenderungen committen statt kopieren.
+   `open(P,'w')` kuerzt die Datei, bevor der Rest des Aufrufs geprueft wird;
+   ein `assert` weiter unten im Skript kommt zu spaet. Also in eine
+   Temporaerdatei schreiben, pruefen, dann `os.replace`. Muster in CLAUDE.md.
 4. **Keine offene Zeile ohne `Next_Test`.** Eine Frage ohne definiertes
    Experiment ist kein Arbeitspaket, sondern ein Thema.
 5. **Zeilen werden nie geloescht**, nur per `Superseded_By` abgeloest.

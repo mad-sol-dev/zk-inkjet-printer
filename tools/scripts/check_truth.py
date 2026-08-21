@@ -3,52 +3,139 @@
 
 Exit 0 = in Ordnung, 1 = Verstoss. Gedacht fuer den Sitzungsanfang und als
 pre-commit-Hook. Die Regeln stehen sonst nur in einem Chat -- und Chats enden.
+
+Grundsatz fuer die Meldungen hier: wer das Skript laufen laesst, ist oft ein
+Agent ohne Vorgeschichte. Ein Traceback oder ein nacktes "Verstoss" laesst ihn
+ratlos zurueck. Jede Abbruchmeldung sagt deshalb, was passiert ist, was es
+bedeutet und was als naechstes zu tun ist.
 """
-import csv, glob, os, sys
+import csv, glob, os, subprocess, sys
 
 P = "research/TRUTH.csv"
 COLS = ["Subsystem","Topic","Statement","Status","Confidence","Evidence_E0","Evidence_E3New",
         "Evidence_E1","Evidence_E3Old","Evidence_E4","Authority","Open_Question","Next_Test",
         "Claim_ID","Decided","Superseded_By","Updated","Source","Prio"]
 
+ATOMAR = """Wie es nicht wieder passiert: TRUTH.csv nie in place schreiben.
+  open(P,'w') kuerzt die Datei, bevor der Rest des Aufrufs geprueft wird --
+  ein assert weiter unten im Skript kommt zu spaet. Stattdessen in eine
+  Temporaerdatei schreiben, das Ergebnis pruefen, dann os.replace.
+  Das Muster steht in CLAUDE.md unter "TRUTH.csv wird atomar geschrieben"."""
+
+def fatal(titel, bedeutung, todo):
+    print("FATAL: %s" % titel)
+    print()
+    print("  Was das heisst: %s" % bedeutung)
+    print()
+    print("  Was jetzt zu tun ist:")
+    for zeile in todo.strip().splitlines():
+        print("  %s" % zeile)
+    print()
+    sys.exit(1)
+
+def zeilen_in_head():
+    """Zeilenzahl der zuletzt committeten Fassung, oder None wenn nicht ermittelbar."""
+    try:
+        out = subprocess.run(["git", "show", "HEAD:" + P], capture_output=True, timeout=10)
+        if out.returncode != 0:
+            return None
+        text = out.stdout.decode("utf-8", "replace")
+        return len(list(csv.DictReader(text.splitlines())))
+    except Exception:
+        return None
+
 def main():
     err = []
+
     if not os.path.exists(P):
-        sys.exit("FEHLT: %s" % P)
-    rows = list(csv.DictReader(open(P, encoding="utf-8", errors="replace")))
+        fatal("%s existiert nicht." % P,
+              "ohne diese Datei hat das Projekt keinen Stand -- sie ist die einzige "
+              "autoritative Quelle.",
+              "Pruefen, ob das Arbeitsverzeichnis stimmt: der Aufruf erwartet die\n"
+              "  Wurzel des firmware-Repositories. Sonst aus Git holen:\n"
+              "      git checkout -- %s" % P)
+
+    if os.path.getsize(P) == 0:
+        fatal("%s ist 0 Bytes gross." % P,
+              "die Datei wurde in place geschrieben und der Schreibvorgang ist "
+              "abgebrochen. Der Inhalt ist weg, aber nicht verloren, solange committet war.",
+              "    git checkout -- %s\n\n%s" % (P, ATOMAR))
+
+    try:
+        with open(P, encoding="utf-8", errors="replace", newline="") as fh:
+            rows = list(csv.DictReader(fh))
+    except Exception as exc:
+        fatal("%s laesst sich nicht als CSV lesen (%s)." % (P, exc.__class__.__name__),
+              "die Datei ist beschaedigt oder halb geschrieben. Meldung: %s" % exc,
+              "    git checkout -- %s\n\n%s" % (P, ATOMAR))
+
+    if not rows:
+        fatal("%s enthaelt keine einzige Datenzeile." % P,
+              "die Kopfzeile ist da oder auch nicht, aber Inhalt fehlt. Das ist fast "
+              "immer ein abgebrochener Schreibvorgang, kein absichtlicher Zustand -- "
+              "Regel 5 verbietet das Loeschen von Zeilen.",
+              "    git checkout -- %s\n\n%s" % (P, ATOMAR))
+
     if list(rows[0].keys()) != COLS:
-        err.append("Spalten weichen ab: %s" % list(rows[0].keys()))
+        fehlend = [c for c in COLS if c not in rows[0]]
+        zuviel = [c for c in rows[0] if c not in COLS]
+        err.append("Spalten weichen ab -- fehlend: %s, unerwartet: %s" % (fehlend or "keine", zuviel or "keine"))
+
+    vorher = zeilen_in_head()
+    if vorher is not None and len(rows) < vorher:
+        fatal("Zeilenzahl ist gesunken: %d in HEAD, %d im Arbeitsbaum (%d fehlen)."
+              % (vorher, len(rows), vorher - len(rows)),
+              "Regel 5 sagt, dass Zeilen nie geloescht werden, sondern nur per "
+              "Superseded_By abgeloest. Eine sinkende Zeilenzahl ist deshalb immer "
+              "ein Fehler und nie eine Absicht.",
+              "Zuerst ansehen, was verschwunden ist:\n"
+              "      git diff -- %s | grep '^-' | head -20\n"
+              "  War es ein Versehen, dann verwerfen:\n"
+              "      git checkout -- %s\n\n%s" % (P, P, ATOMAR))
+
     ids = [r["Claim_ID"] for r in rows]
     dup = sorted({i for i in ids if ids.count(i) > 1})
     if dup:
-        err.append("doppelte Claim_IDs: %s" % dup)
+        err.append("doppelte Claim_IDs: %s -- jede ID darf nur einmal vorkommen" % dup)
     open_rows = [r for r in rows if r["Decided"] == "no" and not r["Superseded_By"]]
     no_test = [r["Claim_ID"] for r in open_rows if not r["Next_Test"].strip()]
     if no_test:
-        err.append("offene Zeilen ohne Next_Test: %s" % no_test)
+        err.append("offene Zeilen ohne Next_Test: %s -- Regel 4: eine Frage ohne "
+                   "definiertes Experiment ist kein Arbeitspaket" % no_test)
     bad_dec = [r["Claim_ID"] for r in rows if r["Decided"] not in ("yes", "no")]
     if bad_dec:
         err.append("Decided weder yes noch no: %s" % bad_dec)
     sup = {r["Claim_ID"] for r in rows}
-    dangling = [r["Claim_ID"] for r in rows if r["Superseded_By"] and r["Superseded_By"] not in sup]
+    dangling = [(r["Claim_ID"], r["Superseded_By"]) for r in rows
+                if r["Superseded_By"] and r["Superseded_By"] not in sup]
     if dangling:
-        err.append("Superseded_By zeigt ins Leere: %s" % dangling)
+        err.append("Superseded_By zeigt ins Leere: %s -- die genannte Zeile gibt es "
+                   "nicht; oft ein verrutschtes Feld beim Anlegen" % dangling)
     PRIO = ("now", "next", "later", "park")
     bad_prio = [r["Claim_ID"] for r in rows
                 if (r["Decided"] == "no" and r.get("Prio") not in PRIO)
                 or (r["Decided"] == "yes" and r.get("Prio", "").strip())]
     if bad_prio:
-        err.append("Prio fehlt bei offener Zeile oder steht bei entschiedener: %s" % bad_prio[:12])
+        err.append("Prio fehlt bei offener Zeile oder steht bei entschiedener: %s "
+                   "-- offen braucht now/next/later/park, entschieden braucht leer" % bad_prio[:12])
     front = [r["Claim_ID"] for r in rows if r["Decided"] == "no" and r.get("Prio") == "now"]
     if len(front) > 6:
-        err.append("Arbeitsfront hat %d Zeilen, erlaubt sind hoechstens 6: %s" % (len(front), front))
+        err.append("Arbeitsfront hat %d Zeilen, erlaubt sind hoechstens 6: %s -- eine "
+                   "erledigte now-Zeile schliessen, bevor eine neue nachrueckt" % (len(front), front))
 
-    copies = [f for f in glob.glob("research/TRUTH.csv*") if f != P and not f.endswith(".md")]
+    reste = [f for f in glob.glob(P + "*") if f.endswith((".tmp", ".part", ".bak"))]
+    if reste:
+        err.append("Reste eines abgebrochenen Schreibvorgangs: %s -- pruefen und "
+                   "loeschen; die eigentliche Datei scheint in Ordnung" % reste)
+    copies = [f for f in glob.glob("research/TRUTH.csv*")
+              if f != P and not f.endswith(".md") and f not in reste]
     if copies:
-        err.append("Kopien neben der autoritativen Datei (Git ist die Historie): %s" % copies)
+        err.append("Kopien neben der autoritativen Datei: %s -- Regel 3: Git ist die "
+                   "Historie, vor groesseren Aenderungen committen statt kopieren" % copies)
     locks = glob.glob("research/.~lock.*")
     if locks:
-        err.append("Office-Lockdatei offen -- Datei ist in Bearbeitung: %s" % locks)
+        err.append("Office-Lockdatei offen -- die Datei ist gerade in einem Editor "
+                   "geoeffnet, Schreibzugriffe kollidieren: %s" % locks)
 
     print("TRUTH.csv: %d Zeilen, %d entschieden, %d offen, %d abgeloest | Front %d"
           % (len(rows), sum(1 for r in rows if r["Decided"] == "yes"),
