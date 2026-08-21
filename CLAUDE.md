@@ -58,6 +58,51 @@ Etikett von aussen in das Geraet zu bekommen und den Druck auszuloesen.
 
 Ein pre-commit-Hook laesst `check_truth.py` mitlaufen.
 
+## TRUTH.csv wird atomar geschrieben -- nie in place
+
+`TRUTH.csv` ist die einzige autoritative Datei des Projekts. Sie wird **niemals
+direkt zum Schreiben geoeffnet.** Der Grund ist nicht theoretisch: am
+2026-08-21 hat ein Skript `open(P, 'w')` ausgewertet, ist danach an einem
+Tippfehler in derselben Zeile abgebrochen -- und hinterliess eine Datei mit
+null Bytes. Python oeffnet und kuerzt, bevor es den Rest des Aufrufs prueft.
+Ein `assert` weiter unten im Skript kommt zu spaet.
+
+Richtig ist: in eine Temporaerdatei schreiben, das Ergebnis pruefen, dann
+`os.replace` -- das ist auf einem Dateisystem atomar, es gibt keinen Zustand
+dazwischen.
+
+```python
+import csv, os
+P = 'research/TRUTH.csv'; T = P + '.tmp'
+rows = list(csv.DictReader(open(P, encoding='utf-8')))
+COLS = list(rows[0].keys())
+n_vorher = len(rows)
+
+# ... Zeilen aendern oder anhaengen ...
+
+with open(T, 'w', encoding='utf-8', newline='') as fh:
+    w = csv.DictWriter(fh, fieldnames=COLS)
+    w.writeheader(); w.writerows(rows)
+assert len(rows) >= n_vorher, 'Zeilen verschwunden'
+os.replace(T, P)
+```
+
+Drei Punkte dazu:
+
+- **Zeilenzahl darf nie sinken.** Regel 5 oben: Zeilen werden nie geloescht,
+  nur per `Superseded_By` abgeloest. Ein `assert` auf die Zeilenzahl faengt
+  jeden Schreibfehler, der das verletzt.
+- **`newline=''` und `csv.DictWriter`** beibehalten -- die Datei hat CRLF, und
+  `csv` schreibt genau das. Ohne `newline=''` entsteht ein Diff ueber alle 259
+  Zeilen statt ueber die geaenderten.
+- **Wenn es doch passiert:** `git checkout -- research/TRUTH.csv`. Deshalb
+  steht in Regel 3 oben, dass vor groesseren Aenderungen committet wird. Am
+  2026-08-21 hat genau das den Schaden auf null reduziert.
+
+Vorsicht auch bei `check_truth.py`: bei leerer Datei bricht es derzeit mit
+einem `IndexError` ab statt einen Verstoss zu melden. Ein Traceback ist dort
+also ein Alarmzeichen, kein Werkzeugproblem.
+
 ## MCP-Server
 
 **Die Server werden ueber Werkzeugnamen angesprochen, nicht ueber URLs.** Wer
