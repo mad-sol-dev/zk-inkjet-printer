@@ -14,7 +14,13 @@ import csv, glob, os, subprocess, sys
 P = "research/TRUTH.csv"
 COLS = ["Subsystem","Topic","Statement","Status","Confidence","Evidence_E0","Evidence_E3New",
         "Evidence_E1","Evidence_E3Old","Evidence_E4","Authority","Open_Question","Next_Test",
-        "Claim_ID","Decided","Superseded_By","Updated","Source","Prio"]
+        "Claim_ID","Decided","Superseded_By","Updated","Source","Prio","Depends_On","Oracle"]
+
+# Ab diesem Datum gelten Oracle-Pflicht und Konfidenzdeckel. Aeltere Zeilen
+# bleiben unberuehrt -- sie werden beim naechsten Anfassen nachgezogen, nicht
+# rueckwirkend umgeschrieben.
+ORACLE_AB = "2026-08-22"
+DECKEL = {"O1": 0.60, "O2": 0.95, "O3": 1.00}
 
 ATOMAR = """Wie es nicht wieder passiert: TRUTH.csv nie in place schreiben.
   open(P,'w') kuerzt die Datei, bevor der Rest des Aufrufs geprueft wird --
@@ -122,6 +128,77 @@ def main():
     if len(front) > 6:
         err.append("Arbeitsfront hat %d Zeilen, erlaubt sind hoechstens 6: %s -- eine "
                    "erledigte now-Zeile schliessen, bevor eine neue nachrueckt" % (len(front), front))
+
+    # --- Abhaengigkeiten (Depends_On) ---
+    deps = {r["Claim_ID"]: [d.strip() for d in r.get("Depends_On", "").split(";") if d.strip()]
+            for r in rows}
+    tot = {r["Claim_ID"]: r["Superseded_By"] for r in rows}
+    ins_leere = [(cid, d) for cid, ds in deps.items() for d in ds if d not in ids]
+    if ins_leere:
+        err.append("Depends_On zeigt ins Leere: %s -- die genannte Zeile gibt es nicht"
+                   % ins_leere[:8])
+    selbst = [cid for cid, ds in deps.items() if cid in ds]
+    if selbst:
+        err.append("Depends_On zeigt auf sich selbst: %s" % selbst)
+    veraltet = [(cid, d) for cid, ds in deps.items() for d in ds if tot.get(d)]
+    if veraltet:
+        err.append("Zeile haengt an einer abgeloesten Zeile: %s -- die Ablösung ist "
+                   "noch nicht durchgereicht. Jede dieser Zeilen gegen die Nachfolgerin "
+                   "pruefen und Depends_On umhaengen; das Umhaengen IST die Pruefung. "
+                   "Genau dieses Nicht-Durchreichen hat CONTRADICTION-USB-001 sieben "
+                   "Monate am Leben gehalten." % veraltet[:8])
+
+    def zyklus():
+        weiss, grau = set(ids), set()
+        def geh(n, pfad):
+            if n in grau:
+                return pfad[pfad.index(n):] + [n]
+            if n not in weiss:
+                return None
+            weiss.discard(n); grau.add(n)
+            for m in deps.get(n, []):
+                if m in ids:
+                    z = geh(m, pfad + [n])
+                    if z:
+                        return z
+            grau.discard(n)
+            return None
+        for n in list(ids):
+            z = geh(n, [])
+            if z:
+                return z
+        return None
+    z = zyklus()
+    if z:
+        err.append("Depends_On enthaelt einen Zyklus: %s -- Abhaengigkeiten muessen "
+                   "ein azyklischer Graph sein, sonst traegt keine Zeile die andere"
+                   % " -> ".join(z))
+
+    # --- Oracle-Stufe und Konfidenzdeckel ---
+    bad_or = [r["Claim_ID"] for r in rows if r.get("Oracle", "") not in ("", "O1", "O2", "O3")]
+    if bad_or:
+        err.append("Oracle weder leer noch O1/O2/O3: %s" % bad_or)
+    neu = [r for r in rows if r.get("Updated", "") >= ORACLE_AB]
+    ohne = [r["Claim_ID"] for r in neu if not r.get("Oracle", "").strip()]
+    if ohne:
+        err.append("ab %s geaenderte Zeile ohne Oracle-Stufe: %s -- O1 hergeleitet, "
+                   "O2 ein wiederholbares Kommando ueber eine Datei, O3 beobachtetes "
+                   "Geraeteverhalten" % (ORACLE_AB, ohne[:12]))
+    ueber = []
+    for r in neu:
+        o = r.get("Oracle", "").strip()
+        if o in DECKEL:
+            try:
+                c = float(r["Confidence"])
+            except ValueError:
+                continue
+            if c > DECKEL[o] + 1e-9:
+                ueber.append((r["Claim_ID"], o, c, DECKEL[o]))
+    if ueber:
+        err.append("Konfidenz ueber dem Deckel der Oracle-Stufe: %s -- entweder die "
+                   "Zahl senken oder die Aussage auf eine hoehere Stufe heben. Neun der "
+                   "bisher fuenfzehn abgeloesten Zeilen standen auf E0, drei bei 0.95 "
+                   "und hoeher: Ueberzeugung ist kein Beleg." % ueber[:8])
 
     reste = [f for f in glob.glob(P + "*") if f.endswith((".tmp", ".part", ".bak"))]
     if reste:

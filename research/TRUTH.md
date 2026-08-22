@@ -25,6 +25,8 @@ Neu hinzugekommen:
 | `Updated` | Datum der letzten Änderung. |
 | `Source` | Woher die Zeile stammt. |
 | `Prio` | Nur bei `Decided=no`. `now` = Arbeitsfront (hoechstens 6 Zeilen, handverlesen), `next` = Nachruecker aus laufender Arbeit, `later` = Altlast aus der Phase-1-Reconciliation, `park` = betrifft unser Werkzeug, nicht das Geraet. Bei entschiedenen Zeilen leer. |
+| `Depends_On` | Claim-IDs, mit `;` getrennt, auf denen diese Zeile *steht*. Probe: waere die genannte Zeile falsch, fiele diese hier mit. Macht tragende Zeilen zaehlbar und Abloesungen durchreichbar. |
+| `Oracle` | Was die Aussage geprueft hat, nicht wie sicher sie sich anfuehlt. `O1` hergeleitet (Deckel c=0.60), `O2` wiederholbares Kommando ueber eine Datei (0.95), `O3` beobachtetes Geraeteverhalten (1.00). Geht die Zeile ueber das hinaus, was das Kommando ausgibt -- Identitaet, Zweck, Bedeutung -- ist sie O1. Pflicht fuer Zeilen mit `Updated` ab 2026-08-22. |
 
 `Prio` ist am 2026-08-20 eingefuehrt worden, weil 128 offene Zeilen keine Karte
 sind, sondern eine Wand. Die Vergaberegel ist mechanisch und jederzeit
@@ -66,6 +68,18 @@ SPI0_BA korrigiert.
    als tauglich belegt ist.** Siehe CL-TOOL-REC-101: acht Monate lang galt der
    USB-Pfad als blockiert, weil eine Ghidra-Scalar-Suche Konstantenpool-Literale
    nicht findet.
+
+6. **Eine Zeile steht nur so hoch wie das, was sie geprueft hat.** Die
+   `Oracle`-Stufe wird vor der Konfidenz vergeben und deckelt sie. Geht die
+   Aussage ueber das hinaus, was das Kommando ausgibt, ist sie O1 -- auch wenn
+   sauber gemessen wurde. `CL-BOOT-REC-007` stand auf E0 mit c=0.95: die
+   Vektortabelle war gemessen, die Zuordnung geraten.
+7. **Eine Abloesung wird durchgereicht, nicht nur eingetragen.** Wer
+   `Superseded_By` setzt, geht die Zeilen durch, die per `Depends_On` an der
+   alten haengen, und haengt sie um. Das Umhaengen ist die Pruefung.
+   `check_truth.py` erzwingt, dass keine Zeile an einer abgeloesten haengt.
+
+Der Ablauf dazu steht in `.claude/skills/anspruch-schliessen/SKILL.md`.
 
 ## Einstieg in eine neue Session
 

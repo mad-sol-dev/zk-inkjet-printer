@@ -59,6 +59,18 @@ def main():
     sub = Counter(r["Subsystem"] for r in real)
     print("  nach Subsystem: " + "  ".join("%s %d" % (k, v) for k, v in sub.most_common()))
 
+    print("\nTRAGENDE ZEILEN -- was am meisten Gewicht haelt:")
+    traeger = Counter(d.strip() for r in rows
+                      for d in r.get("Depends_On", "").split(";") if d.strip())
+    topf = {r["Claim_ID"]: r for r in rows}
+    if not traeger:
+        print("  keine Depends_On gesetzt.")
+    for cid, n in traeger.most_common(5):
+        r = topf.get(cid, {})
+        print("  %-22s %d Abhaengige  [%s/%s]  %s"
+              % (cid, n, r.get("Oracle") or "--", r.get("Confidence", "?"),
+                 r.get("Topic", "?")[:44]))
+
     print("\nGIT")
     print("  " + (sh(["git", "log", "--oneline", "-3"]).replace("\n", "\n  ") or "?"))
     dirty = sh(["git", "status", "--porcelain"])
