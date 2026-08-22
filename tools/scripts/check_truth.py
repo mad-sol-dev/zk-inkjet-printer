@@ -129,6 +129,21 @@ def main():
         err.append("Arbeitsfront hat %d Zeilen, erlaubt sind hoechstens 6: %s -- eine "
                    "erledigte now-Zeile schliessen, bevor eine neue nachrueckt" % (len(front), front))
 
+    # --- Abgeschnittene Zellen ---
+    # Die Januar-Reconciliation hat Statement bei 120 und Next_Test bei 80
+    # Zeichen hart gekappt: 51 Zellen in 42 Zeilen, mit "..." am Ende. Der
+    # Validator konnte das nicht sehen, weil das Feld ja gefuellt war -- und
+    # CL-USB-REC-011 verlor dabei genau den Teil seines Next_Test, der die
+    # Zweimodus-Suche verlangt. Ein halber Satz ist kein Arbeitspaket.
+    gekappt = [(r["Claim_ID"], c) for r in rows for c in ("Statement", "Next_Test")
+               if (r.get(c) or "").strip().endswith(("...", "\u2026"))]
+    if gekappt:
+        err.append("Zelle endet auf '...': %s -- fast immer ein Importschnitt, kein "
+                   "Auslassungszeichen. Volltext steht meist in "
+                   "research/docs_rebuild/reconciliation/RECONCILED_claims_*.md; ist er "
+                   "nicht auffindbar, die Luecke sichtbar machen statt sie stehen zu "
+                   "lassen" % gekappt[:8])
+
     # --- Abhaengigkeiten (Depends_On) ---
     deps = {r["Claim_ID"]: [d.strip() for d in r.get("Depends_On", "").split(";") if d.strip()]
             for r in rows}
