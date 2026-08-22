@@ -51,7 +51,7 @@ def zeilen_in_head():
         return None
 
 def main():
-    err = []
+    err, warn = [], []
 
     if not os.path.exists(P):
         fatal("%s existiert nicht." % P,
@@ -224,14 +224,36 @@ def main():
     if copies:
         err.append("Kopien neben der autoritativen Datei: %s -- Regel 3: Git ist die "
                    "Historie, vor groesseren Aenderungen committen statt kopieren" % copies)
+    # Bewusst nur ein Hinweis, kein Verstoss: die Datei anzusehen ist der
+    # Normalfall und soll nichts blockieren. Eine Regel, die man routinemaessig
+    # mit --no-verify umgeht, ist schlechter als eine, die nur informiert.
+    # Gefaehrlich ist nicht das Offenhaben, sondern das Speichern aus einer
+    # veralteten Ansicht heraus -- und das wuerde ein blockierter Commit
+    # ohnehin nicht verhindern.
     locks = glob.glob("research/.~lock.*")
     if locks:
-        err.append("Office-Lockdatei offen -- die Datei ist gerade in einem Editor "
-                   "geoeffnet, Schreibzugriffe kollidieren: %s" % locks)
+        warn.append("TRUTH.csv ist in LibreOffice geoeffnet (%s). Ansehen ist in "
+                    "Ordnung. Nicht von dort speichern: die Ansicht kann aelter sein "
+                    "als die Datei, und LibreOffice schreibt zusaetzlich CRLF und "
+                    "eigene Quoting-Regeln, was den naechsten Diff unbrauchbar macht."
+                    % ", ".join(os.path.basename(l) for l in locks))
 
-    print("TRUTH.csv: %d Zeilen, %d entschieden, %d offen, %d abgeloest | Front %d"
-          % (len(rows), sum(1 for r in rows if r["Decided"] == "yes"),
-             len(open_rows), sum(1 for r in rows if r["Superseded_By"]), len(front)))
+    # Getrennt zaehlen: diese Datei ist der Stand des GERAETS. Subsystem=TOOL
+    # sind Methoden- und Werkzeugzeilen -- notwendig, aber kein Geraetewissen.
+    # Prio=park markiert das nur bei offenen Zeilen; entschiedene Werkzeugzeilen
+    # trugen bis 2026-08-22 gar keine Kennzeichnung und standen gleichrangig
+    # neben Befunden ueber den Drucker.
+    ger = [r for r in rows if r["Subsystem"] != "TOOL"]
+    wzg = [r for r in rows if r["Subsystem"] == "TOOL"]
+    traegt = {d.strip() for r in rows for d in r.get("Depends_On", "").split(";") if d.strip()}
+    print("TRUTH.csv | GERAET %d (%d entschieden, %d offen, %d abgeloest) | "
+          "WERKZEUG %d (%d davon tragend) | Front %d"
+          % (len(ger), sum(1 for r in ger if r["Decided"] == "yes"),
+             sum(1 for r in ger if r["Decided"] == "no" and not r["Superseded_By"]),
+             sum(1 for r in ger if r["Superseded_By"]),
+             len(wzg), sum(1 for r in wzg if r["Claim_ID"] in traegt), len(front)))
+    for w in warn:
+        print("  HINWEIS:  %s" % w)
     for e in err:
         print("  VERSTOSS: %s" % e)
     return 1 if err else 0

@@ -54,10 +54,18 @@ def main():
     print("\nRESTMENGE")
     print("  offen gesamt %d   davon now %d | next %d | later %d | park %d"
           % (len(open_rows), prio["now"], prio["next"], prio["later"], prio["park"]))
-    real = [r for r in open_rows if r.get("Prio") in ("now", "next", "later")]
-    print("  echte Geraetefragen: %d (park zaehlt nicht mit)" % len(real))
+    real = [r for r in open_rows if r.get("Prio") in ("now", "next", "later")
+            and r["Subsystem"] != "TOOL"]
+    print("  echte Geraetefragen: %d (Werkzeugzeilen zaehlen nicht mit)" % len(real))
     sub = Counter(r["Subsystem"] for r in real)
     print("  nach Subsystem: " + "  ".join("%s %d" % (k, v) for k, v in sub.most_common()))
+
+    wzg = [r for r in rows if r["Subsystem"] == "TOOL"]
+    traegt = {d.strip() for r in rows for d in r.get("Depends_On", "").split(";") if d.strip()}
+    meth = [r for r in wzg if r["Claim_ID"] in traegt]
+    print("  Werkzeug/Methode: %d Zeilen, davon %d tragend (%s); der Rest ist "
+          "Werkzeugstand und kein Geraetewissen"
+          % (len(wzg), len(meth), ", ".join(r["Claim_ID"] for r in meth) or "keine"))
 
     print("\nTRAGENDE ZEILEN -- was am meisten Gewicht haelt:")
     traeger = Counter(d.strip() for r in rows
