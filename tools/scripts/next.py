@@ -79,6 +79,38 @@ def main():
               % (cid, n, r.get("Oracle") or "--", r.get("Confidence", "?"),
                  r.get("Topic", "?")[:44]))
 
+    print("\nUNGEPRUEFT & TRAGEND -- viel haengt dran, direkt geprueft wurde es nie:")
+    kinder = {cid: set() for cid in topf}
+    for r in rows:
+        for d in r.get("Depends_On", "").split(";"):
+            d = d.strip()
+            if d in kinder:
+                kinder[d].add(r["Claim_ID"])
+
+    def blast(cid):
+        seen, stack = set(), list(kinder.get(cid, ()))
+        while stack:
+            x = stack.pop()
+            if x in seen:
+                continue
+            seen.add(x)
+            stack += list(kinder.get(x, ()))
+        return len(seen)
+
+    ungeprueft = [(blast(cid), cid) for cid in traeger
+                  if (topf.get(cid, {}).get("Oracle") or "").strip() not in ("O2", "O3")]
+    if not ungeprueft:
+        print("  keine. Jede tragende Zeile ist O2 oder O3.")
+    for w, cid in sorted(ungeprueft, reverse=True)[:6]:
+        r = topf.get(cid, {})
+        orc = (r.get("Oracle") or "").strip()
+        mark = "hergeleitet" if orc == "O1" else "nicht ausgewiesen"
+        dec = "entschieden" if r.get("Decided") == "yes" else "offen"
+        print("  %-22s traegt %-2d  [%-2s %-17s]  c=%-4s %-11s %s"
+              % (cid, w, orc or "--", mark, r.get("Confidence", "?"), dec,
+                 r.get("Topic", "?")[:40]))
+    print("  -> ein O2/O3-Test an der obersten Zeile deckt die meisten Kinder ab.")
+
     print("\nGIT")
     print("  " + (sh(["git", "log", "--oneline", "-3"]).replace("\n", "\n  ") or "?"))
     dirty = sh(["git", "status", "--porcelain"])
