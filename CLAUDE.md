@@ -165,15 +165,27 @@ gegen eine Kandidatenmenge beweist ohne Dichte-Vergleich nichts.
 
 ## Adresskonventionen
 
-- **VA = Dateioffset + 0x00200000.** APP.bin wird nach 0x00200000 geladen
-  (CL-BOOT: entschieden, nicht 0x03000000). Schreibweise:
-  `VA 0x0020C798 (file+0xC798)`.
+- **VA = Dateioffset + 0x00058000.** APP.bin ist nach 0x00058000 gelinkt und
+  wird dorthin geladen (CL-BOOT-REC-113, gemessen am Scatter-Table der Datei).
+  Schreibweise: `VA 0x00064798 (file+0xC798)`. BOOT.bin liegt bei 0x00700000.
+- **Achtung, zwei Zaehlweisen.** Bis zum 2026-08-31 galt `Dateioffset +
+  0x00200000`, und die Ghidra-Datenbank ist noch so angelegt
+  (CL-TOOL-REC-121). Jede aeltere Zeile in `TRUTH.csv`, jedes aeltere Protokoll
+  und jede Ausgabe des MCP-Servers nennt deshalb Adressen, die um **0x1A8000 zu
+  hoch** sind. Die Dateioffsets stimmen in beiden Zaehlweisen -- deshalb ist
+  keiner der alten Befunde falsch, nur jedes alte Etikett. Im Zweifel den
+  Dateioffset nennen; der ist eindeutig.
 - **MMIO** liegt in 0xB0000000-0xBFFFFFFF und wird immer als solches
   gekennzeichnet: `MMIO 0xB1008000 (USB_BA)`.
-- **ARM/Thumb gemischt.** Thumb-Code liegt im Bereich 0x00210000-0x0021FFFF
-  (CL-BOOT-REC-016). Das heisst *nicht*, dass ARM auf 0x00200000-0x0020FFFF
-  beschraenkt waere -- der weitaus groesste Teil des Bildes darueber ist
-  ebenfalls ARM, etwa `mov r8,#0x28800000` bei 0x00265FE4.
+- **Unterhalb des Images** liegt kein zweites Programm, sondern die RW/ZI-Region,
+  die APP.bin sich beim Start selbst anlegt: 0x00000000-0x00044FC0, mit der
+  ARM-Vektortabelle bei 0 (CL-BOOT-REC-114). Absolute Adressen wie `0x7D8` oder
+  `0x82EC` sind Globals dort und stehen in keiner Datei.
+- **ARM/Thumb gemischt.** Thumb-Code liegt im Bereich file+0x10000-0x1FFFF
+  (CL-BOOT-REC-016, dort noch als 0x00210000-0x0021FFFF notiert). Das heisst
+  *nicht*, dass ARM auf die ersten 64 KiB beschraenkt waere -- der weitaus
+  groesste Teil des Bildes darueber ist ebenfalls ARM, etwa
+  `mov r8,#0x28800000` bei file+0x65FE4.
 
 ## Repository
 
