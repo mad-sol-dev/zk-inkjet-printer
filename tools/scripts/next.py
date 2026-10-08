@@ -3,7 +3,7 @@
 
     python3 tools/scripts/next.py
 
-Druckt: Pruefergebnis, Arbeitsfront, Restmenge. Nichts sonst. Wer das gelesen
+Druckt: Pruefergebnis, Ghidra-Herkunft, Arbeitsfront, Restmenge. Nichts sonst. Wer das gelesen
 hat, weiss wo das Projekt steht, ohne eine einzige Beschreibungsdatei zu oeffnen.
 
 Prio-Werte und ihre Bedeutung:
@@ -36,6 +36,17 @@ def main():
     rc = subprocess.run([sys.executable, "tools/scripts/check_truth.py"], cwd=ROOT)
     if rc.returncode:
         print("\n>> Erst die Verstoesse beheben. Alles andere wartet.\n")
+        return 1
+
+    print("\nGHIDRA-HERKUNFT -- arbeitet Ghidra auf den Bytes aus dem Repo?")
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import ghidra_provenance
+    herkunft_ok, zeilen = ghidra_provenance.check()
+    for z in zeilen:
+        print("  " + z)
+    if not herkunft_ok:
+        print("\n>> Erst klaeren, welches Programm in Ghidra offen ist. "
+              "Bis dahin ist keine Ghidra-Adresse belastbar.\n")
         return 1
 
     rows = list(csv.DictReader(open(P, encoding="utf-8")))
