@@ -15,6 +15,7 @@ ZIELE = [
     # Adresse,   Prologwort, Bedeutung
     (0x00109AC4, 0xE52DE004, "str lr,[sp,#-4]!  -- USB-ISR (CL-USB-REC-102)"),
     (0x000D9934, 0xE92D4FFF, "push {r0-r11,lr}  -- Callback (CL-BOOT-REC-112)"),
+    (0x000A9184, 0xE92D4FF0, "push {r4-r11,lr}  -- SD-Konstruktor, Logik wie fmiInitSDDevice (CL-USB-REC-119)"),
 ]
 
 mem = currentProgram.getMemory()
