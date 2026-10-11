@@ -144,6 +144,12 @@ Der Bridge war am 2026-08-21 noch in Erprobung. **Ein leeres Ergebnis ist
 deshalb kein Befund, sondern ein Anlass, dieselbe Frage mit eigenem Code ueber
 der Rohdatei zu wiederholen.** Siehe CL-TOOL-REC-114.
 
+**Ghidra-Skripte ueber `run_script`** liegen in `tools/scripts/ghidra/`
+(`GHIDRA_MCP_SCRIPT_DIR`). Erst mit `dry_run=true` laufen lassen, dann echt.
+Ob ein Skript durchgelaufen ist, sagt nur `data.ok`, nicht das aeussere `ok`
+der Antwort (CL-TOOL-REC-124). Vor Plugin 1.3.71 kamen Jython-Fehler still mit
+`ok:true` zurueck; solche Ergebnisse sind nicht belegt.
+
 ## Konstantensuche -- vier Modi
 
 Regel 6 oben verlangt, dass eine Methode als tauglich belegt ist, bevor ihr

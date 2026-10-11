@@ -15,7 +15,6 @@ from ghidra.feature.fid.db import FidFileManager
 from ghidra.feature.fid.service import FidService
 from ghidra.program.model.symbol import SourceType
 
-import traceback
 try:
     repo = os.path.normpath(os.path.join(getSourceFile().getParentFile().getAbsolutePath(),
                                          "..", "..", ".."))
@@ -76,9 +75,6 @@ try:
         println("   0x%08X  %-36s %.1f  %s" % (z[0], z[3][0], z[5], z[4][0] + (" +%d" % (len(z[4]) - 1) if len(z[4]) > 1 else "")))
     println("CSV: %s" % CSV)
 
-except:
-    println("FEHLER:\n" + traceback.format_exc())
-    raise
 finally:
     try:
         q.close()
