@@ -5,6 +5,7 @@
 # Eindeutig  = alle Treffer einer Funktion tragen denselben Namen (oft dieselbe
 #              Funktion in mehreren Bibliotheksvarianten, z. B. 36 MSC-Bauarten).
 # Mehrdeutig = verschiedene Namen; die zaehlen nicht als Erkennung.
+# Argument (optional): Punktschwelle als "s8" -- reine Zahlen wandelt run_script in einen Zahltyp und lehnt sie ab; -- fuer den lockeren Lauf (CL-TOOL-REC-125).
 #
 # @category ZK-Inkjet
 # @runtime Jython
@@ -29,7 +30,12 @@ try:
     ff.setActive(True)
 
     svc = FidService()
-    schwelle = svc.getDefaultScoreThreshold()
+    # Optionales Argument: Punktschwelle (Standard der Analyse 14.6). Bei abweichender
+    # Schwelle bekommt die CSV die Schwelle im Namen, damit der Standardlauf bleibt.
+    a = getScriptArgs()
+    schwelle = float(a[0].lstrip("s")) if a else svc.getDefaultScoreThreshold()
+    if a:
+        CSV = CSV.replace(".csv", "_s%g.csv" % schwelle)
     q = svc.openFidQueryService(currentProgram.getLanguage(), False)
     ergebnisse = svc.processProgram(currentProgram, q, schwelle, monitor)
     # Die Treffer lesen ihre Namen aus der offenen Datenbank -- erst am Ende schliessen.
