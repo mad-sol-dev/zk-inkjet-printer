@@ -270,6 +270,7 @@ println("\nLege die Startregionen der Scatter-Tabelle an:")
 for name, dst, size, src, art in REGIONEN:
     if art == "zero":
         mem.createUninitializedBlock(name, toAddr(dst), size, False)
+        mem.getBlock(toAddr(dst)).setWrite(True)   # Laufzeitdaten, nicht konstant
         println("   %-8s %s + %s  uninitialisiert (ZI)" % (name, hexs(dst), hexs(size)))
         continue
 
