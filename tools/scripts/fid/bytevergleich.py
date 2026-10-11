@@ -13,7 +13,9 @@ platziert), ABWEICHEND (erste Stelle genannt), NULLGROESSE (Symbol ohne Laenge,
 etwa Assembler) oder NICHT GEFUNDEN. Liest nur; schreibt die belegten Treffer
 (GLEICH und POOL) nach ghidra_projects/fid/fid_belegt.csv.
 
-  python3 tools/scripts/fid/bytevergleich.py [--alle]
+  python3 tools/scripts/fid/bytevergleich.py
+  python3 tools/scripts/fid/bytevergleich.py --eingabe ghidra_projects/fid/normvergleich.csv \
+      --bibliothek nvtfat --ausgabe ghidra_projects/fid/norm_belegt.csv
 """
 import csv
 import glob
@@ -93,9 +95,19 @@ def vergleichen(app, va, objpfad, name):
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--eingabe", default=os.path.join(FID, "fid_treffer_app.csv"),
+                    help="fid_treffer_app.csv (FID) oder normvergleich.csv")
+    ap.add_argument("--ausgabe", default=os.path.join(FID, "fid_belegt.csv"))
+    ap.add_argument("--bibliothek", default="", help="nur Treffer aus Bibliotheken mit diesem Namensteil")
+    a = ap.parse_args()
     app = open(APP, "rb").read()
-    zeilen = list(csv.DictReader(open(os.path.join(FID, "fid_treffer_app.csv"))))
-    zeilen = [z for z in zeilen if z["eindeutig"] == "1"]
+    zeilen = list(csv.DictReader(open(a.eingabe)))
+    for z in zeilen:                      # normvergleich.csv hat andere Spaltennamen
+        z.setdefault("fid_namen", z.get("namen", ""))
+        z.setdefault("eindeutig", "1" if "|" not in z["fid_namen"] else "0")
+    zeilen = [z for z in zeilen if z["eindeutig"] == "1" and a.bibliothek in z["bibliotheken"]]
     gleich = pool = abw = fehlt = 0
     belegt = []
     for z in zeilen:
@@ -126,13 +138,13 @@ def main():
         print("0x%08X  %-32s %-10s %5d Bytes, %4d maskiert%s  %s"
               % (va, name, art, groesse, maskiert,
                  "" if erste is None else ", erste Abweichung +0x%X" % erste, quelle))
-    with open(os.path.join(FID, "fid_belegt.csv"), "w") as fh:
+    with open(a.ausgabe, "w") as fh:
         fh.write("va,name,vergleich,quelle\n")
         for va, name, art, quelle in belegt:
             fh.write("0x%08X,%s,%s,%s\n" % (va, name, art, quelle))
     print("SUMME: %d gleich, %d gleich bis auf Poolabstand, %d abweichend oder ohne Groesse, "
-          "%d nicht gefunden, von %d -> %d belegt in fid_belegt.csv"
-          % (gleich, pool, abw, fehlt, len(zeilen), len(belegt)))
+          "%d nicht gefunden, von %d -> %d belegt in %s"
+          % (gleich, pool, abw, fehlt, len(zeilen), len(belegt), os.path.basename(a.ausgabe)))
     return 0 if abw == 0 and fehlt == 0 else 1
 
 
