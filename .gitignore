@@ -119,3 +119,6 @@ dist/
 # Phase-A-Binaerartefakte: deterministische Schnitte aus sdcard.work.img,
 # reproduzierbar per Offset (siehe research/phase_a_sd_analysis/artifacts/README.md)
 research/phase_a_sd_analysis/artifacts/**/*.bin
+
+# FID-Bau (CL-TOOL-REC-123): reproduzierbar aus tools/scripts/fid/build_bsp_fid.sh
+ghidra_projects/fid/
