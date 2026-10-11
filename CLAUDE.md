@@ -169,10 +169,10 @@ gegen eine Kandidatenmenge beweist ohne Dichte-Vergleich nichts.
   wird dorthin geladen (CL-BOOT-REC-113, gemessen am Scatter-Table der Datei).
   Schreibweise: `VA 0x00064798 (file+0xC798)`. BOOT.bin liegt bei 0x00700000.
 - **Achtung, zwei Zaehlweisen.** Bis zum 2026-08-31 galt `Dateioffset +
-  0x00200000`, und die Ghidra-Datenbank ist noch so angelegt
-  (CL-TOOL-REC-121). Jede aeltere Zeile in `TRUTH.csv`, jedes aeltere Protokoll
-  und jede Ausgabe des MCP-Servers nennt deshalb Adressen, die um **0x1A8000 zu
-  hoch** sind. Die Dateioffsets stimmen in beiden Zaehlweisen -- deshalb ist
+  0x00200000`. Die Ghidra-Datenbank ist seit dem 2026-10-11 auf 0x00058000
+  verschoben (CL-TOOL-REC-121), der MCP-Server nennt also die richtigen
+  Adressen. Jede aeltere Zeile in `TRUTH.csv` und jedes aeltere Protokoll
+  nennt dagegen Adressen, die um **0x1A8000 zu hoch** sind. Die Dateioffsets stimmen in beiden Zaehlweisen -- deshalb ist
   keiner der alten Befunde falsch, nur jedes alte Etikett. Im Zweifel den
   Dateioffset nennen; der ist eindeutig.
 - **MMIO** liegt in 0xB0000000-0xBFFFFFFF und wird immer als solches
