@@ -59,8 +59,13 @@ if len(args) >= 2:
             nehmen = a in ("BL", "Pool") or (a == "ohne" and code)
         elif args[1] == "stufe2":
             nehmen = a == "Daten" and code
+        elif args[1] == "alle":
+            # Jede Zeile der Datei; bestehende Funktionen ueberspringt die
+            # Hauptschleife ohnehin. Fuer eine vorab (z. B. per capstone)
+            # gepruefte Liste gedacht.
+            nehmen = True
         else:
-            raise Exception("Stufe %s unbekannt, erlaubt: stufe1, stufe2" % args[1])
+            raise Exception("Stufe %s unbekannt, erlaubt: stufe1, stufe2, alle" % args[1])
         if nehmen:
             ZIELE.append((va, w, "%s %s | %s" % (a, "CODE" if code else "ROH", h)))
     println("%s: %d Ziele aus %s" % (args[1], len(ZIELE), args[0]))
