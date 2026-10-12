@@ -1,0 +1,39 @@
+A3 -- Wie laedt BOOT.bin das APP-Image? (Schreibtisch, Rohdatei, kein Ghidra)
+Quelle: firmware/bin/ZK-INKJET-NANO-BOOT.bin (12736 B), Linkbasis 0x00700000 (scatter_base.py).
+Werkzeug: python3 + capstone, ARM-Modus ab Dateioffset 0x20FC. Adressen = BOOT-VA.
+
+Einstieg: __rt_entry -> bl main bei 0x7020FC (b 0x702F2C). main = 0x702F2C.
+
+Ablauf in main (ARM, gelesen):
+  0x702F44  ldr r7,=0x76F400            Puffer
+  0x702F48  ldr r5,=0x70                Zeiger auf RW-Variable; *(0x70)=0x00058000 (scatter_unpack.py --word 0x70)
+  0x702F6C-0x702F74  bl 0x701894(0x1C000, 0x12C, 0x76F400)   -- Lesen A (siehe unten), zweimal
+  0x702FB4-0x702FBC  blx 0x70019C(buf, buf+0x25800, 0x25800) = memcmp (Thumb, Wortschleife)
+                     0x12C Sektoren = 0x25800 B = 320*240*2: Startbild; wird doppelt gelesen und verglichen
+  0x702FC8-0x702FD8  r0=[r5]=0x58000; bl 0x701894(0x18000, 0x1400, 0x58000|0x80000000)
+  0x702FEC-0x702FFC  bl 0x701894(0x18000, 0x1400, 0x2D8000|0x80000000)    -- zweites Lesen
+  0x703010-0x70301C  memcmp([r5]=0x58000, 0x2D8000, 0x280000); bei Ungleichheit weiter bei 0x7030B8
+  0x703030           str [r5],[r5,#4]  -> Einsprung = Ladeadresse 0x58000
+  0x7030B0-B4        ldr r0,[r5,#4]; blx r0    -- Sprung nach 0x58000
+  0x7030B8-C0        add r4,r4,#1; cmp r4,#3; blt 0x702F50  -- hoechstens 3 Versuche, dann 0x700D24
+
+0x701894 (Lesefunktion): Argumente (r0=Sektor, r1=Sektoranzahl, r2=Ziel). Gelesen: lsl r5,#9 (Sektor->Byte,
+  nicht-SDHC-Zweig), FMI-Register 0xB1006408 (DMA-Zieladresse) <- r2, Sektoranzahl als Schleifenzaehler (r8).
+  Sektor 0x18000 * 0x200 = Rohoffset 0x03000000 = Lage von APP.bin auf der Karte (artifacts/README.md).
+
+ERGEBNIS A3
+  * Die Laenge von APP.bin wird NICHT aus einem Kopf bestimmt. Es gibt keine Groessenabfrage: BOOT liest
+    fest 0x1400 Sektoren = 0x280000 B = 2621440 B ab Rohoffset 0x03000000 nach 0x00058000..0x002D8000.
+  * APP.bin ist 0x27522C B lang; BOOT laedt also 0x280000-0x27522C = 0xADD4 = 44500 B ueber das Dateiende
+    hinaus mit (VA 0x2CD22C..0x2D8000). Ein Image bis 0x280000 Bytes wird vollstaendig geladen und geprueft.
+  * Die Zero-Init-Region 0x2D8000 + 0x280000 der BOOT-Scatter-Tabelle ist der Verifikationspuffer fuer die zweite
+    Kopie. 0x58000 + 0x280000 = 0x2D8000 stimmt (Spur aus dem Auftrag bestaetigt arithmetisch), aber die
+    Region ist die zweite Kopie, kein Fachende: das Fach endet, weil BOOT genau 0x1400 Sektoren liest.
+  * Karteninhalt dort (firmware/image/sdcard.work.img, nur gelesen): Rohoffset 0x3000000 == APP.bin
+    (Bytevergleich True); die 44500 Bytes dahinter sind NICHT leer: 29942 Bytes ungleich 0, UTF-8-Katakana-
+    Zeichenketten bis Rel.-Offset 0xA3E2, danach Nullen; ab Rohoffset 0x3280000 (10 KiB gepruefte 0x10000) nur Nullen.
+
+HEAP (fuer A2 wichtig): VA 0x0005820C (Thumb) laedt zwei Poolworte file+0x24C = 0x002D8000 und file+0x250 =
+  0x0076F400 und ruft bl 0x00066A82 (Lesart: Heap-Initialisierung base,limit; Rumpf prueft base+0x10<=limit,
+  legt Kopf an). Der Heap beginnt also genau bei 0x2D8000 -- die APP-Allokatoren (0x00087530(align,size) ->
+  0x00064798) liegen oberhalb der A2-Luecke. Stack-Spitzen aus dem Startstub: 0x7FEC00..0x800000.

@@ -1,0 +1,42 @@
+hook_space_scan.py -- Rohzahlen fuer CL-FIRMWARE-REC-111 (VA = file + 0x58000)
+APP.bin 2576940 Bytes; Thumb-Bereich file+0x10000-0x1FFFF fuer ARM-Decoder ausgespart
+
+== Positivkontrollen (ganze Datei) ==
+lit   0x0008A434 (CL-BOOT-REC-114/CL-STORAGE-REC-135 Callback): 5 Poolworte, soll >0
+imm   0x28800000 cond=AL: 8 Stellen, davon file+0x65FE4: True (Ghidra search_scalars 2026-10-12: 8 Treffer, identische Menge)
+adr   Decoder: 1143 ADD/SUB-PC-Befehle, 1126 davon mit Ziel im Image (Plausibilitaet)
+kette Decoder: 33 Ketten; Kontrolle file+0xC5CEC:  True (mov r0,#0x80000000; sub r0,r0,#0x400000 = 0x7FC00000, von Hand gelesen)
+
+== A1 RAM-Luecke 0x00044FC0-0x00058000 ==
+lit   114 ausgerichtete Worte im Bereich; 8 von ARM-ldr geladen, 1 von Thumb-ldr geladen,
+      Rest 105 sind Datenworte/Codebytes ohne ladenden Befehl
+      ARM-Pool file+0x5B24C = 0x537F0 ARM-ldr-geladen
+      ARM-Pool file+0x5B254 = 0x4CFC0 ARM-ldr-geladen
+      ARM-Pool file+0x5E59C = 0x4CFC0 ARM-ldr-geladen
+      ARM-Pool file+0x65D48 = 0x4CFC0 ARM-ldr-geladen
+      ARM-Pool file+0x6B2F8 = 0x4CFC0 ARM-ldr-geladen
+      ARM-Pool file+0x6F620 = 0x4CFC0 ARM-ldr-geladen
+      ARM-Pool file+0x91988 = 0x542E0 ARM-ldr-geladen
+      ARM-Pool file+0xC3424 = 0x537F0 ARM-ldr-geladen
+      Thumb-Pool file+0x104F4 = 0x4B5F8 (Thumb-Bereich; Wert ist selbst Thumb-Code 0x0004B5F8)
+imm   145 Dekodierungen in der ganzen Datei, 11 davon cond=AL im Codebereich (file<0x120000)
+      file+0x51A90 E3800805 -> 0x50000
+      file+0x5E360 E3A03A4D -> 0x4D000
+      file+0x5E488 E3A03A4D -> 0x4D000
+      file+0x5F24C E3A03A4D -> 0x4D000
+      file+0x625E8 E3A01A4D -> 0x4D000
+      file+0x65B6C E3A08A4D -> 0x4D000
+      file+0x65FE0 E3A07A4D -> 0x4D000
+      file+0x6B058 E3A02A4D -> 0x4D000
+      file+0x6B354 E3A02A4D -> 0x4D000
+      file+0x6F554 E3A03A4D -> 0x4D000
+      file+0xAFA9C E3800805 -> 0x50000
+adr   0 Treffer
+kette 0 Treffer
+
+== A2 hinter dem Image 0x002CD22C-0x002D8000 ==
+lit   104 ausgerichtete Worte im Bereich; 0 von ARM-ldr geladen, 0 von Thumb-ldr geladen,
+      Rest 104 sind Datenworte/Codebytes ohne ladenden Befehl
+imm   8 Dekodierungen in der ganzen Datei, 0 davon cond=AL im Codebereich (file<0x120000)
+adr   0 Treffer
+kette 0 Treffer
