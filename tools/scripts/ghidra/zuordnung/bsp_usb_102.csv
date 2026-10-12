@@ -1,6 +1,6 @@
 art,va,name,quelle
 func,0x00109AC4,usbd_isr,UDC/example/HID_class/usbd.c
-func,0x000F9E88,sysInstallISR,SYSLIB/Src/wb_aic.c
+func!,0x000F9E88,sysInstallISR,SYSLIB/Src/wb_aic.c
 func,0x000F99D0,sysEnableInterrupt,SYSLIB/Src/wb_aic.c
 func,0x000FA0B8,sysSetLocalInterrupt,SYSLIB/Src/wb_aic.c
 func,0x000F9F88,sysIrqShell,SYSLIB/Src/wb_aic.c

@@ -1,7 +1,10 @@
 # Uebernimmt BSP-Namen, die durch Abgleich mit dem Quelltext zugeordnet sind
 # (Oracle O1, nicht bytebelegt -- dafuer fid_benennen.py). Argument: CSV in
 # tools/scripts/ghidra/zuordnung/ (versioniert, von Hand gepflegt) mit Spalten
-# art,va,name,quelle; art = func | data | struct | zeiger.
+# art,va,name,quelle; art = func | func! | data | struct | zeiger.
+# - func!: wie func, ersetzt aber auch einen von Hand vergebenen Namen. Der alte
+#   Name bleibt als zusaetzliches Label an derselben Adresse (findbar) und steht
+#   im Plate-Kommentar als "frueher: ...".
 # Optional als zweites Argument die Claim-ID fuer den Kommentar.
 #
 # - func: nur Standardnamen (FUN_...) werden umbenannt, Quelle ANALYSIS; vergebene
@@ -44,7 +47,7 @@ fm = currentProgram.getFunctionManager()
 lst = currentProgram.getListing()
 st = currentProgram.getSymbolTable()
 dtm = currentProgram.getDataTypeManager()
-n = {"angelegt": 0, "umbenannt": 0, "schon": 0, "behalten": 0, "label": 0, "struct": 0, "zeiger": 0}
+n = {"angelegt": 0, "umbenannt": 0, "ersetzt": 0, "schon": 0, "behalten": 0, "label": 0, "struct": 0, "zeiger": 0}
 meld = []
 
 B, W, D, P = ByteDataType.dataType, WordDataType.dataType, DWordDataType.dataType, PointerDataType.dataType
@@ -124,7 +127,8 @@ for z in csv.DictReader(open(CSV)):
     a = toAddr(int(z["va"], 16))
     plate = "BSP n32901: %s aus %s, Zuordnung durch Quelltextabgleich (O1, %s)" % (
         z["name"], z["quelle"], CLAIM)
-    if z["art"] == "func":
+    ersetzen = z["art"] == "func!"
+    if z["art"] in ("func", "func!"):
         f = fm.getFunctionAt(a)
         if f is None:
             drin = fm.getFunctionContaining(a)
@@ -150,9 +154,20 @@ for z in csv.DictReader(open(CSV)):
             println("   %s  %-14s -> %s" % (z["va"], f.getName(), z["name"]))
             f.setName(z["name"], SourceType.ANALYSIS)
             n["umbenannt"] += 1
+        elif ersetzen:
+            alt = f.getName()
+            println("   %s  vergeben %-28s -> %s (alter Name als Label)" % (z["va"], alt, z["name"]))
+            f.setName(z["name"], SourceType.ANALYSIS)
+            if not any(x.getName() == alt for x in st.getSymbols(a)):
+                st.createLabel(a, alt, SourceType.USER_DEFINED)
+            n["ersetzt"] += 1
         else:
             n["behalten"] += 1
             println("   %s  vergeben %-28s bleibt, BSP sagt %s" % (z["va"], f.getName(), z["name"]))
+        frueher = [x.getName() for x in st.getSymbols(a)
+                   if x.getName() != z["name"] and not x.getName().startswith("FUN_")]
+        if frueher:
+            plate += "; frueher: " + ", ".join(sorted(frueher))
     elif z["art"] == "zeiger":
         d0 = lst.getDataAt(a)
         if d0 is None or d0.getDataType().getName().startswith("undefined"):
@@ -211,7 +226,7 @@ for z in csv.DictReader(open(CSV)):
     if lst.getComment(CodeUnit.PLATE_COMMENT, a) != plate:
         lst.setComment(a, CodeUnit.PLATE_COMMENT, plate)
 
-println("angelegt %(angelegt)d, umbenannt %(umbenannt)d, schon richtig %(schon)d, vergebene behalten %(behalten)d, "
+println("angelegt %(angelegt)d, umbenannt %(umbenannt)d, ersetzt %(ersetzt)d, schon richtig %(schon)d, vergebene behalten %(behalten)d, "
         "Labels %(label)d, Strukturen %(struct)d, Zeiger %(zeiger)d" % n)
 for x in meld:
     println("   Meldung: %s" % x)
