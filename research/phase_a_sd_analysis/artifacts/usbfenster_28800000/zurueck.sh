@@ -3,7 +3,7 @@ set -e
 # Erzeugt von patch_usb_window.py -- Originalzustand (0x2A614000)
 # Ein Sektor: Datei-Sektor 0xE5 von APP.bin = Rohsektor 98533 (Rohadresse 0x0301CA00).
 # NUR auf die Testkarte anwenden, niemals auf die Originalkarte.
-DEV=/dev/sdX
+DEV=/dev/sdc
 echo "Ziel: $DEV, Rohsektor 98533"
 IST=$(dd if=$DEV bs=512 skip=98533 count=1 status=none | sha256sum | cut -d" " -f1)
 echo "vorher: $IST"
