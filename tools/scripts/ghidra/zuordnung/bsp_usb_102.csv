@@ -1,0 +1,17 @@
+art,va,name,quelle
+func,0x00109AC4,usbd_isr,UDC/example/HID_class/usbd.c
+func,0x000F9E88,sysInstallISR,SYSLIB/Src/wb_aic.c
+func,0x000F99D0,sysEnableInterrupt,SYSLIB/Src/wb_aic.c
+func,0x000FA0B8,sysSetLocalInterrupt,SYSLIB/Src/wb_aic.c
+func,0x000F9F88,sysIrqShell,SYSLIB/Src/wb_aic.c
+func,0x000F99F8,sysFiqShell,SYSLIB/Src/wb_aic.c
+func,0x001084B8,usbd_control_packet,UDC/example/HID_class/usbd.c
+func,0x0010A874,usbd_send_descriptor,UDC/example/HID_class/usbd.c
+func,0x0010AE44,usbd_update_device,UDC/example/HID_class/usbd.c
+func,0x00108470,usbdClearAllFlags,UDC/example/HID_class/usbd.c
+data,0x00000810,sysIrqHandlerTable,SYSLIB/Src/wb_aic.c
+data,0x00000890,sysFiqHandlerTable,SYSLIB/Src/wb_aic.c
+data,0x000082B0,usbdStatus,UDC/lib/usbd.h
+data,0x000009D8,_usb_cmd_pkt,UDC/example/HID_class/usbd.c
+struct,0x00008190,usbdInfo,UDC/lib/usbd.h
+zeiger,0x00008190,usbdInfo,UDC/lib/usbd.h
