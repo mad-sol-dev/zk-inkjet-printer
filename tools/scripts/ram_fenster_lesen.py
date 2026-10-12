@@ -18,6 +18,7 @@ import time
 
 MARKE = 0x10000
 KONTROLLE = (0x9F8, bytes.fromhex("120100020000004016049300"))
+HEAP_DESKRIPTOR = 0x44F58          # Poolwort von FUN_00066a38 (0x66A40); [Kopf+4] = erster freier Knoten
 
 # Name, Adresse, Laenge -- Quellen in CL-USB-REC-126 / -102 / -124 und den Dekompilaten
 ZUSTAND = [
@@ -69,8 +70,20 @@ def main():
     ap.add_argument("--zustand", action="store_true")
     ap.add_argument("--abstand", type=float, default=0, help="zweiten Zustand nach so vielen Sekunden lesen")
     ap.add_argument("--abzug", help="ganzen RAM (8 MiB) in diese Datei schreiben")
+    ap.add_argument("--heap", action="store_true", help="Freiliste des C-Heaps ablaufen (Deskriptor 0x44F58)")
     a = ap.parse_args()
     kontrolle(a.dev)
+    if a.heap:
+        kopf = struct.unpack("<I", lesen(a.dev, HEAP_DESKRIPTOR, 4))[0]
+        knoten = struct.unpack("<I", lesen(a.dev, kopf + 4, 4))[0]
+        frei, n = [], 0
+        while knoten and n < 4096 and knoten < 0x800000:
+            groesse, weiter = struct.unpack("<II", lesen(a.dev, knoten, 8))
+            frei.append((knoten, groesse)); knoten = weiter; n += 1
+        print("Heap: Kopf 0x%X, %d freie Bloecke, frei gesamt %d B, groesster %d B"
+              % (kopf, len(frei), sum(g for _, g in frei), max([g for _, g in frei] or [0])))
+        for k, g in sorted(frei, key=lambda x: -x[1])[:5]:
+            print("    0x%06X: %d" % (k, g))
     if a.abzug:
         open(a.abzug, "wb").write(lesen(a.dev, 0, 0x800000))
         print("RAM-Abzug -> %s" % a.abzug)
