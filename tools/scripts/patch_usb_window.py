@@ -67,6 +67,7 @@ def main():
     sec = sectors[0]
     raw_sector = (RAW_APP >> 9) + sec
 
+    a.out = os.path.abspath(a.out)   # Skripte muessen von jedem Verzeichnis aus laufen
     os.makedirs(a.out, exist_ok=True)
     tag = "%08x" % base
     p_app = os.path.join(a.out, "APP.usbfenster_%s.bin" % tag)
