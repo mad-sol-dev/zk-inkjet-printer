@@ -1,0 +1,56 @@
+art,va,name,quelle
+func,0x000CF04C,mscdInit,UDC/src/MSC/mscd.c
+func,0x000CEDF0,mscdFlashInit,UDC/src/MSC/mscd.c
+func,0x000CEB34,mscdBlcokModeEnable,UDC/src/MSC/mscd.c
+func,0x000CEDC8,mscdDeinit,UDC/src/MSC/mscd.c
+func,0x000CFEE4,mscdMassEvent,UDC/src/MSC/mscd.c
+func,0x000CF5D0,mscdMassBulk,UDC/src/MSC/mscd.c
+func,0x000CEE50,mscdFshBuf2CBW,UDC/src/MSC/mscd.c
+func,0x000CEB60,mscdCSW2FshBuf,UDC/src/MSC/mscd.c
+func,0x000CF520,mscdInquiry_Command,UDC/src/MSC/mscd.c
+func,0x000CFF4C,mscdModeSel_Command,UDC/src/MSC/mscd.c
+func,0x000CFF70,mscdModeSense6_Command,UDC/src/MSC/mscd.c
+func,0x000CFFC4,mscdModeSense_Command,UDC/src/MSC/mscd.c
+func,0x000D03E8,mscdRd10_Command,UDC/src/MSC/mscd.c
+func,0x000D0514,mscdRdCurCap_Command,UDC/src/MSC/mscd.c
+func,0x000D05AC,mscdRdFmtCap_Command,UDC/src/MSC/mscd.c
+func,0x000D0678,mscdReqSen_Command,UDC/src/MSC/mscd.c
+func,0x000D0BB0,mscdWt10_Command,UDC/src/MSC/mscd.c
+func,0x000D0760,mscdSDRAM2USB_Bulk,UDC/src/MSC/mscd.c
+func,0x000D0AC8,mscdUSB2SDRAM_Bulk,UDC/src/MSC/mscd.c
+func,0x000D09A4,mscdSDRAM_USB_Transfer,UDC/src/MSC/mscd.c
+func,0x0007184C,Flash_Identify,UDC/src/MSC/mscd.c
+func,0x000CEF04,mscdFullSpeedInit,UDC/src/MSC/mscd.c
+func,0x000CEF90,mscdHighSpeedInit,UDC/src/MSC/mscd.c
+func,0x00072BF8,MSC_ClassDataIn,UDC/src/MSC/mscd.c
+func,0x00072CA4,MSC_ClassDataOut,UDC/src/MSC/mscd.c
+func,0x00072D9C,MSC_EPA_CallBack,UDC/src/MSC/mscd.c
+func,0x00072DBC,MSC_EPB_CallBack,UDC/src/MSC/mscd.c
+func,0x00072DDC,MSC_Reset,UDC/src/MSC/mscd.c
+func,0x001079C0,udcOpen,UDC/src/USBD/usbd.c
+func,0x0010780C,udcInit,UDC/src/USBD/usbd.c
+func,0x001077E0,udcDeinit,UDC/src/USBD/usbd.c
+func,0x001077C8,udcClose,UDC/src/USBD/usbd.c
+func,0x000FA118,sysprintf,SYSLIB/Lib/wblib.h (Deklaration)
+func,0x00064798,malloc,C-Bibliothek (mscdInit)
+func,0x00064804,free,C-Bibliothek (mscdDeinit)
+func,0x00065F64,memcpy,C-Bibliothek (mscdInquiry_Command)
+func,0x00065C18,strcpy,C-Bibliothek (mscdInquiry_Command)
+data,0x000082EC,mscdInfo,UDC/src/MSC/mscd.c
+data,0x000082BC,CBW_In,UDC/src/MSC/mscd.c
+data,0x000082DC,CSW_In,UDC/src/MSC/mscd.c
+data,0x000009F4,g_mscd_block_mode,UDC/src/MSC/mscd.c
+data,0x000009F5,bFirstInit,UDC/src/MSC/mscd.c
+data,0x00000ADC,g_u32MscMassAddr,UDC/src/MSC/mscd.c
+data,0x00000AD8,g_u32MscStorageAddr,UDC/src/MSC/mscd.c
+data,0x000009F8,MSC_DeviceDescriptor,UDC/src/MSC/mscd.c
+data,0x00000A0C,MSC_QualifierDescriptor,UDC/src/MSC/mscd.c
+data,0x00000A18,MSC_ConfigurationBlock,UDC/src/MSC/mscd.c
+data,0x00000A38,MSC_ConfigurationBlockFull,UDC/src/MSC/mscd.c
+data,0x00000A58,MSC_HOSConfigurationBlock,UDC/src/MSC/mscd.c
+data,0x00000A78,MSC_FOSConfigurationBlock,UDC/src/MSC/mscd.c
+data,0x00000A98,MSC_StringDescriptor0,UDC/src/MSC/mscd.c
+data,0x00000A9C,MSC_StringDescriptor1,UDC/src/MSC/mscd.c
+data,0x00000AAC,MSC_StringDescriptor2,UDC/src/MSC/mscd.c
+data,0x00000ABC,MSC_StringDescriptor3,UDC/src/MSC/mscd.c
+data,0x00000AF0,InquiryID,UDC/src/MSC/mscd.c

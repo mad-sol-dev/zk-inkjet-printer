@@ -5,7 +5,9 @@
 # Optional als zweites Argument die Claim-ID fuer den Kommentar.
 #
 # - func: nur Standardnamen (FUN_...) werden umbenannt, Quelle ANALYSIS; vergebene
-#   Namen bleiben, der BSP-Name steht dann nur im Plate-Kommentar.
+#   Namen bleiben, der BSP-Name steht dann nur im Plate-Kommentar. Fehlt an der
+#   Adresse eine Funktion, wird sie als ARM angelegt -- nur wenn die Adresse in
+#   keiner anderen Funktion und in keinen Daten mit echtem Typ liegt.
 # - data: Label setzen (primaer), vorhandene Labels bleiben erhalten.
 # - struct: usbdInfo = USBD_INFO_T aus UDC/lib/usbd.h, gepackt, BOOL = 1 Byte
 #   (an den Offsets 0x68..0x10E gemessen, CL-USB-REC-102/-126). Ersetzt nur
@@ -24,6 +26,8 @@ import csv
 import os
 from ghidra.program.model.listing import CodeUnit
 from ghidra.program.model.symbol import SourceType
+from ghidra.app.cmd.disassemble import ArmDisassembleCommand
+from ghidra.app.cmd.function import CreateFunctionCmd
 from ghidra.program.model.data import (PointerDataType as PDT,StructureDataType, CategoryPath, ByteDataType,
                                        WordDataType, DWordDataType, PointerDataType,
                                        ArrayDataType, DataTypeConflictHandler)
@@ -40,7 +44,7 @@ fm = currentProgram.getFunctionManager()
 lst = currentProgram.getListing()
 st = currentProgram.getSymbolTable()
 dtm = currentProgram.getDataTypeManager()
-n = {"umbenannt": 0, "schon": 0, "behalten": 0, "label": 0, "struct": 0, "zeiger": 0}
+n = {"angelegt": 0, "umbenannt": 0, "schon": 0, "behalten": 0, "label": 0, "struct": 0, "zeiger": 0}
 meld = []
 
 B, W, D, P = ByteDataType.dataType, WordDataType.dataType, DWordDataType.dataType, PointerDataType.dataType
@@ -123,8 +127,23 @@ for z in csv.DictReader(open(CSV)):
     if z["art"] == "func":
         f = fm.getFunctionAt(a)
         if f is None:
-            meld.append("%s keine Funktion" % z["va"])
-            continue
+            drin = fm.getFunctionContaining(a)
+            if drin is not None:
+                meld.append("%s liegt in %s, nicht angelegt" % (z["va"], drin.getName()))
+                continue
+            if echt_belegt(a, 4) and lst.getInstructionAt(a) is None:
+                meld.append("%s mit Daten belegt, nicht angelegt" % z["va"])
+                continue
+            if lst.getInstructionAt(a) is None:
+                lst.clearCodeUnits(a, a.add(3), False)
+                ArmDisassembleCommand(a, None, False).applyTo(currentProgram, monitor)
+            CreateFunctionCmd(a).applyTo(currentProgram, monitor)
+            f = fm.getFunctionAt(a)
+            if f is None:
+                meld.append("%s nicht anlegbar" % z["va"])
+                continue
+            n["angelegt"] += 1
+            println("   %s  Funktion angelegt, %d Bytes" % (z["va"], f.getBody().getNumAddresses()))
         if f.getName() == z["name"]:
             n["schon"] += 1
         elif f.getSymbol().getSource() == SourceType.DEFAULT:
@@ -192,7 +211,7 @@ for z in csv.DictReader(open(CSV)):
     if lst.getComment(CodeUnit.PLATE_COMMENT, a) != plate:
         lst.setComment(a, CodeUnit.PLATE_COMMENT, plate)
 
-println("umbenannt %(umbenannt)d, schon richtig %(schon)d, vergebene behalten %(behalten)d, "
+println("angelegt %(angelegt)d, umbenannt %(umbenannt)d, schon richtig %(schon)d, vergebene behalten %(behalten)d, "
         "Labels %(label)d, Strukturen %(struct)d, Zeiger %(zeiger)d" % n)
 for x in meld:
     println("   Meldung: %s" % x)
