@@ -31,7 +31,7 @@ ERGEBNIS A3
     Region ist die zweite Kopie, kein Fachende: das Fach endet, weil BOOT genau 0x1400 Sektoren liest.
   * Karteninhalt dort (firmware/image/sdcard.work.img, nur gelesen): Rohoffset 0x3000000 == APP.bin
     (Bytevergleich True); die 44500 Bytes dahinter sind NICHT leer: 29942 Bytes ungleich 0, UTF-8-Katakana-
-    Zeichenketten bis Rel.-Offset 0xA3E2, danach Nullen; ab Rohoffset 0x3280000 (10 KiB gepruefte 0x10000) nur Nullen.
+    Zeichenketten bis Rel.-Offset 0xA3E2, danach Nullen; ab Rohoffset 0x3280000 (0x10000 Bytes geprueft) nur Nullen.
 
 HEAP (fuer A2 wichtig): VA 0x0005820C (Thumb) laedt zwei Poolworte file+0x24C = 0x002D8000 und file+0x250 =
   0x0076F400 und ruft bl 0x00066A82 (Lesart: Heap-Initialisierung base,limit; Rumpf prueft base+0x10<=limit,
