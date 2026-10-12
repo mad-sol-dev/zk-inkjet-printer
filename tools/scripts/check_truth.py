@@ -9,7 +9,7 @@ Agent ohne Vorgeschichte. Ein Traceback oder ein nacktes "Verstoss" laesst ihn
 ratlos zurueck. Jede Abbruchmeldung sagt deshalb, was passiert ist, was es
 bedeutet und was als naechstes zu tun ist.
 """
-import csv, glob, os, subprocess, sys
+import csv, glob, os, re, subprocess, sys
 
 P = "research/TRUTH.csv"
 COLS = ["Subsystem","Topic","Statement","Status","Confidence","Evidence_E0","Evidence_E3New",
@@ -49,6 +49,42 @@ def zeilen_in_head():
         return len(list(csv.DictReader(text.splitlines())))
     except Exception:
         return None
+
+# Alte Adresszaehlweise. Bis 2026-08-31 galt VA = Dateioffset + 0x200000; die
+# Linkbasis ist 0x00058000 (CL-BOOT-REC-113), die Ghidra-Datenbank steht seit
+# 2026-10-11 dort (CL-TOOL-REC-121). Eine Zeile, die APP-Adressen der alten
+# Zaehlweise nennt, braucht einen Vermerk -- sonst sucht der naechste Leser an
+# der falschen Stelle. Am 2026-10-12 trugen 48 Zeilen solche Adressen ohne
+# Vermerk, weil jede Sitzung nur die Zeilen nachzog, die sie ohnehin anfasste.
+# Nur ein Hinweis: die Erkennung ist eine Heuristik, kein Beweis. VAs von
+# 0x200000 bis 0x2CD22B sind auch in der neuen Zaehlweise gueltig (Dateioffset
+# 0x1A8000 aufwaerts); eine neue Zeile, die solche Adressen nennt, sagt deshalb
+# einmal, in welcher Zaehlweise sie schreibt, dann schweigt die Pruefung.
+# FUN_-Namen werden aus demselben Grund nicht geprueft.
+ALT_BASIS, APP_GROESSE = 0x200000, 0x27522C
+ALT_HEX = re.compile(r"0x0*([0-9A-Fa-f]{5,8})\b")
+ALT_DATEI = re.compile(r"(file offsets?|file|Datei(offset)?|Dateioffsets?)\s*[:=]?\s*$", re.I)
+ALT_MARKE = re.compile(r"BASIS-VERMERK|CL-BOOT-REC-113|KORREKTUR 20|Zaehlweise|alte Adresse|"
+                       r"Linkbasis|0x00058000|VA = (Dateioffset )?\+ ?0x58000", re.I)
+
+
+def alte_adressen(rows):
+    """Nicht abgeloeste Zeilen mit APP-Adressen der alten Zaehlweise und ohne Vermerk."""
+    treffer = []
+    for r in rows:
+        if r.get("Superseded_By"):
+            continue
+        text = " ".join(r.get(c) or "" for c in ("Topic", "Statement", "Next_Test"))
+        if ALT_MARKE.search(text):
+            continue
+        for m in ALT_HEX.finditer(text):
+            v = int(m.group(1), 16)
+            if (ALT_BASIS < v < ALT_BASIS + APP_GROESSE
+                    and not ALT_DATEI.search(text[max(0, m.start() - 22):m.start()])):
+                treffer.append(r["Claim_ID"])
+                break
+    return treffer
+
 
 def main():
     err, warn = [], []
@@ -230,6 +266,15 @@ def main():
     # Gefaehrlich ist nicht das Offenhaben, sondern das Speichern aus einer
     # veralteten Ansicht heraus -- und das wuerde ein blockierter Commit
     # ohnehin nicht verhindern.
+    alt = alte_adressen(rows)
+    if alt:
+        warn.append("%d Zeile(n) nennen Adressen der alten Zaehlweise Dateioffset + 0x200000 "
+                    "ohne Vermerk: %s -- richtig ist Dateioffset + 0x58000 (CL-BOOT-REC-113), "
+                    "also alt minus 0x1A8000. Einen BASIS-VERMERK mit den umgerechneten "
+                    "Adressen anhaengen, oder die Zaehlweise in der Zeile selbst nennen. "
+                    "Dateioffsets direkt nach 'file'/'Datei' zaehlen nicht."
+                    % (len(alt), ", ".join(alt[:12]) + (" ..." if len(alt) > 12 else "")))
+
     locks = glob.glob("research/.~lock.*")
     if locks:
         warn.append("TRUTH.csv ist in LibreOffice geoeffnet (%s). Ansehen ist in "
