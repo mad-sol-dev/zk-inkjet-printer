@@ -1,0 +1,26 @@
+# patch_md5_kopf.py, 2026-10-13 (Nachbau Kartenstand, Gegenlesen RAM-Abzug vor Puffer-Fix)
+Positivkontrolle APP.bin original: MD5 e4784d6e7524f24a168ce179980a70ee == Kopf e4784d6e7524f24a168ce179980a70ee, [0x558] = 0x00000000
+Nachbau des Kartenstands:
+  USB-Fenster  Datei 0x1CA5C/0x1CAAC: 0x2A614000 -> 0x28800000 (patch_usb_window.py)
+  Datei 0x012400  1 Worte (0x12528)  patch_usb_dauerbetrieb.py, Sicherung = Original
+  Datei 0x068E00  1 Worte (0x68F4C)  patch_usb_dauerbetrieb.py, Sicherung = Original
+  Datei 0x069000  1 Worte (0x69044)  patch_usb_dauerbetrieb.py, Sicherung = Original
+  Datei 0x06A600  1 Worte (0x6A7FC)  patch_usb_dauerbetrieb.py, Sicherung = Original
+  Datei 0x078400  2 Worte (0x78460 0x784E4)  patch_ram_fenster.py, Sicherung = Original
+  Datei 0x077400  1 Worte (0x77518)  patch_msc_puffer.py, Sicherung = Original
+Kartenstand vorher: [0x558] = 0xF444A176 = -196828810 (Diagnose M-196828810)
+  = am Geraet abgelesener Wert (Positivkontrolle des Nachbaus)
+RAM-Abzug research/phase_a_sd_analysis/artifacts/ram_fenster/ram_nach_stecken.bin (String-Feld auf Dateistand): 1 Worte weichen ab: 0x77518
+Kopf Datei 0xC8F60: e4784d6e7524f24a168ce179980a70ee -> c67cd5c096080a3bf835dc0a656c6d64
+Kartenstand nachher: [0x558] = 0x00000000, MD5 unveraendert True
+Sektor Datei 0xC8E00 = Karte 99911; Imagebereich sha256 vorher 75fcca056846e687.., nachher 2bde8f63094fc508..
+
+# Offline-Test patch.sh/zurueck.sh gegen nachgebaute Karte (Datei statt /dev/sdc, Image bei 0x3000000)
+#  1 Vor-Stand: geschrieben, Ruecklesen ok; Karte == APP.md5kopf.bin, image_pruefwert: [0x558]=0, kein Klick bei 0x0FFFFFFF
+#    geaendert nur Roh 0x30C8F60..0x30C8F6F; hinter dem Image unveraendert
+#  2 zweiter Lauf: "Kopf ist schon gesetzt", rc 0
+#  3 zurueck.sh: Karte byte-gleich zum Vor-Stand
+#  4 ungepatchte Karte (Original-APP): Abbruch vor der Rueckfrage, nichts geschrieben
+#  5 Rueckfrage mit n: nichts geschrieben
+#  6 --image mit dd-Abbild der nachgebauten Karte: Sektor und patch.sh identisch zum Nachbau
+#  7 --image mit schon gesetztem Kopf: "nichts zu tun"

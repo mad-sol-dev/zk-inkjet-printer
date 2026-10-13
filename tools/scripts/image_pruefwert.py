@@ -77,8 +77,9 @@ def main():
     e = (0x0FFFFFFF + v) & 0xFFFFFFFF
     print('%s: %d abweichende Worte, L=%#x' % (quelle, len(abw), L))
     print('  [0x558] = %#010x = %d (Diagnose M%d)' % (v, s, s))
+    # 0x6A7E0 cmn r4,#0xf0000001 / beq: genau 0x0FFFFFFF klickt nicht (also nicht bei [0x558]=0)
     print('  kein Ereignis 0x0FFFFFFF + [0x558] = %#010x -> Klick in ui_event_wait: %s'
-          % (e, (e >> 28) == 0 and e != 9))
+          % (e, (e >> 28) == 0 and e not in (0x0FFFFFFF, 9)))
     print('  MD5 dieses Images: %s (Kopf: %s)' % (d.hex(), bytes(b[K:K + 16]).hex()))
 
 
