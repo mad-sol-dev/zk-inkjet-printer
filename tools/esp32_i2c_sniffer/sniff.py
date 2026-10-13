@@ -30,6 +30,7 @@ STATUS = {0x00: "ok", 0x01: "CheckMac-Fehlvergleich", 0x03: "Parse-Fehler", 0x0F
           0x11: "nach Wake", 0xFF: "CRC-/Kommunikationsfehler"}
 WORDADR = {0x00: "Reset", 0x01: "Sleep", 0x02: "Idle"}
 WECKZEITEN = []  # Zeitpunkte der Weckpulse fuer die Abstandsstatistik
+AKTIV = []  # Zeitstempel jeder Bus-Zeile, auch undeutbarer -- Herzschlag unabhaengig von der Dekodierung
 
 
 def deuten(zeile, stat):
@@ -37,6 +38,7 @@ def deuten(zeile, stat):
     teile = zeile.split()
     if len(teile) < 2 or not teile[0][0].isdigit():
         return None
+    AKTIV.append(float(teile[0]))
     if teile[1] == "WAKE":
         stat["wake"] += 1
         if int(teile[2]) >= 1000:
@@ -136,6 +138,12 @@ def main():
         print("# Weckpuls-Abstand ms: Median %.1f, 10 %% %.1f, 90 %% %.1f, Maximum %.1f, ueber 100 ms: %d von %d"
               % (abst[len(abst) // 2], abst[len(abst) // 10], abst[len(abst) * 9 // 10], abst[-1],
                  sum(1 for x in abst if x > 100), len(abst)))
+    if AKTIV:
+        # Buendel = Aktivitaet mit weniger als 100 ms Abstand; Pausen ueber 2 s einzeln melden
+        start = [AKTIV[0]] + [b for a, b in zip(AKTIV, AKTIV[1:]) if b - a > 0.1]
+        pausen = ["%.2f..%.2f s" % (a, b) for a, b in zip(start, start[1:]) if b - a > 2]
+        print("# Aktivitaet: %d Buendel von %.2f bis %.2f s, Pausen ueber 2 s: %s"
+              % (len(start), AKTIV[0], AKTIV[-1], ", ".join(pausen) or "keine"))
     if log:
         log.write("# Zusammenfassung %s: %s\n" % (time.strftime("%Y-%m-%d %H:%M:%S"),
                                                    ", ".join("%s %d" % kv for kv in sorted(stat.items()))))
