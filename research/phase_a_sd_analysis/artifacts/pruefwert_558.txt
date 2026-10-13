@@ -1,0 +1,14 @@
+# image_pruefwert.py, Nachtlauf 2026-10-13
+## RAM-Abzug nach Stecken (Kartenstand vor Puffer-Fix), Abzug zeigt [0x558]=0xcf60ef7d
+Positivkontrolle APP.bin original: MD5==Kopf True, [0x558]=0x00000000 (soll 0)
+research/phase_a_sd_analysis/artifacts/ram_fenster/ram_nach_stecken.bin (String-Feld zurueckgesetzt): 8 abweichende Worte, L=0x27522c
+  [0x558] = 0xcf60ef7d = -815730819 (Diagnose M-815730819)
+  kein Ereignis 0x0FFFFFFF + [0x558] = 0xdf60ef7c -> Klick in ui_event_wait: False
+  MD5 dieses Images: 8fe403694a72c6527d68e65446bde871 (Kopf: e4784d6e7524f24a168ce179980a70ee)
+## derselbe Stand + Puffer-Fix (Kartenstand seit 2026-10-13, Diagnose zeigte M -196828810)
+Positivkontrolle APP.bin original: MD5==Kopf True, [0x558]=0x00000000 (soll 0)
+  patch Datei 0x77518: 0x0001001f -> 0x0002001f
+research/phase_a_sd_analysis/artifacts/ram_fenster/ram_nach_stecken.bin (String-Feld zurueckgesetzt): 9 abweichende Worte, L=0x27522c
+  [0x558] = 0xf444a176 = -196828810 (Diagnose M-196828810)
+  kein Ereignis 0x0FFFFFFF + [0x558] = 0x0444a175 -> Klick in ui_event_wait: True
+  MD5 dieses Images: c67cd5c096080a3bf835dc0a656c6d64 (Kopf: e4784d6e7524f24a168ce179980a70ee)
