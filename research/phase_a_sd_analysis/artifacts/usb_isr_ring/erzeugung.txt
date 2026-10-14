@@ -1,0 +1,28 @@
+# patch_usb_isr_ring.py + patch_md5_kopf.py --image, 2026-10-15 (CL-USB-REC-128)
+python3 tools/scripts/patch_usb_isr_ring.py --out research/phase_a_sd_analysis/artifacts/usb_isr_ring --device /dev/sdc
+  Stub 0x2CD800, 75 Worte, alle per capstone rueckgeprueft
+  Poolwort 0x10799C (Datei 0xAF99C): 0x109AC4 -> 0x2CD800; Stub Datei 0x275800 = Karte 103340; Pool-Sektor Karte 99708
+  ohne neuen Kopf waere [0x558] = 0xA3D3AFDA
+python3 tools/scripts/patch_md5_kopf.py --image research/phase_a_sd_analysis/artifacts/usb_isr_ring/APP.usb_isr_ring.bin --out research/phase_a_sd_analysis/artifacts/md5_kopf_4 --device /dev/sdc
+  Kopf Datei 0xC8F60: e9e3747800158d46f1eb0613f5be17fa -> 9df147cdea1b0eaa9ada29226caa68c0, [0x558] nachher 0
+  Imagebereich sha256 vorher 580a2eecfab750b1.., nachher 876bdc7a2800f0ba..
+
+# Reihenfolge an der Karte (Stand md5_kopf_3 = Ruecklese- und TMR1-Ringpuffer-Patch drauf):
+#   usb_isr_ring/patch.sh, dann md5_kopf_4/patch.sh. Zurueck: md5_kopf_4/zurueck.sh, dann usb_isr_ring/zurueck.sh.
+# Lesen vor Ablauf von 22 s nach dem Abziehen (sonst Watchdog-Neustart, Puffer im BOOT-Ladebereich geloescht):
+#   sudo python3 tools/scripts/usb_isr_ring_lesen.py /dev/sdX --roh research/phase_a_sd_analysis/artifacts/usb_isr_ring/ring_1.bin
+
+# Emulation (uv run tools/scripts/pruef_usb_isr_ring_emu.py --abzug ram_fenster/ram_nach_wiederanstecken.bin --dir usb_isr_ring)
+#  Poolworte 0x10799C = 0x2CD800, 0xB43E0 weiter 0x2CD600
+#  1 3 Eintritte mit VBUS: r0-r8/sp/lr/Rahmen unveraendert, Sprung in usbd_isr, Kopf Magic/0/0/0/3/3
+#  2 300 Eintritte ohne VBUS: Episode 1, n 300, A[0] und B[letzter] = PC, STAT_L, ENB_L, USB_STAT, USB_ENB, PHY_CTL, TISR, TDR1 richtig,
+#    Grenzen eingehalten, TMR1-Puffer 0x2CE000..0x2D0000 unberuehrt
+#  3 VBUS zurueck, Episode 2 mit n = 1. 47 Befehle je Eintritt ohne VBUS. Alle Pruefungen ok.
+# usb_isr_ring_lesen.py --datei mit Emulationsdaten richtig gedeutet; Abzug ohne Patch -> "kein Kopf"
+
+# Offline-Test gegen nachgebaute Karte (Image = md5_kopf_3/APP.md5kopf.bin, Stub 0x275600 vorhanden, 0x275800 leer)
+#  1 md5_kopf_4/patch.sh zuerst: Abbruch, nichts geschrieben
+#  2 usb_isr_ring/patch.sh mit n: nichts geschrieben
+#  3 beide: Image == md5_kopf_4/APP.md5kopf.bin, [0x558] = 0, beide Stub-Sektoren richtig, Poolworte 0x2CD800 und 0x2CD600
+#  4 zweiter Lauf: beide "nichts zu tun"
+#  5 zurueck.sh beider Stufen: Karte byte-gleich zum Stand vorher
