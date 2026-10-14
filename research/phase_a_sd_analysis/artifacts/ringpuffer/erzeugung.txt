@@ -1,0 +1,30 @@
+# patch_ringpuffer.py + patch_md5_kopf.py --image, 2026-10-14 abends (CL-USB-REC-128)
+python3 tools/scripts/patch_ringpuffer.py --out research/phase_a_sd_analysis/artifacts/ringpuffer --device /dev/sdc
+  Stub 0x2CD600, 82 Worte, alle per capstone rueckgeprueft
+  Poolwort 0xB43E0 (Datei 0x5C3E0): 0xFBAAC -> 0x2CD600; Stub Datei 0x275600 = Karte 103339; Pool-Sektor Karte 99041
+  ohne neuen Kopf waere [0x558] = 0x8D662C03
+python3 tools/scripts/patch_md5_kopf.py --image research/phase_a_sd_analysis/artifacts/ringpuffer/APP.ringpuffer.bin --out research/phase_a_sd_analysis/artifacts/md5_kopf_3 --device /dev/sdc
+  Abbild: 10 Sektoren weichen vom Original ab: 0x12400 0x1CA00 0x5C200 0x68E00 0x69000 0x6A600 0x76E00 0x77400 0x78400 0xC8E00
+  Kopf Datei 0xC8F60: 6e4353a5d2d6cc589faa67d10d402761 -> e9e3747800158d46f1eb0613f5be17fa, [0x558] nachher 0
+  Imagebereich sha256 vorher be269860f4fe778e.., nachher 648fdbf90fcb411a..
+
+# Reihenfolge an der Karte (Stand md5_kopf_2 = Ruecklese-Patch drauf):
+#   ringpuffer/patch.sh, dann md5_kopf_3/patch.sh. Zurueck: md5_kopf_3/zurueck.sh, dann ringpuffer/zurueck.sh.
+
+# Emulation (uv run tools/scripts/pruef_ringpuffer_emu.py --abzug ram_fenster/ram_nach_wiederanstecken.bin --dir ringpuffer)
+#  Verteiler-Rahmen wie im Abzug (lr_irq bei 0x7FF7FC, sp 0x7FF7D0, lr 0xF9FD8), unicorn
+#  1 Timer-Flag 0: Register/sp/lr/Rahmen unveraendert, Kopf nicht angelegt
+#  2 5 Ticks mit VBUS: Magic, Zustand 0, VBUS-Ticks 5
+#  3 1100 Ticks ohne VBUS: Episode 1, n 1100, B[letzter] = PC/LR_svc/SP_svc/SPSR richtig, A[255] = Tick 1020, nichts ausserhalb geschrieben
+#  4 USR unterbrochen: SYS-Register gelesen
+#  5 VBUS zurueck, dann Episode 2 mit n = 1 und neuem Starttick
+#  48 Befehle je Tick ohne VBUS. Alle Pruefungen ok.
+# ringpuffer_lesen.py --datei: Emulationsdaten und synthetische Episode n=1100 richtig gedeutet (B = t844..t1099), Abzug ohne Patch -> "kein Kopf"
+
+# Offline-Test gegen nachgebaute Karte (Image = md5_kopf_2/APP.md5kopf.bin, Stub-Sektor leer)
+#  1 md5_kopf_3/patch.sh zuerst: Abbruch, nichts geschrieben
+#  2 ringpuffer/patch.sh mit n: nichts geschrieben
+#  3 beide: Image == md5_kopf_3/APP.md5kopf.bin, [0x558] = 0, Stub-Sektor == .neu, geaendert nur 0x5C200, 0xC8E00, 0x275600
+#  4 zweiter Lauf: beide "nichts zu tun"
+#  5 zurueck.sh beider Stufen: Karte byte-gleich zum Stand vorher
+#  6 Stub-Sektor auf der Karte nicht leer: Abbruch vor der Rueckfrage
