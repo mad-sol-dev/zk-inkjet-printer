@@ -1,0 +1,21 @@
+# patch_vbus_waechter.py + patch_md5_kopf.py --image, 2026-10-15 (CL-USB-REC-128)
+python3 tools/scripts/patch_vbus_waechter.py --out research/phase_a_sd_analysis/artifacts/vbus_waechter --device /dev/sdc
+  W1 0x2CDA00 (33 Worte), W2 0x2CDB00 (22 Worte), alle per capstone rueckgeprueft
+  Poolworte 0x10799C -> 0x2CDA00 (IRQ 16), 0xB43E0 -> 0x2CDB00 (IRQ 15); Stubs Datei 0x275A00 = Karte 103341
+  Pool-Sektoren Datei 0x5C200 = Karte 99041, Datei 0xAF800 = Karte 99708; ohne neuen Kopf waere [0x558] = 0x363185E2
+python3 tools/scripts/patch_md5_kopf.py --image research/phase_a_sd_analysis/artifacts/vbus_waechter/APP.vbus_waechter.bin --out research/phase_a_sd_analysis/artifacts/md5_kopf_6 --device /dev/sdc
+  Kopf Datei 0xC8F60: 905e542f9b7b28e611b7238a5c80b304 -> 3a3dca16031fa16adaaad8af954461da, [0x558] nachher 0
+
+# Reihenfolge an der Karte (Stand md5_kopf_5): vbus_waechter/patch.sh, dann md5_kopf_6/patch.sh.
+# Zurueck: md5_kopf_6/zurueck.sh, dann vbus_waechter/zurueck.sh.
+
+# Emulation (uv run tools/scripts/pruef_vbus_waechter_emu.py --abzug ram_fenster/ram_nach_wiederanstecken.bin): Kette Waechter -> Ring -> Handler
+#  W1: Kabel da / erster Abzieh-Eintritt (VbusStatus 1) / VBUS nicht anhaengig / nicht freigegeben -> jeweils usbd_isr, kein AIC-Zugriff
+#  W1 Sturmfall (Kabel weg, VbusStatus 0, STAT 0x111 & ENB 0x10E): Ruecksprung in den Verteiler, MDCR = 0x10000, Merker 1, USB-Ring unberuehrt
+#  W2: Merker 1 und Kabel weg -> nur weiter; Merker 1 und Kabel da -> MECR = 0x10000, Merker 0; danach keine zweite Freigabe
+#  Register r0-r8, sp, lr, Modus in allen Faellen unveraendert. Alle Pruefungen ok.
+
+# Offline-Test gegen nachgebaute Karte (Image = md5_kopf_5, Ring-Stubs 0x275600/0x275800 vorhanden, 0x275A00 leer)
+#  1 Kopf zuerst: Abbruch; 2 n: nichts geschrieben
+#  3 beide: Image == md5_kopf_6, [0x558] = 0, geaendert nur 0x5C3E0, 0xAF99C und Kopf; Waechter-Sektor richtig, Ringe unveraendert
+#  4 zweiter Lauf: "nichts zu tun"; 5 zurueck.sh beider Stufen: Karte byte-gleich zum Stand vorher
