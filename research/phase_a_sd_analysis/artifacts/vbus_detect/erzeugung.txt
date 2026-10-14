@@ -1,0 +1,18 @@
+# patch_vbus_detect.py + patch_md5_kopf.py --image, 2026-10-15 (CL-USB-REC-128)
+python3 tools/scripts/patch_vbus_detect.py --out research/phase_a_sd_analysis/artifacts/vbus_detect --device /dev/sdc
+  0x109C60: 0xE3A00E22 -> 0xE3A00E32  mov r0, #0x320   (usbd_isr VBUS-Zweig, Abziehen)
+  0x10A050: 0xE3A00E22 -> 0xE3A00E32  mov r0, #0x320   (usbd_isr SUSPEND-Pfad, Abziehen)
+  Sektoren (Datei): 0xB1C00, 0xB2000 = Karte 99726, 99728; ohne neuen Kopf waere [0x558] = 0x70402E6F
+python3 tools/scripts/patch_md5_kopf.py --image research/phase_a_sd_analysis/artifacts/vbus_detect/APP.vbus_detect.bin --out research/phase_a_sd_analysis/artifacts/md5_kopf_5 --device /dev/sdc
+  Kopf Datei 0xC8F60: 9df147cdea1b0eaa9ada29226caa68c0 -> 905e542f9b7b28e611b7238a5c80b304, [0x558] nachher 0
+  Imagebereich sha256 vorher 6f6ddb34f97a1162.., nachher 73a7d095cba57c4a..
+
+# Reihenfolge an der Karte (Stand md5_kopf_4): vbus_detect/patch.sh, dann md5_kopf_5/patch.sh.
+# Zurueck: md5_kopf_5/zurueck.sh, dann vbus_detect/zurueck.sh.
+
+# Offline-Test gegen nachgebaute Karte (Image = md5_kopf_4/APP.md5kopf.bin)
+#  1 md5_kopf_5/patch.sh zuerst: Abbruch, nichts geschrieben
+#  2 vbus_detect/patch.sh mit n: nichts geschrieben
+#  3 beide: Image == md5_kopf_5/APP.md5kopf.bin, [0x558] = 0, geaendert genau 0xB1C60, 0xB2050 und Kopf 0xC8F60..0xC8F6F
+#  4 zweiter Lauf: beide "nichts zu tun"
+#  5 zurueck.sh beider Stufen: Karte byte-gleich zum Stand vorher
