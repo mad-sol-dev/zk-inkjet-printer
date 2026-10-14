@@ -7,6 +7,8 @@
  *   <t in s> S E8 03 27 08 ... P       Bytes hex, angehaengtes '-' = NACK, 'Sr' = wiederholter START
  *   <t in s> WAKE 2021                 START und STOP ohne Bit dazwischen, Dauer in us (Weckpuls)
  *   !OVF <n>                           Ereignispuffer uebergelaufen, n Ereignisse verloren
+ *   <t in s> PEGEL SCL=1 SDA=1         Ruhepegel der Leitungen hat sich geaendert (Kern 0, alle ~10 ms
+ *                                      gelesen; zeigt absolute Pegel, z. B. ob der Bus beim Abziehen faellt)
  *
  * Keine I2C-Hardware des ESP32: ein Slave-Block wuerde ACKs senden und den Bus stoeren.
  * Der Master der Firmware arbeitet per Bit-Bang und schaltet SDA dicht an den SCL-Flanken
@@ -24,6 +26,7 @@
 #include "driver/uart.h"
 #include "soc/gpio_reg.h"
 #include "esp_cpu.h"
+#include "esp_timer.h"
 
 #define SCL_GPIO 32
 #define SDA_GPIO 33
@@ -215,6 +218,7 @@ void app_main(void)
     uint64_t t_start = 0, t_last = 0;
     uint32_t lost_seen = 0;
     uint32_t idle_ticks = 0;
+    int pegel_alt = -1; // zuletzt gemeldeter Ruhepegel, Bit 0 SCL, Bit 1 SDA
 
     len = sprintf(line, "\n# esp32_i2c_sniffer SCL=GPIO%d SDA=GPIO%d guard=%dus\n", SCL_GPIO, SDA_GPIO, GUARD_US);
     out(line, len);
@@ -239,6 +243,21 @@ void app_main(void)
                 len = 0;
                 open = 0;
                 content = 0;
+            }
+            // Ruhepegel direkt lesen: nur ausserhalb einer Transaktion, sonst meldet jedes Bit eine Zeile
+            if (!open)
+            {
+                uint32_t in = REG_READ(GPIO_IN1_REG);
+                int pegel = ((in & SCL_BIT) ? 1 : 0) | ((in & SDA_BIT) ? 2 : 0);
+                if (pegel != pegel_alt)
+                {
+                    char m[64];
+                    int64_t us = esp_timer_get_time();
+                    int n = sprintf(m, "%lld.%06lld PEGEL SCL=%d SDA=%d\n", us / 1000000, us % 1000000,
+                                    pegel & 1, (pegel >> 1) & 1);
+                    out(m, n);
+                    pegel_alt = pegel;
+                }
             }
             vTaskDelay(1);
             continue;

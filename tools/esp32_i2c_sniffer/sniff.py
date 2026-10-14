@@ -39,6 +39,9 @@ def deuten(zeile, stat):
     if len(teile) < 2 or not teile[0][0].isdigit():
         return None
     AKTIV.append(float(teile[0]))
+    if teile[1] == "PEGEL":
+        stat["pegelwechsel"] += 1
+        return "Ruhepegel " + " ".join(teile[2:])
     if teile[1] == "WAKE":
         stat["wake"] += 1
         if int(teile[2]) >= 1000:
