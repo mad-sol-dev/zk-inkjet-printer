@@ -1,0 +1,19 @@
+# patch_reset_ruecklesen.py + patch_md5_kopf.py --image, 2026-10-14 (CL-USB-REC-128, Statement 11)
+python3 tools/scripts/patch_reset_ruecklesen.py --out research/phase_a_sd_analysis/artifacts/reset_ruecklesen --device /dev/sdc
+  VA 0xCEFD0 (Datei 0x76FD0): 0x1AFFFFFB -> 0xE1A00000, Sektor Datei 0x76E00 = Karte 99255
+  Basis md5_kopf/APP.md5kopf.bin: [0x558] = 0; nach dem Patch ohne neuen Kopf [0x558] = 0xA489BDEF
+python3 tools/scripts/patch_md5_kopf.py --image research/phase_a_sd_analysis/artifacts/reset_ruecklesen/APP.ruecklesen.bin --out research/phase_a_sd_analysis/artifacts/md5_kopf_2 --device /dev/sdc
+  Positivkontrolle Original: MD5 == Kopf, [0x558] = 0
+  Abbild: 9 Sektoren weichen vom Original ab: 0x12400 0x1CA00 0x68E00 0x69000 0x6A600 0x76E00 0x77400 0x78400 0xC8E00
+  Kopf Datei 0xC8F60: c67cd5c096080a3bf835dc0a656c6d64 -> 6e4353a5d2d6cc589faa67d10d402761, [0x558] nachher 0
+  Imagebereich sha256 vor Schritt 1 2bde8f63094fc508.., nach Schritt 1 e6e3d032ae14fb3a.., nach Schritt 2 bb553d03a92c47f1..
+
+# Reihenfolge an der Karte: reset_ruecklesen/patch.sh, dann md5_kopf_2/patch.sh. Zurueck: md5_kopf_2/zurueck.sh, dann reset_ruecklesen/zurueck.sh.
+
+# Offline-Test gegen nachgebaute Karte (Datei, Image bei Roh 0x3000000 = md5_kopf/APP.md5kopf.bin, O_DIRECT ok)
+#  1 md5_kopf_2/patch.sh zuerst: Abbruch vor der Rueckfrage, nichts geschrieben
+#  2 reset_ruecklesen/patch.sh mit n: nichts geschrieben
+#  3 beide in richtiger Reihenfolge: Karte == md5_kopf_2/APP.md5kopf.bin, [0x558] = 0, Wort 0x76FD0 = 00 00 A0 E1,
+#    20 Byte geaendert (4 Befehl + 16 Kopf), ausserhalb des Images unveraendert
+#  4 zweiter Lauf: beide "nichts zu tun"
+#  5 zurueck.sh beider Stufen: Karte byte-gleich zum Stand vorher
