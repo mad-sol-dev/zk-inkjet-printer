@@ -14,11 +14,13 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
    Rohartefakte erzeugen. **Eine Sitzung darf kein neues beschreibendes
    Dokument anlegen.** `research/system_understanding.md` und alles daneben ist
    abgeleitet und nicht autoritativ.
-3. **Keine Kopien** von `TRUTH.csv` -- und nie in place schreiben. Git ist die
-   Historie; vor groesseren Aenderungen committen statt kopieren.
-   `open(P,'w')` kuerzt die Datei, bevor der Rest des Aufrufs geprueft wird;
-   ein `assert` weiter unten im Skript kommt zu spaet. Also in eine
-   Temporaerdatei schreiben, pruefen, dann `os.replace`. Muster in CLAUDE.md.
+3. **Das Register nur ueber das Werkzeug aendern:** `tools/scripts/truth.py`
+   (Kommandozeile) oder die `truth_*`-Werkzeuge des MCP-Servers `truth`. Keine
+   eigenen Schnipsel -- eines davon hat die Datei am 2026-08-21 auf null Bytes
+   gekuerzt. Kann das Werkzeug etwas nicht, wird es in der Vorlage
+   `$HOME/workspace/truth-register` erweitert (mit Selbsttest) und
+   hierher kopiert, nicht umgangen. Keine Kopien von `TRUTH.csv`; Git ist die
+   Historie.
 4. **Keine offene Zeile ohne `Next_Test`.** Eine Frage ohne definiertes
    Experiment ist kein Arbeitspaket, sondern ein Thema.
 5. **Zeilen werden nie geloescht**, nur per `Superseded_By` abgeloest.
@@ -67,7 +69,51 @@ Etikett von aussen in das Geraet zu bekommen und den Druck auszuloesen.
 
 Ein pre-commit-Hook laesst `check_truth.py` mitlaufen.
 
+## Register lesen und aendern -- tools/scripts/truth.py
+
+Seit 2026-10-15 gibt es dafuer ein Werkzeug, statt dass jede Sitzung ihr
+eigenes Skript schreibt. Es ist dieselbe Datei wie in der Vorlage
+`$HOME/workspace/truth-register`; was ZK-Inkjet anders hat (Evidenz in
+`Evidence_E0` als `Anzahl [Beleg]`, Vorgaben fuer die Altspalten), steht in
+`tools/scripts/truth_local.py`.
+
+```bash
+python3 tools/scripts/truth.py front
+python3 tools/scripts/truth.py find --offen --subsystem USB
+python3 tools/scripts/truth.py show CL-USB-REC-131 --felder Statement,Next_Test
+python3 tools/scripts/truth.py deps CL-BOOT-REC-113
+python3 tools/scripts/truth.py journal CL-USB-REC-128        # das Laborjournal einer Zeile
+python3 tools/scripts/truth.py add --subsystem USB --topic "..." --statement "..." \
+        --oracle O1 --confidence 0.5 --next-test "..." --prio next --depends CL-BOOT-REC-113
+python3 tools/scripts/truth.py close CL-USB-REC-131 --oracle O3 --confidence 0.95 \
+        --evidence "Vorgang am Geraet, Testkarte, Abzug ..." --urteil "..." --dry-run
+python3 tools/scripts/truth.py supersede CL-ALT --by CL-NEU --notiz "warum"   # listet Abhaengige
+python3 tools/scripts/truth.py commit "truth: CL-USB-REC-131 -- Weg zum Urteil"
+```
+
+Jede Aenderung wird vor dem Schreiben mit `check_truth.py` geprueft und nur
+geschrieben, wenn sie keinen Verstoss bringt, den es vorher nicht gab.
+`--dry-run` zeigt sie vorher. Lange Texte: `--json datei.json` oder `-` fuer
+stdin, statt Anfuehrungszeichen in der Shell. Bei `supersede` schreibt das
+Werkzeug nichts, solange nicht ueber jede abhaengige Zeile entschieden ist
+(`--umhaengen` oder `--mitabloesen`).
+
+Derselbe Funktionsumfang als MCP-Server: `tools/scripts/truth_mcp.py`, fuer
+Claude Code eingebunden ueber eine lokale `.mcp.json` (gitignored; Vorlage
+`mcp/claude-code.mcp.json.example`, einfach kopieren) (Werkzeuge `truth_front`,
+`truth_find`, `truth_show`, `truth_deps`, `truth_journal`, `truth_check`,
+`truth_add`, `truth_close`, `truth_supersede`, `truth_set`, `truth_prio`,
+`truth_commit`). Fuer die Desktop-App denselben Eintrag mit absolutem Pfad in
+deren Konfiguration.
+
+Nach einer Aenderung am Werkzeug oder am Validator:
+`python3 tools/scripts/truth_selbsttest.py` -- muss "Alle Kontrollen
+bestanden" melden.
+
 ## TRUTH.csv wird atomar geschrieben -- nie in place
+
+Das Folgende ist der Hintergrund und der Notfallweg, wenn das Werkzeug nicht
+verfuegbar ist. Im Normalfall schreibt nur `truth.py`.
 
 `TRUTH.csv` ist die einzige autoritative Datei des Projekts. Sie wird **niemals
 direkt zum Schreiben geoeffnet.** Der Grund ist nicht theoretisch: am

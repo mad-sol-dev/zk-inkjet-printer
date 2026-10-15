@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "truth": {
+      "command": "python3",
+      "args": ["tools/scripts/truth_mcp.py"]
+    }
+  }
+}

@@ -13,6 +13,10 @@ Schliessen und durch Abloesungen, die niemand durchgereicht hat.
 **TRUTH.md sagt, was erlaubt ist. Dieser Skill sagt, in welcher Reihenfolge es
 getan wird.** Bei Widerspruch gewinnt TRUTH.md.
 
+Gelesen und geaendert wird nur ueber `tools/scripts/truth.py` (oder die
+`truth_*`-Werkzeuge des MCP-Servers `truth`). Kein eigenes Skript. Erst mit
+`--dry-run` ansehen, dann schreiben.
+
 ## Schritt 1 -- Oracle-Stufe vergeben, vor der Konfidenz
 
 Nicht "wie sicher bin ich", sondern "was hat es geprueft". Die Stufe bestimmt
@@ -73,16 +77,18 @@ Nur dann gehoert sie hinein.
 
 Wenn diese Zeile eine andere abloest:
 
-1. `Superseded_By` in der alten Zeile setzen. Zeilen werden nie geloescht.
-2. **Alle Zeilen suchen, die auf die alte zeigen**, und einzeln pruefen, ob sie
-   die Abloesung ueberleben:
-   `grep -n 'CL-ALTE-ID' research/TRUTH.csv`
-3. Depends_On auf die Nachfolgerin umhaengen. **Das Umhaengen ist die Pruefung** --
-   wer umhaengt, ohne gelesen zu haben, verschiebt den Fehler nur.
-4. Faellt eine abhaengige Zeile mit, wird sie ebenfalls abgeloest, nicht editiert.
+1. Nachfolgerin anlegen (`truth.py add`). Zeilen werden nie geloescht.
+2. `truth.py supersede CL-ALT --by CL-NEU --notiz "..."` ohne weitere Angaben.
+   Haengen Zeilen an der alten, schreibt das Werkzeug nichts und listet jede
+   mit ihrem Text auf.
+3. Jede davon lesen und entscheiden: `--umhaengen ID` (ueberlebt, haengt
+   kuenftig an der Nachfolgerin) oder `--mitabloesen ID` (faellt mit). **Das
+   Entscheiden ist die Pruefung** -- wer umhaengt, ohne gelesen zu haben,
+   verschiebt den Fehler nur.
+4. Denselben Aufruf mit den Listen wiederholen.
 
-`check_truth.py` erzwingt Schritt 3: eine Zeile darf nicht an einer abgeloesten
-haengen. Der Validator merkt aber nicht, ob wirklich gelesen wurde.
+Das Werkzeug erzwingt, dass ueber jede abhaengige Zeile entschieden wird. Ob
+wirklich gelesen wurde, merkt es nicht.
 
 ## Schritt 6 -- Die Zelle auf das Urteil bringen
 
@@ -105,11 +111,10 @@ stand im ersten Satz, der Rest war das Protokoll von 30 Commits.
 Geschlossene Zeile: `Decided=yes`, `Prio` leeren, `Updated` auf heute,
 `Next_Test` leeren. Aus `next` nachruecken, hoechstens 6 auf `now`.
 
-**TRUTH.csv wird atomar geschrieben** -- Temporaerdatei, Ergebnis pruefen,
-`os.replace`. Nie `open(P,'w')`: das kuerzt die Datei, bevor irgendein assert
-greift, und genau so war sie schon einmal null Bytes gross.
-
-Danach `python3 tools/scripts/check_truth.py`. Sauber, dann committen.
+`truth.py close ID --oracle ... --confidence ... --evidence "..." --urteil "..."`
+setzt das alles in einem Schritt und schreibt nur, wenn der Validator danach
+keinen neuen Verstoss meldet. Dann `truth.py commit "truth: ID -- ..."`; die
+Nachricht beschreibt den Weg -- Kandidaten, Fehlversuche, warum so entschieden.
 
 ## Wenn eine Zeile sich nicht schliessen laesst
 

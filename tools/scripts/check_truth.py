@@ -29,6 +29,12 @@ DECKEL = {"O1": 0.60, "O2": 0.95, "O3": 1.00}
 # der Weg dorthin steht in den Commit-Nachrichten mit der Claim-ID.
 # Altzeilen werden beim naechsten Anfassen gekuerzt, nicht rueckwirkend.
 ZELLE_AB = "2026-10-16"
+
+# Ab diesem Datum braucht eine O2/O3-Zeile ihren Beleg in Evidence_E0 (Kommando
+# bzw. Vorgang am Geraet, Format 'Anzahl [Beleg]'). Der Skill verlangte das seit
+# August, geprueft wurde es nicht: am 2026-10-15 standen fuenf O2/O3-Zeilen mit
+# Evidence_E0 = 0 im Register. Aufgefallen durch den Selbsttest von truth.py.
+EVIDENZ_AB = "2026-10-15"
 ZELLGRENZE = {"Statement": 2000, "Next_Test": 1000}
 
 ATOMAR = """Wie es nicht wieder passiert: TRUTH.csv nie in place schreiben.
@@ -259,6 +265,19 @@ def main():
                    "Zahl senken oder die Aussage auf eine hoehere Stufe heben. Neun der "
                    "bisher fuenfzehn abgeloesten Zeilen standen auf E0, drei bei 0.95 "
                    "und hoeher: Ueberzeugung ist kein Beleg." % ueber[:8])
+
+    # --- Evidenzpflicht fuer O2/O3 ---
+    def ohne_beleg(r):
+        return (r.get("Oracle", "") in ("O2", "O3") and not r["Superseded_By"]
+                and (r.get("Evidence_E0") or "").strip() in ("", "0"))
+    x = [r["Claim_ID"] for r in rows if ohne_beleg(r) and r.get("Updated", "") >= EVIDENZ_AB]
+    if x:
+        err.append("O2/O3 ohne Evidence (Evidence_E0 leer oder 0): %s -- O2 nennt das Kommando "
+                   "und die Datei, O3 den Vorgang am Geraet; wer das nicht kann, hat O1" % x[:12])
+    x = [r["Claim_ID"] for r in rows if ohne_beleg(r) and r.get("Updated", "") < EVIDENZ_AB]
+    if x:
+        warn.append("%d Altzeile(n) auf O2/O3 ohne Beleg in Evidence_E0: %s -- beim Anfassen "
+                    "Beleg nachtragen oder auf O1 senken" % (len(x), ", ".join(x)))
 
     # --- Zellgrenze ---
     lebend = [r for r in rows if not r["Superseded_By"]]

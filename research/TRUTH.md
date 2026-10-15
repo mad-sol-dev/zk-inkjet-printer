@@ -93,6 +93,12 @@ SPI0_BA korrigiert.
    Prosadokumente. Im Oktober wanderte sie in die Zellen -- CL-USB-REC-128
    hatte 28 428 Zeichen, 42 lebende Zeilen lagen ueber 2000.
 
+9. **Geaendert wird nur ueber das Werkzeug** `tools/scripts/truth.py` (oder
+   die `truth_*`-Werkzeuge des MCP-Servers). Es prueft jede Aenderung vor dem
+   Schreiben gegen `check_truth.py` und schreibt atomar. Anlass: bis
+   2026-10-15 schrieb jede Sitzung ihr eigenes Schnipsel, mit denselben Fallen
+   jedes Mal; eines davon hat die Datei auf null Bytes gekuerzt.
+
 Der Ablauf dazu steht in `.claude/skills/anspruch-schliessen/SKILL.md`.
 
 ## Einstieg in eine neue Session

@@ -14,11 +14,13 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
    Rohartefakte erzeugen. **Eine Sitzung darf kein neues beschreibendes
    Dokument anlegen.** `research/system_understanding.md` und alles daneben ist
    abgeleitet und nicht autoritativ.
-3. **Keine Kopien** von `TRUTH.csv` -- und nie in place schreiben. Git ist die
-   Historie; vor groesseren Aenderungen committen statt kopieren.
-   `open(P,'w')` kuerzt die Datei, bevor der Rest des Aufrufs geprueft wird;
-   ein `assert` weiter unten im Skript kommt zu spaet. Also in eine
-   Temporaerdatei schreiben, pruefen, dann `os.replace`. Muster in CLAUDE.md.
+3. **Das Register nur ueber das Werkzeug aendern:** `tools/scripts/truth.py`
+   (Kommandozeile) oder die `truth_*`-Werkzeuge des MCP-Servers `truth`. Keine
+   eigenen Schnipsel -- eines davon hat die Datei am 2026-08-21 auf null Bytes
+   gekuerzt. Kann das Werkzeug etwas nicht, wird es in der Vorlage
+   `$HOME/workspace/truth-register` erweitert (mit Selbsttest) und
+   hierher kopiert, nicht umgangen. Keine Kopien von `TRUTH.csv`; Git ist die
+   Historie.
 4. **Keine offene Zeile ohne `Next_Test`.** Eine Frage ohne definiertes
    Experiment ist kein Arbeitspaket, sondern ein Thema.
 5. **Zeilen werden nie geloescht**, nur per `Superseded_By` abgeloest.
