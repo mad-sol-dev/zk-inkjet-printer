@@ -12,8 +12,9 @@ ist (Design Guide A1, PWM Counter Register): delay(2000) = 48000 Takte,
 delay(5000) = 120000 & 0xFFFF = 54464 Takte.
 
 Der ESP32-Logikanalysator (sigrok 0.5.2) liefert jede zweite Probe als 0 auf
-allen Kanaelen; eine solche Phase wird erkannt und verworfen (effektive Rate
-halbiert, wird gemeldet).
+allen Kanaelen; eine solche Phase wird erkannt und verworfen. Ob die Nullproben
+mitgezaehlte Abtastungen sind (Rate halbiert, Zeiten stimmen) oder eingeschoben
+(Zeiten doppelt so lang wie echt), ist offen -- nur Verhaeltnisse sind sicher.
 
   python3 tools/scripts/sr_phasen.py MITSCHNITT.sr [--scl SCL] [--sda SDA] [--min-ms 0.5]
 Liest nur.
@@ -59,8 +60,9 @@ def main():
         p = leer[0]
         zust = zust[1 - p::2]
         rate /= 2
-        print("Phase %d ist zu %.1f %% (0,0) und wird verworfen -> effektiv %.0f Hz, %.0f us je Probe"
-              % (p, 100 * null[p], rate, 1e6 / rate))
+        print("Phase %d ist zu %.1f %% (0,0) und wird verworfen -> %.0f us je Probe nach Dateizeitbasis"
+              % (p, 100 * null[p], 1e6 / rate))
+        print("ZEITBASIS OFFEN: sind die Nullproben eingeschoben statt mitgezaehlt, halbieren sich alle Zeiten unten")
 
     # Startartefakt: fuehrende (0,0)-Proben (am Anfang sind die Phasen kurz vertauscht) sind kein Bus-Zustand
     s0 = 0

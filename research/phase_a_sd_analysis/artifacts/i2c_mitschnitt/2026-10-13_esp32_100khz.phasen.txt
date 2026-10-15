@@ -1,5 +1,6 @@
 research/phase_a_sd_analysis/artifacts/i2c_mitschnitt/2026-10-13_esp32_100khz.sr: 4820 Proben, 100000 Hz, 48.20 ms; SCL Bit 0, SDA Bit 1
-Phase 1 ist zu 99.0 % (0,0) und wird verworfen -> effektiv 50000 Hz, 20 us je Probe
+Phase 1 ist zu 99.0 % (0,0) und wird verworfen -> 20 us je Probe nach Dateizeitbasis
+ZEITBASIS OFFEN: sind die Nullproben eingeschoben statt mitgezaehlt, halbieren sich alle Zeiten unten
 Anfang: 32 Proben (0,0) als Startartefakt uebersprungen, der folgende Abschnitt ist angeschnitten
       0.64 -     3.40 ms  Weckpuls    2.76 ms  (Rand)
       3.40 -     7.98 ms  Ruhe        4.58 ms
