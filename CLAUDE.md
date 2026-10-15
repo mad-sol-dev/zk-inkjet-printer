@@ -67,7 +67,12 @@ Etikett von aussen in das Geraet zu bekommen und den Druck auszuloesen.
 3. Ergebnisse als Zeilen in `TRUTH.csv`, nicht als Prosa daneben.
 4. `python3 tools/scripts/check_truth.py` sauber, committen, Front nachfuehren.
 
-Ein pre-commit-Hook laesst `check_truth.py` mitlaufen.
+Ein pre-commit-Hook laesst `check_truth.py` mitlaufen. Ein pre-push-Hook
+prueft die ausgehenden Commits mit `tools/scripts/check_privat.py` auf private
+Daten (Login, Hostname, Heimatpfad, MAC-Adressen/BSSIDs, dazu lokale Muster aus
+`.git/info/privat-muster`) und laedt danach die LFS-Objekte hoch. Beide liegen
+in `.githooks/` (aktiv ueber `git config core.hooksPath .githooks`); Selbsttest:
+`python3 tools/scripts/check_privat_selbsttest.py`.
 
 ## Register lesen und aendern -- tools/scripts/truth.py
 

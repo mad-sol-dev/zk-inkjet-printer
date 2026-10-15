@@ -1,0 +1,21 @@
+#!/bin/bash
+# Vor jedem Push: ausgehende Commits auf private Daten pruefen, danach Git LFS.
+# core.hooksPath zeigt auf .githooks; der von git-lfs angelegte Hook in
+# .git/hooks laeuft deshalb nicht -- der LFS-Upload passiert hier.
+# Umgehen der Datenpruefung nur bewusst: CHECK_PRIVAT=aus git push ...
+eingabe=$(cat)
+[ -n "$eingabe" ] && eingabe="$eingabe"$'\n'
+
+if [ -f tools/scripts/check_privat.py ]; then
+  printf '%s' "$eingabe" | python3 tools/scripts/check_privat.py --pre-push "$1" || {
+    echo "" >&2
+    echo "Push gestoppt (check_privat.py)." >&2
+    exit 1
+  }
+fi
+
+command -v git-lfs >/dev/null 2>&1 || {
+  echo "Push gestoppt: git-lfs fehlt, LFS-Objekte wuerden nicht hochgeladen." >&2
+  exit 2
+}
+printf '%s' "$eingabe" | git lfs pre-push "$@"
