@@ -22,6 +22,15 @@ COLS = ["Subsystem","Topic","Statement","Status","Confidence","Evidence_E0","Evi
 ORACLE_AB = "2026-08-22"
 DECKEL = {"O1": 0.60, "O2": 0.95, "O3": 1.00}
 
+# Ab diesem Datum gilt die Zellgrenze (Regel 9 in CLAUDE.md, Regel 8 in
+# TRUTH.md). Im Januar wanderte die Arbeit aus der Matrix zurueck in
+# Prosadokumente, im Oktober in die Zellen: CL-USB-REC-128 hatte 28 428
+# Zeichen, 42 lebende Zeilen lagen ueber 2000. Eine Zelle ist ein Urteil;
+# der Weg dorthin steht in den Commit-Nachrichten mit der Claim-ID.
+# Altzeilen werden beim naechsten Anfassen gekuerzt, nicht rueckwirkend.
+ZELLE_AB = "2026-10-16"
+ZELLGRENZE = {"Statement": 2000, "Next_Test": 1000}
+
 ATOMAR = """Wie es nicht wieder passiert: TRUTH.csv nie in place schreiben.
   open(P,'w') kuerzt die Datei, bevor der Rest des Aufrufs geprueft wird --
   ein assert weiter unten im Skript kommt zu spaet. Stattdessen in eine
@@ -250,6 +259,24 @@ def main():
                    "Zahl senken oder die Aussage auf eine hoehere Stufe heben. Neun der "
                    "bisher fuenfzehn abgeloesten Zeilen standen auf E0, drei bei 0.95 "
                    "und hoeher: Ueberzeugung ist kein Beleg." % ueber[:8])
+
+    # --- Zellgrenze ---
+    lebend = [r for r in rows if not r["Superseded_By"]]
+    zu_lang = [(r["Claim_ID"], c, len(r.get(c) or "")) for r in lebend
+               if r.get("Updated", "") >= ZELLE_AB
+               for c, n in ZELLGRENZE.items() if len(r.get(c) or "") > n]
+    if zu_lang:
+        err.append("Zelle ueber der Grenze: %s -- eine Zelle ist ein Urteil, kein "
+                   "Laborjournal. Urteil und tragende Belege stehen lassen, den Weg "
+                   "dorthin in die Commit-Nachricht; ein eigenstaendiges Ergebnis wird "
+                   "eine eigene Zeile. Grenzen: %s" % (zu_lang[:8], ZELLGRENZE))
+    alt_lang = [r["Claim_ID"] for r in lebend if r.get("Updated", "") < ZELLE_AB
+                and any(len(r.get(c) or "") > n for c, n in ZELLGRENZE.items())]
+    if alt_lang:
+        warn.append("%d Altzeile(n) ueber der Zellgrenze %s. Wer eine davon anfasst, "
+                    "kuerzt sie auf das Urteil; der Weg bleibt im Git-Log "
+                    "(git log --format='%%ad %%h %%s' --date=short | grep <Claim-ID>)."
+                    % (len(alt_lang), ZELLGRENZE))
 
     reste = [f for f in glob.glob(P + "*") if f.endswith((".tmp", ".part", ".bak"))]
     if reste:

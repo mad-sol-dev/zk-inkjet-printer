@@ -43,8 +43,9 @@ Treffer kommt. Wer kein solches Kommando angeben kann, hat keine O2-Zeile.
 
 Bei O3: welcher Vorgang am Geraet, welche Karte, welches Dump-Paar, welcher
 Diff. Die Testkarte ist nicht die Originalkarte (`CL-TOOL-REC-106`) und die
-laufende Firmware ist eine wiederhergestellte aeltere Generation
-(`CL-BOOT-REC-106`) -- beides gehoert in die Zeile, wenn es die Aussage beruehrt.
+laufende Firmware ist ein wiederhergestellter Build vom 9. Dezember 2022, nicht
+belegt ab Werk (`CL-BOOT-REC-115`, `CL-STORAGE-REC-105`) -- beides gehoert in
+die Zeile, wenn es die Aussage beruehrt.
 
 ## Schritt 3 -- Negativbefund braucht seine Positivkontrolle
 
@@ -83,7 +84,23 @@ Wenn diese Zeile eine andere abloest:
 `check_truth.py` erzwingt Schritt 3: eine Zeile darf nicht an einer abgeloesten
 haengen. Der Validator merkt aber nicht, ob wirklich gelesen wurde.
 
-## Schritt 6 -- Front nachziehen und schreiben
+## Schritt 6 -- Die Zelle auf das Urteil bringen
+
+Die Zeile sagt, was gilt und worauf es steht: Urteil zuerst, dann die
+tragenden Belege. Kandidaten, Fehlversuche und Zwischenstaende gehoeren in die
+Commit-Nachricht mit der Claim-ID -- der Git-Log ist das Laborjournal dieses
+Projekts. Ein Ergebnis, das fuer sich gilt, wird eine eigene Zeile, kein
+weiterer Absatz.
+
+Grenzen ab 2026-10-16: `Statement` 2000 Zeichen, `Next_Test` 1000. Wer eine
+laengere Altzeile anfasst, kuerzt sie dabei auf das Urteil. Der Weg ist nicht
+verloren: `git log --date=short --format='%ad %h %s' | grep <Claim-ID>`.
+
+Warum: im Januar wanderte die Arbeit aus der Matrix in Prosadokumente, im
+Oktober in die Zellen. CL-USB-REC-128 hatte 28 428 Zeichen -- die Antwort
+stand im ersten Satz, der Rest war das Protokoll von 30 Commits.
+
+## Schritt 7 -- Front nachziehen und schreiben
 
 Geschlossene Zeile: `Decided=yes`, `Prio` leeren, `Updated` auf heute,
 `Next_Test` leeren. Aus `next` nachruecken, hoechstens 6 auf `now`.

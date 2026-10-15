@@ -79,6 +79,20 @@ SPI0_BA korrigiert.
    alten haengen, und haengt sie um. Das Umhaengen ist die Pruefung.
    `check_truth.py` erzwingt, dass keine Zeile an einer abgeloesten haengt.
 
+8. **Eine Zelle ist ein Urteil, kein Laborjournal.** `Statement` sagt, was
+   gilt und worauf es steht: Urteil zuerst, dann die tragenden Belege.
+   Kandidaten, Fehlversuche und Zwischenstaende gehoeren in die
+   Commit-Nachrichten, die die Claim-ID nennen; dort stehen sie ohnehin schon
+   (CL-USB-REC-128: 30 Commits). Wieder lesbar mit
+   `git log --date=short --format='%ad %h %s' | grep CL-USB-REC-128`.
+   Ein Ergebnis, das fuer sich gilt, wird eine eigene Zeile statt eines
+   Absatzes. Grenzen fuer Zeilen, die ab dem 2026-10-16 geaendert werden:
+   `Statement` 2000 Zeichen, `Next_Test` 1000. Wer eine laengere Altzeile
+   anfasst, kuerzt sie auf das Urteil; der Weg bleibt im Git-Log.
+   Anlass: im Januar wanderte die Arbeit aus der Matrix zurueck in
+   Prosadokumente. Im Oktober wanderte sie in die Zellen -- CL-USB-REC-128
+   hatte 28 428 Zeichen, 42 lebende Zeilen lagen ueber 2000.
+
 Der Ablauf dazu steht in `.claude/skills/anspruch-schliessen/SKILL.md`.
 
 ## Einstieg in eine neue Session

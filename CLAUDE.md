@@ -34,6 +34,12 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
    committete Arbeit ist die haeufigste Verlustursache in diesem Projekt
    gewesen.
 
+9. **Eine Zelle ist ein Urteil, kein Laborjournal.** `Statement` nennt das
+   Urteil zuerst, dann die tragenden Belege -- hoechstens 2000 Zeichen,
+   `Next_Test` hoechstens 1000 (ab 2026-10-16 geaenderte Zeilen, der
+   Validator prueft es). Der Weg dorthin steht in den Commit-Nachrichten mit
+   der Claim-ID. Ein Ergebnis, das fuer sich gilt, wird eine eigene Zeile.
+
 <!-- ZK-TRUTH-RULES: Ende -->
 
 # CLAUDE.md
