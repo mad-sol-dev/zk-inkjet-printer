@@ -33,7 +33,9 @@ Umgehen (nur bewusst): CHECK_PRIVAT=aus git push ...
 import argparse, bz2, getpass, gzip, io, lzma, os, re, socket, subprocess, sys, zipfile
 
 NULL = "0" * 40
-EMAIL_ERLAUBT = [r"@users\.noreply\.github\.com$"]
+# GitHub-Noreply-Adressen; noreply@github.com ist der Committer von Commits,
+# die im Web-Editor von GitHub entstanden sind
+EMAIL_ERLAUBT = [r"@users\.noreply\.github\.com$", r"^noreply@github\.com$"]
 # Platzhalter und Broadcast sind keine Geraeteadressen
 MAC_ERLAUBT = [r"(?i)^(00[:-]){5}00$", r"(?i)^(ff[:-]){5}ff$"]
 MAX_ENTPACKT = 256 * 1024 * 1024

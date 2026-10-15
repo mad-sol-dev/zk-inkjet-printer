@@ -100,6 +100,7 @@ def main():
                {"a.md": b"$HOME/workspace/x user@host:~ xx:xx:xx:xx:xx:xx\n"})
         L.fall("Null- und Broadcast-MAC", 0, {"a.md": b"00:00:00:00:00:00 ff:ff:ff:ff:ff:ff\n"})
         L.fall("Hexdump mit mehr als sechs Bytes", 0, {"a.md": b"01:02:03:04:05:06:07:08\n"})
+        L.fall("GitHub-Webcommit (noreply@github.com)", 0, autor="noreply@github.com")
         L.fall("Lokales Muster mit erlaubt-Ausnahme", 0, {"a.md": b"Geheimwort-ok\n"},
                muster=("Geheimwort", "erlaubt: ^Geheimwort$"))
         print("Positivkontrollen (muessen anhalten):")
