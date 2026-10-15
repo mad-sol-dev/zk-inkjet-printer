@@ -109,7 +109,9 @@ def _evidenz(text):
 # ------------------------------------------------------------------ Validator
 def _validator_lauf(pfad):
     """Projekteigenen Validator gegen pfad laufen lassen. Liefert (rc, Ausgabe)."""
-    ct = importlib.import_module("check_truth")
+    # Bei jedem Lauf neu laden: der MCP-Server laeuft lange, und eine Aenderung am
+    # Validator soll sofort gelten, nicht erst nach einem Neustart des Servers.
+    ct = importlib.reload(importlib.import_module("check_truth"))
     alt_p, alt_cwd = ct.P, os.getcwd()
     puffer = io.StringIO()
     rc = 0
@@ -130,6 +132,16 @@ def _validator_lauf(pfad):
     return rc, puffer.getvalue()
 
 
+def _kategorie(text):
+    return re.split(r"[:(]| -- ", text, maxsplit=1)[0].strip()[:60]
+
+
+def _nur_kopie(zeile):
+    """Die Pruefung einer Wegwerfkopie meldet die echte Datei als Kopie -- kein Befund."""
+    z = zeile.strip()
+    return z.startswith("VERSTOSS:") and _kategorie(z[9:].strip()).startswith("Kopien")
+
+
 def _schluessel(ausgabe):
     """Verstoesse als Menge (Kategorie, ID). So zaehlt eine kuerzere Liste nicht als neu."""
     s = set()
@@ -139,7 +151,7 @@ def _schluessel(ausgabe):
             s.add(("FATAL", z[6:].strip()[:60]))
         elif z.startswith("VERSTOSS:"):
             text = z[9:].strip()
-            kat = re.split(r"[:(]| -- ", text, maxsplit=1)[0].strip()[:60]
+            kat = _kategorie(text)
             ids = ID_MUSTER.findall(text)
             if ids:
                 s.update((kat, i) for i in ids)
@@ -189,7 +201,8 @@ def schreiben(cols, rows, dry=False):
         shutil.rmtree(tmp, ignore_errors=True)
     neu = _schluessel(aus_n) - _schluessel(aus_v)
     if neu:
-        zeilen = [z for z in aus_n.splitlines() if "VERSTOSS" in z or "FATAL" in z]
+        zeilen = [z for z in aus_n.splitlines()
+                  if ("VERSTOSS" in z or "FATAL" in z) and not _nur_kopie(z)]
         raise Abgelehnt("NICHT GESCHRIEBEN -- die Aenderung bringt neue Verstoesse:\n  "
                         + "\n  ".join(sorted("%s: %s" % (k, i or "") for k, i in neu))
                         + "\n\nValidator:\n" + "\n".join(zeilen) + "\n\nGeplant war:\n" + bericht)
@@ -485,8 +498,11 @@ def commit(nachricht):
 def _json_felder(quelle):
     if not quelle:
         return {}
-    text = sys.stdin.read() if quelle == "-" else open(quelle, encoding="utf-8").read()
-    d = json.loads(text)
+    try:
+        text = sys.stdin.read() if quelle == "-" else open(quelle, encoding="utf-8").read()
+        d = json.loads(text)
+    except (OSError, ValueError) as e:
+        raise Abgelehnt("--json %s: %s" % (quelle, e))
     if not isinstance(d, dict):
         raise Abgelehnt("--json erwartet ein Objekt")
     return d

@@ -108,7 +108,9 @@ deren Konfiguration.
 
 Nach einer Aenderung am Werkzeug oder am Validator:
 `python3 tools/scripts/truth_selbsttest.py` -- muss "Alle Kontrollen
-bestanden" melden.
+bestanden" melden. Der laufende MCP-Server laedt `check_truth.py` bei jedem
+Aufruf neu, eine Regelaenderung gilt also sofort; eine Aenderung an `truth.py`
+selbst wirkt dort erst nach einem Neustart des Servers.
 
 ## TRUTH.csv wird atomar geschrieben -- nie in place
 

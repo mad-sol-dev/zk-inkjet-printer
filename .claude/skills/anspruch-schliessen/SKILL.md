@@ -45,8 +45,8 @@ In `Evidence_E0` gehoert etwas, das jemand ausfuehren kann: der Aufruf und die
 Datei. Nicht "Bytesuche zeigt zwei Treffer", sondern das, womit man auf zwei
 Treffer kommt. Wer kein solches Kommando angeben kann, hat keine O2-Zeile.
 Seit 2026-10-15 prueft der Validator das: O2/O3 mit `Evidence_E0` leer oder 0
-ist ein Verstoss. `truth.py --evidence "..."` schreibt es im Format
-`1 [Beleg]`.
+ist ein Verstoss. `truth.py close ID --evidence "..."` (ebenso bei `add`)
+schreibt es im Format `1 [Beleg]`.
 
 Bei O3: welcher Vorgang am Geraet, welche Karte, welches Dump-Paar, welcher
 Diff. Die Testkarte ist nicht die Originalkarte (`CL-TOOL-REC-106`) und die

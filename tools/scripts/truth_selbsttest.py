@@ -114,8 +114,12 @@ def main():
                         "O1", "--confidence", "0.3", "--next-test", "t", "--dry-run")
         t.soll("Trockenlauf schreibt nicht und vergibt ID automatisch",
                rc == 0 and t.hash() == vorher and "T-SELBSTTEST-003" in out, out)
-        t.verboten("Konfidenz ueber dem O1-Deckel", "Deckel",
-                   "close", "T-SELBSTTEST-001", "--oracle", "O1", "--confidence", "0.9")
+        out = t.verboten("Konfidenz ueber dem O1-Deckel", "Deckel",
+                         "close", "T-SELBSTTEST-001", "--oracle", "O1", "--confidence", "0.9")
+        t.soll("die Ablehnung nennt keinen Schein-Verstoss 'Kopien' (Pruefung der Wegwerfkopie)",
+               "Kopien" not in out, out)
+        t.verboten("--json mit fehlender Datei: Ablehnung statt Traceback", "--json",
+                   "set", "T-SELBSTTEST-001", "--json", os.path.join(t.root, "fehlt.json"))
         if evidenz_ab is None or heute < evidenz_ab:
             print("--   O2 ohne Evidenz: uebersprungen, der Validator kennt die Regel %s"
                   % ("nicht (EVIDENZ_AB fehlt)" if evidenz_ab is None else "erst ab " + evidenz_ab))
@@ -142,6 +146,24 @@ def main():
                and t.zeile(alt)["Superseded_By"] == "T-SELBSTTEST-001")
         rc, out = t.cli("check")
         t.soll("Validator danach sauber", rc == 0, out)
+        # Ein Prozess, zwei Laeufe, dazwischen ein geaenderter Validator -- so wie im
+        # langlebigen MCP-Server. Der zweite Lauf muss die Aenderung sehen.
+        tools = os.path.join(t.root, TOOLS_REL)
+        ct_pfad = os.path.join(tools, "check_truth.py")
+        original = open(ct_pfad, encoding="utf-8").read()
+        probe = ("import sys\nsys.path.insert(0, %r)\nimport truth\n"
+                 "rc1, _ = truth.pruefen()\n"
+                 "open(%r, 'a', encoding='utf-8').write("
+                 "'\\n\\ndef main():\\n    print(\"  VERSTOSS: Selbsttest-Marke\")\\n    return 1\\n')\n"
+                 "rc2, aus = truth.pruefen()\n"
+                 "print(rc1, rc2, 'Selbsttest-Marke' in aus)\n") % (tools, ct_pfad)
+        try:
+            p = subprocess.run([sys.executable, "-c", probe], cwd=t.root, capture_output=True, text=True)
+        finally:
+            with open(ct_pfad, "w", encoding="utf-8") as fh:
+                fh.write(original)
+        t.soll("Validator wird je Lauf neu geladen (langlebiger MCP-Server)",
+               p.stdout.split() == ["0", "1", "True"], p.stdout + p.stderr)
         t.verboten("Claim_ID aendern", "Claim_ID", "set", "T-SELBSTTEST-002", "Claim_ID=X-1")
         t.verboten("Prio an entschiedener Zeile", "Prio", "prio", "T-SELBSTTEST-002", "now")
         if zelle_ab and heute < zelle_ab:
