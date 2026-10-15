@@ -1,7 +1,7 @@
 # Sitzung 2026-08-22 — Abhängigkeitsgraph, Oracle-Stufen, Encoder aufgelöst
 
 Nicht autoritativ. Autoritativ ist `research/TRUTH.csv`.
-Commits: `8a0e1f0` bis `128824c` (9 Stück, nicht gepusht).
+Commits: `b2b3472` bis `e57d75d` (9 Stück, nicht gepusht).
 
 ## Was am Register gebaut wurde
 

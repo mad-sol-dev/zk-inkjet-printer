@@ -1,7 +1,7 @@
 # Sitzung 2026-08-29 — Lehren aus dem Agenten-Hack, ins Register uebersetzt
 
 Nicht autoritativ. Autoritativ ist `research/TRUTH.csv`.
-Commits: `6f8f5f5`, `06c979b` (2 Stueck, nicht gepusht).
+Commits: `c886925`, `20654a9` (2 Stueck, nicht gepusht).
 
 ## Anlass
 
@@ -13,7 +13,7 @@ umgesetzt, der Rest als Kandidaten notiert.
 
 ## Was gebaut wurde
 
-**`next.py` — Block `UNGEPRUEFT & TRAGEND`** (`6f8f5f5`). Die Rangliste nach
+**`next.py` — Block `UNGEPRUEFT & TRAGEND`** (`c886925`). Die Rangliste nach
 Abhaengigen (`TRAGENDE ZEILEN`) gab es schon; sie sagt *was* traegt. Neu ist der
 Zusatz: *was traegt und nie direkt geprueft wurde* — tragende Zeilen mit `Oracle`
 nicht in {O2,O3}, sortiert nach transitivem Blast-Radius statt nach direkten
@@ -34,7 +34,7 @@ Backfill-Wegweiser, kein Grundlagen-Urteil. Ein *falsch gesetztes* Oracle
 (gemessen/geraten wie CL-BOOT-REC-007) faengt er nicht — das liest nur ein Mensch.
 Auf Top-6 gedeckelt.
 
-**`CL-USB-REC-108` — Next_Test auf den Poll-Filter geschaerft** (`06c979b`). Die
+**`CL-USB-REC-108` — Next_Test auf den Poll-Filter geschaerft** (`20654a9`). Die
 uebertragbare Anleihe: die gekaperten HF-Worker wurden nicht angesprochen
 (Firewall blockt inbound), sondern pollten alle 5 s einen oeffentlichen Datensatz,
 den sie ohnehin lesen durften, und schrieben Ergebnisse dorthin zurueck.
