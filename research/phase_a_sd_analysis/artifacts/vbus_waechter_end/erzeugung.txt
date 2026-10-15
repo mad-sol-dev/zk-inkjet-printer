@@ -1,0 +1,18 @@
+# patch_vbus_waechter_end.py, 2026-10-15 (CL-USB-REC-128) -- Endpatch VBUS-Waechter
+python3 tools/scripts/patch_vbus_waechter_end.py --out research/phase_a_sd_analysis/artifacts/vbus_waechter_end --device /dev/sdc
+  W1 0x2CDA00 (33 Worte, Normalfall b 0x109AC4), W2 0x2CDB00 (22 Worte, danach b 0xFBAAC), alle per capstone rueckgeprueft
+  Endstand = md5_kopf (2026-10-13) + Poolworte 0x10799C -> 0x2CDA00, 0xB43E0 -> 0x2CDB00 + Kopf
+  Endstand gegen md5_kopf geaendert: 0x5C200, 0xAF800, 0xC8E00; Kopf c67cd5c096080a3bf835dc0a656c6d64 -> 296b3c5b8d48ae5b76635eeb77731145, [0x558] = 0
+  zu schreibende Sektoren (Datei): 0x5C200, 0x76E00, 0xAF800, 0xB1C00, 0xB2000, 0xC8E00, 0x275600 (leer), 0x275800 (leer), 0x275A00 (Waechter)
+  patch.sh akzeptiert Ausgangsstand md5_kopf_6 (Diagnose-Schichten) oder md5_kopf; Sicherung je Ausgangsstand in sicherung_<stand>/
+
+# Emulation (uv run tools/scripts/pruef_vbus_waechter_end_emu.py --abzug ram_fenster/ram_nach_wiederanstecken.bin)
+#  Endstand ohne vbus_detect- und Ruecklese-Patch; W1: Kabel da / erster Abzieh-Eintritt / VBUS nicht anhaengig -> usbd_isr;
+#  Sturmfall -> MDCR = 1<<16, Ruecksprung; W2: Kabel weg -> weiter, Kabel da -> MECR = 1<<16; kein Befehl aus den Ring-Sektoren,
+#  Ring-Puffer unberuehrt; Register unveraendert. Alle Pruefungen ok.
+
+# Offline-Test gegen nachgebaute Karten (Stub-Sektor 0x275400 aus ram_fenster in beiden)
+#  Ausgangsstand 6 und 13: n -> nichts geschrieben; j -> Image == Endstand, [0x558] = 0, Stub-Sektoren leer/leer/Waechter, 0x275400 unveraendert;
+#    zweiter Lauf "nichts zu tun"; zurueck.sh -> Karte byte-gleich zum jeweiligen Ausgangsstand
+#  Stand md5_kopf_5 (nicht erwartet): Abbruch vor der Rueckfrage
+#  Stand 13 mit belegtem Stub-Sektor 0x275800: Abbruch vor der Rueckfrage

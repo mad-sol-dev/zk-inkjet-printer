@@ -53,7 +53,9 @@ AIC_MECR, AIC_MDCR = 0xB8000120, 0xB8000124
 IRQ_USB = 1 << 16
 
 
-def w1():
+def w1(ziel=None):
+    """ziel: wohin der Normalfall springt (Vorgabe: USB-ISR-Ring 0x2CD800)."""
+    ziel = ur.STUB if ziel is None else ziel
     a = Asm(W1)
     a.w(0xE92D0000 | regs(0, 1, 2, 14), "push {r0, r1, r2, lr}")
     a.ldr_lit(0, PHY_CTL, "ldr r0, [pc, #")
@@ -83,11 +85,13 @@ def w1():
     a.w(0xE12FFF1E, "bx lr")
     a.lab("normal")
     a.w(0xE8BD0000 | regs(0, 1, 2, 14), "pop {r0, r1, r2, lr}")
-    a.b("", ur.STUB, "b #0x%x" % ur.STUB)
+    a.b("", ziel, "b #0x%x" % ziel)
     return a.fertig()
 
 
-def w2():
+def w2(ziel=None):
+    """ziel: wohin W2 am Ende springt (Vorgabe: TMR1-Ring 0x2CD600)."""
+    ziel = rp.STUB if ziel is None else ziel
     a = Asm(W2)
     a.w(0xE92D0000 | regs(0, 1, 14), "push {r0, r1, lr}")
     a.ldr_lit(0, WACHT, "ldr r0, [pc, #")
@@ -108,7 +112,7 @@ def w2():
     a.w(str_(1, 0, 0), "str r1, [r0]")
     a.lab("weiter")
     a.w(0xE8BD0000 | regs(0, 1, 14), "pop {r0, r1, lr}")
-    a.b("", rp.STUB, "b #0x%x" % rp.STUB)
+    a.b("", ziel, "b #0x%x" % ziel)
     return a.fertig()
 
 
