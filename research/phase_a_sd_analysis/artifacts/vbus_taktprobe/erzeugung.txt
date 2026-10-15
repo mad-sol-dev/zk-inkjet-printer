@@ -1,0 +1,26 @@
+# patch_vbus_taktprobe.py, 2026-10-15 (CL-USB-REC-131) -- Messstand Taktprobe
+python3 tools/scripts/patch_vbus_taktprobe.py --out research/phase_a_sd_analysis/artifacts/vbus_taktprobe
+  PROBE 0x2CD800 (60 Worte), W1 0x2CDA00 (38 Worte), W2 0x2CDB00 (48 Worte), alle 133 Befehle per capstone rueckgeprueft
+  Basis Endstand vbus_waechter_end: Imagebereich, Poolworte (0x10799C -> W1, 0xB43E0 -> W2) und Kopf 296b3c5b... unveraendert
+  geschrieben werden nur Datei 0x275800 = Karte 103340 (PROBE; im Endstand leer) und Datei 0x275A00 = Karte 103341 (W1/W2)
+  Daten WACHT 0x2D7000: +0 Merker, +4 Sperren, +8 Freigaben, +0xC Ticks seit Sperre, +0x10 Countdown,
+    +0x20 SPERRE, +0x60 SPAET, +0xA0 AN0, +0xE0 AN1 (je 16 Worte, Magic 'TKP1' in +0x3C)
+
+# Nebenbefund beim Entwurf: die Firmware prueft den PHY-Takt selbst so. mscdHighSpeedInit 0xCEF90 (Poolwort 0xCF438,
+#  pfnHighSpeedInit) schreibt EPA_MPS = 0x200 und wartet bei 0xCEFC4 ohne Grenze aufs Ruecklesen (BSP mscd.c 2235f.).
+#  Bleibt ein Probewert ohne Takt haengen und greift spaeter, ueberschreibt ihn der naechste Bus-Reset.
+
+# Emulation (uv run tools/scripts/pruef_vbus_taktprobe_emu.py --abzug ram_fenster/ram_nach_wiederanstecken.bin)
+#  UDC als MMIO-Modell: ohne Takt keine Uebernahme von USB_IRQ_STAT- und EPA_MPS-Schreibzugriffen; Pegelmodell (VBUS_IS ohne VBUS
+#  sofort neu); taube Probe (EPA_MPS nimmt nie an). Je Modell: W1-Normalfaelle ohne jeden Schreibzugriff, Sturmfall (MDCR, SPERRE,
+#  Schreibfolge EPA_MPS 0x20/0x200, USB_IRQ_STAT 0x100), 1001 Ticks ohne Kabel (SPAET genau beim 1000., sonst kein UDC-Zugriff),
+#  Anstecken (AN0 ohne Schreiben auf USB_IRQ_STAT, MECR, Countdown 10), Einsteck-Zweig als Modellschritt, 12 Ticks (AN1 genau beim
+#  10.). Register r0-r8, sp, lr, Modus je Eintritt unveraendert. Urteil des Lesers: Kandidat 2 -> "Kandidat 2 ... TCLKOK_IS in AN1
+#  gesetzt", Kandidat 1 -> "Kandidat 1 oder 3", taube Probe -> "kein Urteil: Positivkontrolle". Zweiter Zyklus: Zaehler 2/2, n = 2.
+#  alt = 0x20 -> Probewert 0x40. 618 Pruefungen ok.
+
+# Offline-Test gegen nachgebaute Karten (Endstand-Image, Stubs 0x275400 aus ram_fenster, 0x275600/0x275800 leer, 0x275A00 Waechter)
+#  Endstand n: nichts geschrieben; j: nur Karten-Byte 0x3275800 und 0x3275A00 geaendert, beide == .neu; zweiter Lauf "schon drauf";
+#  zurueck.sh: byte-gleich zum Endstand; patchen und zurueck ein zweites Mal ebenso
+#  Stand md5_kopf_6, Fremdinhalt in 0x275800, nur 0x275800 gepatcht: je Abbruch vor der Rueckfrage, nichts geschrieben, keine Sicherung
+#  zurueck.sh ohne Sicherung: Abbruch
