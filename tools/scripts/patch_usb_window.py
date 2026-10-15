@@ -85,6 +85,8 @@ def main():
             "# Ein Sektor: Datei-Sektor 0x%X von APP.bin = Rohsektor %d (Rohadresse 0x%08X)." % (sec, raw_sector, raw_sector * 512),
             "# NUR auf die Testkarte anwenden, niemals auf die Originalkarte.",
             'DEV=%s' % a.device,
+            # Sektordateien liegen neben dem Skript; kein absoluter Pfad im Repository
+            'cd "$(dirname "$0")"',
             'echo "Ziel: $DEV, Rohsektor %d"' % raw_sector,
             # Vorher pruefen, dass dort wirklich der erwartete Sektor steht
             'IST=$(dd if=$DEV bs=512 skip=%d count=1 status=none | sha256sum | cut -d" " -f1)' % raw_sector,
@@ -93,7 +95,8 @@ def main():
                 hashlib.sha256(orig[sec * 512:(sec + 1) * 512]).hexdigest(),
                 hashlib.sha256(d[sec * 512:(sec + 1) * 512]).hexdigest()),
             'read -p "Fortfahren? [j/N] " x; [ "$x" = j ] || exit 1',
-            "dd if=%s of=$DEV bs=512 count=1 seek=%d conv=notrunc,fsync status=none" % (src, raw_sector),
+            "dd if=%s of=$DEV bs=512 count=1 seek=%d conv=notrunc,fsync status=none"
+            % (os.path.basename(src), raw_sector),
             'echo "nachher: $(dd if=$DEV bs=512 skip=%d count=1 status=none | sha256sum | cut -d" " -f1)"' % raw_sector,
             "sync", 'echo "fertig"', ""]))
         os.chmod(p, 0o755)

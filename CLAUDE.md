@@ -18,8 +18,8 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
    (Kommandozeile) oder die `truth_*`-Werkzeuge des MCP-Servers `truth`. Keine
    eigenen Schnipsel -- eines davon hat die Datei am 2026-08-21 auf null Bytes
    gekuerzt. Kann das Werkzeug etwas nicht, wird es in der Vorlage
-   `$HOME/workspace/truth-register` erweitert (mit Selbsttest) und
-   hierher kopiert, nicht umgangen. Keine Kopien von `TRUTH.csv`; Git ist die
+   `truth-register` (eigenes Repository, lokal `../../truth-register`)
+   erweitert (mit Selbsttest) und hierher kopiert, nicht umgangen. Keine Kopien von `TRUTH.csv`; Git ist die
    Historie.
 4. **Keine offene Zeile ohne `Next_Test`.** Eine Frage ohne definiertes
    Experiment ist kein Arbeitspaket, sondern ein Thema.
@@ -73,7 +73,7 @@ Ein pre-commit-Hook laesst `check_truth.py` mitlaufen.
 
 Seit 2026-10-15 gibt es dafuer ein Werkzeug, statt dass jede Sitzung ihr
 eigenes Skript schreibt. Es ist dieselbe Datei wie in der Vorlage
-`$HOME/workspace/truth-register`; was ZK-Inkjet anders hat (Evidenz in
+`truth-register` (lokal `../../truth-register`); was ZK-Inkjet anders hat (Evidenz in
 `Evidence_E0` als `Anzahl [Beleg]`, Vorgaben fuer die Altspalten), steht in
 `tools/scripts/truth_local.py`.
 

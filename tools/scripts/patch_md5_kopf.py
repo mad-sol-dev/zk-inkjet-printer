@@ -129,7 +129,12 @@ def main():
         bild = bild[:L]
         if struct.unpack_from("<I", bild, K + 0x10)[0] != L:
             sys.exit("Laengenwort im Kopf des Abbilds ist nicht 0x%X" % L)
-        quelle = "Abbild %s" % a.image
+        # Relativ zur Repo-Wurzel, sonst nur der Dateiname: das Skript landet im
+        # oeffentlichen Repository, ein absoluter Pfad verriete das Heimatverzeichnis.
+        wurzel = os.path.normpath(os.path.join(HIER, "..", ".."))
+        pfad = os.path.abspath(a.image)
+        quelle = "Abbild %s" % (os.path.relpath(pfad, wurzel) if pfad.startswith(wurzel + os.sep)
+                                else os.path.basename(pfad))
         sek = sorted({o // 512 * 512 for o in worte_diff(orig, bild)})
         print("Abbild: %d Sektoren weichen vom Original ab: %s"
               % (len(sek), " ".join("0x%X" % s for s in sek)))

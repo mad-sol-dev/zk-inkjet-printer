@@ -111,7 +111,7 @@ für diesen Kandidaten sauber verneint.
 ## Ausgabe
 
 Ein Bericht nach
-`$HOME/workspace/zk-inkjet-printer/firmware/research/probes/B2-usb-bruecke/report.md`.
+`research/probes/B2-usb-bruecke/report.md`.
 
 **Nichts** in `research/TRUTH.csv`, keine weiteren neuen Dateien im Repo.
 

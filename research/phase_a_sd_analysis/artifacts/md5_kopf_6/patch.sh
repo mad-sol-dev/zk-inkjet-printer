@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 # Erzeugt von patch_md5_kopf.py (CL-FIRMWARE-REC-119). NUR Testkarte.
-# Quelle: Abbild $HOME/workspace/zk-inkjet-printer/firmware/research/phase_a_sd_analysis/artifacts/vbus_waechter/APP.vbus_waechter.bin
+# Quelle: Abbild research/phase_a_sd_analysis/artifacts/vbus_waechter/APP.vbus_waechter.bin
 # Kopf Datei 0xC8F60: 905e542f9b7b28e611b7238a5c80b304 -> 3a3dca16031fa16adaaad8af954461da
 DEV=${1:-/dev/sdc}
 cd "$(dirname "$0")"

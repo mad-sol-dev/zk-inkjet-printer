@@ -41,11 +41,11 @@
 
 **Anonymization Rules Applied:**
 ```
-$HOME/workspace/ → $HOME/workspace/
-$HOME/ → $HOME/
-user → user
+/home/<login>/programme/Projekte/ → $HOME/workspace/
+/home/<login>/ → $HOME/
+<login> → user
 <first name> → User
-host → host
+<hostname> → host
 /usr/lib/jvm/jdk-21.0.8-oracle-x64/bin/java → $JAVA_HOME/bin/java
 ```
 

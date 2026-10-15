@@ -70,7 +70,7 @@ direkt aus Ghidra. Verdächtig sind nur die Basen.
 
 ## Ausgabe
 
-Ein Bericht nach `$HOME/workspace/zk-inkjet-printer/firmware/research/probes/A1-encoder-gpio/report.md`.
+Ein Bericht nach `research/probes/A1-encoder-gpio/report.md`.
 **Nichts** in `research/TRUTH.csv` — das Eintragen ist ein getrennter Schritt.
 Keine neuen Dateien im Repo.
 

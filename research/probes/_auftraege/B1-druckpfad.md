@@ -110,7 +110,7 @@ hin, statt einen zu konstruieren.
 ## Ausgabe
 
 Ein Bericht nach
-`$HOME/workspace/zk-inkjet-printer/firmware/research/probes/B1-druckpfad/report.md`.
+`research/probes/B1-druckpfad/report.md`.
 
 **Nichts** in `research/TRUTH.csv` — das Eintragen ist ein getrennter Schritt und
 wird nicht von dieser Sitzung gemacht. Keine weiteren neuen Dateien im Repo.
