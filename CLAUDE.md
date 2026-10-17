@@ -86,12 +86,14 @@ in `.githooks/` (aktiv ueber `git config core.hooksPath .githooks`); Selbsttest:
 
 Nach jedem Commit (ebenso nach pull, Branchwechsel, rebase) erzeugt ein
 post-commit-Hook die Ansicht des Registers neu: `build/truth_ansicht.html`
-(gitignored), eine Seite mit Front, tragenden Zeilen, Registertabelle mit
-Filtern, Verweisen in beide Richtungen und dem Laborjournal je Zeile. Sie ist
-aus `TRUTH.csv` und `git log` abgeleitet und fuehrt nichts Eigenes. Von Hand:
+(gitignored), eine Seite mit Front, einem Graphen der Abhaengigkeiten,
+tragenden Zeilen, Registertabelle mit Filtern, Verweisen in beide Richtungen
+und dem Laborjournal je Zeile. Sie ist aus `TRUTH.csv` und `git log`
+abgeleitet und fuehrt nichts Eigenes. Den Graphen ordnet Graphviz an (`dot`,
+Paket graphviz); fehlt es, entsteht die Seite ohne Graph. Von Hand:
 `python3 tools/scripts/truth_ansicht.py --oeffnen`. Oeffentlich baut
-`.github/workflows/register-ansicht.yml` dieselbe Seite bei jedem Push fuer
-GitHub Pages, sobald Pages im Repository auf "GitHub Actions" steht.
+`.github/workflows/register-ansicht.yml` dieselbe Seite bei jedem Push auf
+master: https://mad-sol-dev.github.io/zk-inkjet-printer/
 
 ## Register lesen und aendern -- tools/scripts/truth.py
 

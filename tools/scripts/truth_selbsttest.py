@@ -88,7 +88,9 @@ class _Seite(HTMLParser):
     def __init__(self):
         super().__init__()
         self.zeilen, self.ids, self.verweise, self.journal = {}, [], [], {}
-        self._zeile = None
+        self.graph = {}                  # Ansicht -> {"node": [...], "edge": [...]} aus den SVG-Titeln
+        self._zeile = self._gv = self._g = None
+        self._titel = False
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -102,6 +104,25 @@ class _Seite(HTMLParser):
             self.journal[a["id"]] = []
         if tag == "li" and "data-hash" in a and self._zeile:
             self.journal[self._zeile].append(a["data-hash"])
+        if tag == "div" and "gv" in (a.get("class") or "").split():
+            self._gv = a.get("data-v")
+            self.graph[self._gv] = {"node": [], "edge": []}
+        if tag == "g" and self._gv:
+            art = (a.get("class") or "").split()[:1]
+            self._g = art[0] if art and art[0] in ("node", "edge") else None
+        if tag == "title" and self._gv and self._g:
+            self._titel = True
+
+    def handle_endtag(self, tag):
+        if tag == "div" and self._gv:
+            self._gv = None              # im SVG gibt es keine div, das erste </div> schliesst die Ansicht
+        if tag == "title":
+            self._titel = False
+
+    def handle_data(self, data):
+        if self._titel:
+            self.graph[self._gv][self._g].append(data)
+            self._g = None
 
 
 def ansicht_pruefen(t):
@@ -117,8 +138,9 @@ def ansicht_pruefen(t):
               "--oracle", "O1", "--confidence", "0.5", "--next-test", "nichts", "--prio", "next",
               "--depends", "T-SELBSTTEST-001")
 
-    def lauf(*a):
-        p = subprocess.run([sys.executable, skript] + list(a), cwd=t.root, capture_output=True, text=True)
+    def lauf(*a, env=None):
+        p = subprocess.run([sys.executable, skript] + list(a), cwd=t.root, capture_output=True, text=True,
+                           env=dict(os.environ, **(env or {})))
         return p.returncode, p.stdout + p.stderr
 
     out = os.path.join(t.root, "build", "truth_ansicht.html")
@@ -160,8 +182,35 @@ def ansicht_pruefen(t):
         if ("alt" in a.get("class", "").split()) != bool(r["Superseded_By"].strip()):
             falsch.append(r["Claim_ID"] + " (abgeloest)")
     t.soll("Ansicht: Abhaengigkeiten in beide Richtungen, Abloesungen markiert", not falsch, str(falsch[:10]))
-    t.soll("Ansicht: Text wird maskiert, nicht als Markup eingesetzt",
-           "<script>alert(1)" not in html_ and "&lt;script&gt;alert(1)&lt;/script&gt;" in html_)
+    t.soll("Ansicht: Text wird maskiert, nicht als Markup eingesetzt (auch im Graphen)",
+           "<script>alert(1)" not in html_ and "&lt;script&gt;alert(1)&lt;/script&gt;" in html_
+           and "Escape <b>" not in html_)
+
+    if shutil.which("dot"):
+        lebend = {r["Claim_ID"] for r in rows if not r["Superseded_By"].strip()}
+        kanten = {(d, r["Claim_ID"]) for r in rows if r["Claim_ID"] in lebend
+                  for d in teile(r["Depends_On"]) if d in lebend}
+        knoten = {x for k in kanten for x in k}
+        g = seite.graph.get("alle", {"node": [], "edge": []})
+        t.soll("Graph: 'Everything' zeigt genau die lebenden Zeilen mit Kante und jede Kante einmal",
+               sorted(g["node"]) == sorted(knoten)
+               and sorted(g["edge"]) == sorted("%s->%s" % k for k in kanten),
+               "Knoten %d/%d, Kanten %d/%d" % (len(g["node"]), len(knoten), len(g["edge"]), len(kanten)))
+        front = {r["Claim_ID"] for r in rows if r["Claim_ID"] in lebend and r["Decided"] == "no"
+                 and r["Prio"] == "now"}
+        fg = set(seite.graph.get("front", {"node": []})["node"])
+        t.soll("Graph: 'Front' enthaelt die Front und alles, worauf sie steht, sonst nichts",
+               all(x in fg for x in front) and fg <= (front | knoten), str(sorted(fg)[:10]))
+    else:
+        print("--   Graph: Inhalt uebersprungen, Graphviz (dot) ist nicht installiert")
+    ohne = os.path.join(t.root, "build", "ohne_dot.html")
+    rc, aus = lauf("--out", ohne, "--leise", env={"TRUTH_ANSICHT_DOT": "/gibt/es/nicht/dot"})
+    s2 = open(ohne, encoding="utf-8").read() if rc == 0 else ""
+    p2 = _Seite()
+    p2.feed(s2)
+    t.soll("Graph: ohne Graphviz entsteht die Seite trotzdem, mit Hinweis statt Graph",
+           rc == 0 and "Graphviz (dot) is not installed" in s2 and not p2.graph
+           and list(p2.zeilen) == ids, aus)
     t.soll("Ansicht: nicht committete Aenderung wird im Kopf gemeldet", "uncommitted changes" in html_)
 
     sys.path.insert(0, tools)

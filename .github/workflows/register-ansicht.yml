@@ -28,6 +28,8 @@ jobs:
           fetch-depth: 0            # ganze Historie, sonst bleibt das Laborjournal leer
           lfs: false                # die Ansicht braucht keine LFS-Dateien
           persist-credentials: false
+      - name: Graphviz installieren (ordnet den Graphen der Abhaengigkeiten an)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends graphviz
       - name: Ansicht erzeugen
         run: >
           python3 tools/scripts/truth_ansicht.py --out _site/index.html

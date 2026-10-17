@@ -8,9 +8,13 @@
 
 Warum es das gibt: die CSV ist fuer Menschen unbequem -- lange Zellen,
 Claim-IDs, die man einzeln nachschlagen muss, Abhaengigkeiten nur ueber
-`truth.py deps`. Die Ansicht macht daraus eine Seite mit Front, tragenden
-Zeilen, Registertabelle mit Filtern, Verweisen in beide Richtungen und dem
-Laborjournal je Zeile.
+`truth.py deps`. Die Ansicht macht daraus eine Seite mit Front, einem Graphen
+der Abhaengigkeiten, tragenden Zeilen, Registertabelle mit Filtern, Verweisen
+in beide Richtungen und dem Laborjournal je Zeile.
+
+Den Graphen ordnet Graphviz an (`dot`, Paket graphviz); er steht als SVG in der
+Seite. Fehlt dot, entsteht die Seite trotzdem, nur ohne Graphen und mit einem
+Hinweis. Ein anderes dot-Programm: Umgebungsvariable TRUTH_ANSICHT_DOT.
 
 Was sie nicht ist: ein zweiter Stand. Sie fuehrt keinen eigenen Inhalt. Alles
 kommt aus TRUTH.csv (ueber truth.lesen()), aus git log und aus dem Validator.
@@ -26,7 +30,8 @@ Projektspezifisches (optional, in truth_local.py):
   ANSICHT_TITEL   Seitentitel
   ANSICHT_ORACLE  {"O1": ("kurz", "lang"), ...} -- was die Pruefstufen hier heissen
 """
-import argparse, html, importlib, os, re, subprocess, sys, tempfile, webbrowser
+import argparse, html, importlib, os, re, shutil, subprocess, sys, tempfile, textwrap
+import webbrowser
 
 HIER = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HIER)
@@ -52,6 +57,7 @@ STATUS_ART = {"verified": "gut", "supported": "eher", "hypothesis": "vermutet",
 KERN = ["Claim_ID", "Subsystem", "Topic", "Statement", "Status", "Oracle", "Confidence",
         "Depends_On", "Decided", "Superseded_By", "Next_Test", "Prio", "Updated", "Source"]
 LANG = 1400          # ab so vielen Zeichen wird eine Zelle eingeklappt
+GV_FUELLUNG = {"O3": "#e3f3e8", "O2": "#e2f1f6", "O1": "#fbf0d9", "": "#f3f1ec"}
 URTEIL_KURZ = 220    # Vorschau des Urteils in der Registerzeile
 
 
@@ -114,6 +120,34 @@ def deckel():
         return dict(DECKEL_VORGABE)
 
 
+def dot_svg(quelle):
+    """Graphviz rechnet die Anordnung. Ohne dot gibt es keinen Graphen, aber eine Seite."""
+    prog = shutil.which(os.environ.get("TRUTH_ANSICHT_DOT", "dot"))
+    if not prog:
+        return None, ("Graphviz (dot) is not installed, so the graph is missing. "
+                      "Install graphviz and generate the page again.")
+    try:
+        p = subprocess.run([prog, "-Tsvg"], input=quelle, capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError) as e:
+        return None, "Graphviz failed: %s" % e
+    if p.returncode != 0 or "<svg" not in p.stdout:
+        return None, "Graphviz failed: %s" % ((p.stderr or "").strip()[:300] or "exit %d" % p.returncode)
+    svg = p.stdout[p.stdout.index("<svg"):]
+    return re.sub(r"<!--.*?-->\s*", "", svg, flags=re.S).strip(), None
+
+
+def dot_text(s):
+    return (s or "").replace("\\", "\\\\").replace('"', '\\"')
+
+
+def dot_label(cid, topic):
+    zeilen = textwrap.wrap(" ".join((topic or "").split()), 30)
+    if len(zeilen) > 3:
+        zeilen = zeilen[:3]
+        zeilen[2] = zeilen[2][:27].rstrip() + " ..."
+    return "\\n".join(dot_text(z) for z in [cid] + zeilen)
+
+
 # ------------------------------------------------------------------ Modell
 class Register:
     def __init__(self, cols, rows):
@@ -161,6 +195,7 @@ class Seite:
         self.pos = {c: i for i, c in enumerate(reg.ids)}
         self.n_oben = {c: len(reg.huelle(c, reg.oben)) for c in reg.ids}
         self.n_unten = {c: len(reg.huelle(c, reg.unten)) for c in reg.ids}
+        self.graphen, self.graph_fehler, self.im_graph = self.graphen_bauen()
 
     # -------------------------------------------------------------- Bausteine
     def tooltip(self, cid):
@@ -295,7 +330,7 @@ this page adds nothing of its own.</p>
 %s
 <div class="kacheln">%s</div>
 <div class="val">%s</div>
-<nav><a href="#front">Front</a><a href="#tragend">Load-bearing</a><a href="#register">Register</a>
+<nav><a href="#front">Front</a><a href="#graph">Graph</a><a href="#tragend">Load-bearing</a><a href="#register">Register</a>
 <a href="#legende">Legend</a></nav>
 </header>""" % (esc(self.titel), esc(REL), stand,
                 "".join('<p class="warn">%s</p>' % w for w in warn), kacheln, v)
@@ -372,6 +407,120 @@ check level), is still open, or was refuted.</small></h2>
 <ul class="kurz">%s</ul>
 </section>""" % (karten, len(nach), liste)
 
+    # -------------------------------------------------------------- Graph
+    def graph_ansichten(self):
+        """Drei Ausschnitte, jeder fuer sich angeordnet: Front, offene Fragen, alles.
+        Abgeloeste Zeilen und Zeilen ohne jede Kante kommen nicht vor."""
+        reg = self.reg
+        lebend = [c for c in reg.ids if not reg.abgeloest(c)]
+        lset = set(lebend)
+        kanten = [(d, c) for c in lebend for d in reg.oben[c] if d in lset]   # d traegt c
+        mit_kante = {x for k in kanten for x in k}
+
+        def mit_unterbau(start):
+            menge, stack = set(start), list(start)
+            while stack:
+                for d in reg.oben.get(stack.pop(), []):
+                    if d in lset and d not in menge:
+                        menge.add(d)
+                        stack.append(d)
+            return menge
+        front = [c for c in lebend if reg.offen(c) and reg.topf[c].get("Prio") == "now"]
+        offen = [c for c in lebend if reg.offen(c)]
+        offen_k = [c for c in offen if c in mit_kante]
+        return kanten, [
+            ("front", "Front", mit_unterbau(front),
+             "The front (Prio = now) and everything it stands on."),
+            ("offen", "Open questions", mit_unterbau(offen_k),
+             "Every open row with a dependency, and everything those stand on. %d open row%s "
+             "without any Depends_On link %s not shown." % (
+                 len(offen) - len(offen_k), "" if len(offen) - len(offen_k) == 1 else "s",
+                 "is" if len(offen) - len(offen_k) == 1 else "are")),
+            ("alle", "Everything", mit_kante,
+             "Every live row with at least one dependency. %d live row%s without any link %s not shown."
+             % (len(lebend) - len(mit_kante), "" if len(lebend) - len(mit_kante) == 1 else "s",
+                "is" if len(lebend) - len(mit_kante) == 1 else "are")),
+        ]
+
+    def dot_quelle(self, name, menge, kanten):
+        reg = self.reg
+        z = ['digraph "%s" {' % name,
+             'graph [id="gv-%s", rankdir=BT, nodesep=0.22, ranksep=0.42, bgcolor="transparent", '
+             'fontname="Helvetica"];' % name,
+             'node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, '
+             'margin="0.10,0.05", color="#9aa0a6", fontcolor="#1f2328"];',
+             'edge [arrowsize=0.6, color="#8a8f98"];']
+        for c in reg.ids:                     # Registerreihenfolge: gleiche Eingabe, gleiches Bild
+            if c not in menge:
+                continue
+            r = reg.topf[c]
+            o = (r.get("Oracle") or "").strip()
+            o = o if o in GV_FUELLUNG else ""
+            kl = ["k", o.lower() if o else "ox"]
+            rand = ""
+            if reg.offen(c):
+                kl.append("offen")
+                if r.get("Prio") in ("now", "next"):
+                    kl.append("p-" + r["Prio"])
+                    rand = ', color="%s", penwidth=%s' % (
+                        ("#b42318", "2.4") if r["Prio"] == "now" else ("#5a4fb3", "1.6"))
+            schwach = bool(self.schwach(c))
+            if schwach:
+                kl.append("schwach")
+            z.append('"%s" [id="gv-%s-%s", class="%s", style="%s", fillcolor="%s", label="%s"%s];' % (
+                c, name, c, " ".join(kl), "rounded,filled,dashed" if schwach else "rounded,filled",
+                GV_FUELLUNG[o], dot_label(c, r.get("Topic")), rand))
+        i = 0
+        for d, c in kanten:
+            if d in menge and c in menge:
+                z.append('"%s" -> "%s" [id="gv-%s-e%d"];' % (d, c, name, i))
+                i += 1
+        z.append("}")
+        return "\n".join(z) + "\n"
+
+    def graphen_bauen(self):
+        kanten, ansichten = self.graph_ansichten()
+        graphen, im_graph = [], set()
+        for name, titel, menge, text in ansichten:
+            if not menge:
+                graphen.append((name, titel, 0, text, None))
+                continue
+            svg, fehler = dot_svg(self.dot_quelle(name, menge, kanten))
+            if fehler:
+                return [], fehler, set()
+            graphen.append((name, titel, len(menge), text, svg))
+            if name == "alle":
+                im_graph = set(menge)
+        return graphen, None, im_graph
+
+    def graph(self):
+        kopf = """<section id="graph">
+<h2>Graph <small>Who stands on whom, through Depends_On. An arrow points from what a row stands on to
+the row, so the foundations are at the bottom and the open questions near the top. Click a box to
+light up everything it stands on and everything that stands on it; drag to move around.</small></h2>"""
+        if self.graph_fehler:
+            return kopf + '<p class="warn">%s</p></section>' % esc(self.graph_fehler)
+        tabs = "".join('<button type="button" class="gv-tab" data-v="%s" aria-pressed="%s">%s <small>%d</small></button>'
+                       % (n, "true" if i == 0 else "false", esc(t), k)
+                       for i, (n, t, k, _, _) in enumerate(self.graphen))
+        hinweise = "".join('<p class="gv-hinweis" data-v="%s"%s>%s</p>' % (n, "" if i == 0 else " hidden", esc(x))
+                           for i, (n, _, _, x, _) in enumerate(self.graphen))
+        boxen = "".join('<div class="gv" data-v="%s"%s>%s</div>' % (
+            n, "" if i == 0 else " hidden", svg or '<p class="leer">No rows in this view.</p>')
+            for i, (n, _, _, _, svg) in enumerate(self.graphen))
+        muster = "".join('<span class="gv-muster %s">%s</span>' % (k, t) for k, t in (
+            ("o3", "O3 " + esc(self.oracle["O3"][0])), ("o2", "O2 " + esc(self.oracle["O2"][0])),
+            ("o1", "O1 " + esc(self.oracle["O1"][0])), ("ox", "no check level"),
+            ("p-now", "front (now)"), ("p-next", "queued (next)"),
+            ("schwach", "weak link: derived, no check level, open or refuted")))
+        return """%s
+<div class="gv-leiste">%s<span class="gv-zoom"><button type="button" data-z="-" aria-label="Zoom out">&minus;</button><button type="button" data-z="+" aria-label="Zoom in">+</button><button type="button" data-z="fit">Fit</button><button type="button" data-z="1">100%%</button></span></div>
+%s
+<div class="gv-info" id="gv-info"><span class="leer">Click a box to light up its chain.</span></div>
+%s
+<p class="gv-legende">%s</p>
+</section>""" % (kopf, tabs, hinweise, boxen, muster)
+
     # -------------------------------------------------------------- Tragend
     def tragend(self):
         reg = self.reg
@@ -416,6 +565,8 @@ the top row covers the most rows above it.</small></h3><ul class="kurz">%s</ul><
         if (r.get("Next_Test") or "").strip():
             teile.append("<h4>Next test</h4>" + self.textblock(r.get("Next_Test")))
         ob, un = reg.oben[cid], reg.unten[cid]
+        if cid in self.im_graph:
+            teile.append('<button type="button" class="imgraph" data-id="%s">Show in graph</button>' % esc(cid))
         teile.append("""<div class="bez">
 <div><h4>Stands on <small>%d direct, %d in total</small></h4><ul class="kurz">%s</ul></div>
 <div><h4>Depended on by <small>%d direct, %d in total</small></h4><ul class="kurz">%s</ul></div>
@@ -522,7 +673,7 @@ and the register validator. Same input, same file.</p>
 <meta name="generator" content="truth_ansicht.py">
 <title>%s</title>
 <style>%s</style>
-<noscript><style>.text.lang{max-height:none;-webkit-mask-image:none;mask-image:none}.mehr,.filter{display:none}</style></noscript>
+<noscript><style>.text.lang{max-height:none;-webkit-mask-image:none;mask-image:none}.mehr,.filter,.gv-zoom,.imgraph{display:none}</style></noscript>
 </head>
 <body>
 %s
@@ -531,11 +682,13 @@ and the register validator. Same input, same file.</p>
 %s
 %s
 %s
+%s
 </main>
 <script>%s</script>
 </body>
 </html>
-""" % (esc(self.titel), CSS, self.kopf(), self.front(), self.tragend(), self.register(), self.legende(), JS)
+""" % (esc(self.titel), CSS, self.kopf(), self.front(), self.graph(), self.tragend(), self.register(),
+       self.legende(), JS)
 
 
 CSS = r"""
@@ -643,6 +796,39 @@ a.id.alt{color:var(--alt);text-decoration:line-through}
 .leg dt{margin-top:8px}.leg dd{margin:2px 0 0;color:var(--tx2)}
 .fuss{color:var(--tx2);font-size:.85rem;margin:30px 0 40px}
 .versteckt{display:none}
+.gv-leiste{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 6px}
+.gv-leiste button{font:inherit;font-size:.88rem;padding:3px 10px;border:1px solid var(--rand);border-radius:6px;background:var(--fl);color:var(--tx);cursor:pointer}
+.gv-tab[aria-pressed=true]{background:var(--akz);border-color:var(--akz);color:var(--bg)}
+.gv-tab[aria-pressed=true] small{color:inherit}
+.gv-zoom{margin-left:auto;display:flex;gap:4px}
+.gv-hinweis{color:var(--tx2);font-size:.88rem;margin:4px 0}
+.gv{overflow:auto;max-height:78vh;border:1px solid var(--rand);border-radius:8px;background:var(--fl);cursor:grab;user-select:none;-webkit-user-select:none}
+.gv.zieht{cursor:grabbing}
+.gv svg{display:block}
+.gv .node{cursor:pointer}
+.gv .node path,.gv .node polygon{fill:var(--fl2);stroke:var(--alt)}
+.gv .node.o3 path,.gv .node.o3 polygon{fill:var(--gut-b)}
+.gv .node.o2 path,.gv .node.o2 polygon{fill:var(--eher-b)}
+.gv .node.o1 path,.gv .node.o1 polygon{fill:var(--verm-b)}
+.gv .node.schwach path,.gv .node.schwach polygon{stroke:var(--verm)}
+.gv .node.p-next path,.gv .node.p-next polygon{stroke:var(--offen);stroke-width:1.6}
+.gv .node.p-now path,.gv .node.p-now polygon{stroke:var(--now);stroke-width:2.4}
+.gv .node text{fill:var(--tx)}
+.gv .edge path{stroke:var(--tx2);opacity:.7}
+.gv .edge polygon{fill:var(--tx2);stroke:var(--tx2);opacity:.7}
+.gv .blass{opacity:.13}
+.gv .node.gewaehlt path,.gv .node.gewaehlt polygon{stroke:var(--akz);stroke-width:3}
+.gv .edge.an path{stroke:var(--akz);stroke-width:1.8;opacity:1}
+.gv .edge.an polygon{fill:var(--akz);stroke:var(--akz);opacity:1}
+.gv-info{margin:6px 0;padding:6px 10px;border:1px solid var(--akz);border-radius:6px;background:var(--fl)}
+.gv-info b{font-weight:600}
+.gv-legende{display:flex;flex-wrap:wrap;gap:6px;font-size:.8rem;color:var(--tx2);margin:8px 0}
+.gv-muster{padding:1px 8px;border:1px solid var(--alt);border-radius:5px;background:var(--fl2)}
+.gv-muster.o3{background:var(--gut-b)}.gv-muster.o2{background:var(--eher-b)}.gv-muster.o1{background:var(--verm-b)}
+.gv-muster.ox{background:var(--fl2)}
+.gv-muster.p-now{border:2px solid var(--now);background:none}.gv-muster.p-next{border:2px solid var(--offen);background:none}
+.gv-muster.schwach{border:1px dashed var(--verm);background:none}
+.imgraph{margin:10px 0 0;font:inherit;font-size:.85rem;color:var(--akz);background:none;border:1px solid var(--rand);border-radius:6px;padding:2px 10px;cursor:pointer}
 @media (max-width:820px){
 .filter{position:static}
 .zwei,.bez{grid-template-columns:1fr}
@@ -702,6 +888,53 @@ document.addEventListener('click',function(e){var b=e.target.closest('.mehr');if
 document.addEventListener('keydown',function(e){if(e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();f.q.focus()}});
 leiste();anwenden();
 if(document.readyState==='complete')hash();else window.addEventListener('load',function(){setTimeout(hash,0)});
+})();
+(function(){
+var sek=document.getElementById('graph'),boxen=sek?[].slice.call(sek.querySelectorAll('.gv')):[];
+if(!boxen.some(function(b){return b.querySelector('svg')}))return;
+var info=document.getElementById('gv-info'),leer=info.innerHTML,zoom={},aktiv=null;
+function karte(box){if(box._k)return box._k;var k={knoten:{},oben:{},unten:{},kanten:[]};
+ box.querySelectorAll('g.node').forEach(function(g){var n=g.querySelector('title').textContent;k.knoten[n]=g;k.oben[n]=[];k.unten[n]=[]});
+ box.querySelectorAll('g.edge').forEach(function(g){var t=g.querySelector('title').textContent.split('->');g._von=t[0];g._zu=t[1];k.kanten.push(g);
+  if(k.oben[t[1]])k.oben[t[1]].push(t[0]);if(k.unten[t[0]])k.unten[t[0]].push(t[1])});
+ return box._k=k}
+function huelle(start,nb){var s={},st=[start];while(st.length){(nb[st.pop()]||[]).forEach(function(y){if(!s[y]){s[y]=1;st.push(y)}})}return s}
+function waehlen(box,id){var k=karte(box);if(!k.knoten[id])return;var auf=huelle(id,k.oben),ab=huelle(id,k.unten);
+ function in_(m,x){return x===id||!!m[x]}
+ Object.keys(k.knoten).forEach(function(n){var g=k.knoten[n];g.classList.toggle('blass',!(in_(auf,n)||in_(ab,n)));g.classList.toggle('gewaehlt',n===id)});
+ k.kanten.forEach(function(e){var an=!!((in_(auf,e._von)&&in_(auf,e._zu))||(in_(ab,e._von)&&in_(ab,e._zu)));e.classList.toggle('blass',!an);e.classList.toggle('an',an)});
+ infoZeigen(id,Object.keys(auf).length,Object.keys(ab).length)}
+function loesen(box){var k=karte(box);Object.keys(k.knoten).forEach(function(n){k.knoten[n].classList.remove('blass','gewaehlt')});
+ k.kanten.forEach(function(e){e.classList.remove('blass','an')});info.innerHTML=leer}
+function infoZeigen(id,nAuf,nAb){var z=document.getElementById(id),s=z&&z.querySelector('summary');info.textContent='';
+ var a=document.createElement('a');a.href='#'+id;a.className='id';a.textContent=id;info.appendChild(a);
+ if(s){['.c-st','.c-or','.c-pr'].forEach(function(q){var x=s.querySelector(q);if(x&&x.innerHTML)info.insertAdjacentHTML('beforeend',' '+x.innerHTML)});
+  var t=document.createElement('b');t.textContent=' '+s.querySelector('.c-topic b').textContent;info.appendChild(t)}
+ var n=document.createElement('span');n.className='zahl';n.textContent=' Stands on '+nAuf+', carries '+nAb+' in this view. ';info.appendChild(n);
+ var o=document.createElement('a');o.href='#'+id;o.textContent='Open in register';info.appendChild(o)}
+function masse(box){var svg=box.querySelector('svg'),vb=svg.viewBox.baseVal;return{svg:svg,w:vb.width,h:vb.height}}
+// Zoom 1 = natuerliche Groesse: Graphviz rechnet in pt, 1 pt = 4/3 px
+function setzeZoom(box,z){var m=masse(box);z=Math.max(0.1,Math.min(3,z));zoom[box.dataset.v]=z;m.svg.style.width=(m.w*z*4/3)+'px';m.svg.style.height=(m.h*z*4/3)+'px'}
+function passend(box){return Math.min(1,(box.clientWidth-2)/(masse(box).w*4/3))}
+function zeige(v){boxen.forEach(function(b){var an=b.dataset.v===v;b.hidden=!an;if(an){aktiv=b;
+  if(b.querySelector('svg')&&!(v in zoom))setzeZoom(b,Math.max(0.8,passend(b)))}});
+ sek.querySelectorAll('.gv-tab').forEach(function(t){t.setAttribute('aria-pressed',String(t.dataset.v===v))});
+ sek.querySelectorAll('.gv-hinweis').forEach(function(p){p.hidden=p.dataset.v!==v});info.innerHTML=leer}
+sek.querySelectorAll('.gv-tab').forEach(function(t){t.addEventListener('click',function(){zeige(t.dataset.v)})});
+sek.querySelectorAll('.gv-zoom button').forEach(function(b){b.addEventListener('click',function(){if(!aktiv||!aktiv.querySelector('svg'))return;
+ var z=zoom[aktiv.dataset.v]||1,w=b.dataset.z;setzeZoom(aktiv,w==='+'?z*1.25:w==='-'?z/1.25:w==='fit'?passend(aktiv):1)})});
+boxen.forEach(function(b){var start=null,bewegt=false;
+ b.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.button!==0)return;start={x:e.clientX,y:e.clientY,l:b.scrollLeft,t:b.scrollTop};bewegt=false});
+ b.addEventListener('pointermove',function(e){if(!start)return;var dx=e.clientX-start.x,dy=e.clientY-start.y;
+  if(!bewegt&&Math.abs(dx)+Math.abs(dy)>4){bewegt=true;b.classList.add('zieht')}if(bewegt){b.scrollLeft=start.l-dx;b.scrollTop=start.t-dy}});
+ window.addEventListener('pointerup',function(){start=null;b.classList.remove('zieht')});
+ b.addEventListener('click',function(e){if(bewegt){bewegt=false;return}var g=e.target.closest('g.node');
+  if(g)waehlen(b,g.querySelector('title').textContent);else loesen(b)})});
+document.addEventListener('click',function(e){var knopf=e.target.closest('.imgraph');if(!knopf)return;
+ zeige('alle');var box=aktiv,g=karte(box).knoten[knopf.dataset.id];if(!g)return;waehlen(box,knopf.dataset.id);
+ sek.scrollIntoView({block:'start'});var r=g.getBoundingClientRect(),br=box.getBoundingClientRect();
+ box.scrollLeft+=r.left-br.left-box.clientWidth/2+r.width/2;box.scrollTop+=r.top-br.top-box.clientHeight/2+r.height/2});
+zeige(boxen[0].dataset.v);
 })();
 """
 
