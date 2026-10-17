@@ -1,0 +1,155 @@
+{
+ "source": "zk-inkjet-ghidramcpd, program ZK-INKJET-NANO-APP.bin.orig (state READY), base 0x58000 (CL-TOOL-REC-121); read-only queries 2026-10-17, transcribed from the tool responses",
+ "search_scalars": {
+  "control_0x28800000": {
+   "hits": 8,
+   "addresses": [
+    "0xb62b0",
+    "0xb7234",
+    "0xba5d0",
+    "0xbdb70",
+    "0xbdfe4",
+    "0xc3060",
+    "0xc335c",
+    "0xc754c"
+   ],
+   "note": "same 8 sites as the own imm decoder (neg_recheck.py control)"
+  },
+  "0xB8008000": {
+   "hits": 0
+  },
+  "0xB1006800": {
+   "hits": 0
+  },
+  "0xB800E000": {
+   "hits": 0
+  },
+  "0xB0000084": {
+   "hits": 0
+  },
+  "0xB800104C": {
+   "hits": 0
+  },
+  "0xB8001044": {
+   "hits": 0
+  },
+  "0xB0000000": {
+   "hits": 27,
+   "note": "identical to the 27 code-range sites of the own imm decoder"
+  },
+  "0xD00": {
+   "hits": 2,
+   "addresses": [
+    "0xb9a94 (str r5,[sp,#0xd00], an offset)",
+    "0xf9e30 (orr r12,r12,#0xd00)"
+   ]
+  }
+ },
+ "search_xrefs_to": {
+  "0x89EC4": {
+   "total": 5,
+   "from": [
+    "0x89e2c",
+    "0x89e58",
+    "0x89eb0",
+    "0xb2b44",
+    "0xc7c08 key_print_read_gpe9"
+   ]
+  },
+  "0x89F34": {
+   "total": 21,
+   "note": "own BL decoder 22: 0xB2BAC (b, in undefined bytes 0xB2B94-0xB2BBF) missing"
+  },
+  "0x882EC": {
+   "total": 3,
+   "from": [
+    "0x83868 (no function)",
+    "0x11a628 FUN_0011a098",
+    "0x11b648 FUN_0011b554"
+   ]
+  },
+  "0x85F28": {
+   "total": 3,
+   "from": [
+    "0x85ec8",
+    "0x85ef0",
+    "0x10bf74"
+   ]
+  },
+  "0xC7BF8": {
+   "total": 4,
+   "note": "call refs only; the pool word 0xB7700 (keydev_register) is not listed"
+  },
+  "0x248500": {
+   "total": 0
+  },
+  "0x24AB68": {
+   "total": 0
+  },
+  "0xD00": {
+   "total": 24,
+   "note": "old DB: none (CL-STORAGE-REC-128); own decoder: 30 pool words, 46 ARM ldr loads"
+  },
+  "0x120F28": {
+   "total": 4,
+   "from": [
+    "0x83ad4 print_job_run READ",
+    "0x83e68 print_job_run PARAM",
+    "0xbb170 FUN_000baef0 READ",
+    "0xbbc0c FUN_000baef0 PARAM"
+   ]
+  },
+  "0xD8AE8": {
+   "total": 0
+  },
+  "0x9EEC0": {
+   "total": 0,
+   "note": "called indirectly via I2C ops table 0x120F40+0x1C (blx at 0xEB968 etc.)"
+  },
+  "0xD874C": {
+   "total": 2,
+   "from": [
+    "0x83adc print_job_run CONDITIONAL_COMPUTED_CALL",
+    "0xbb178 FUN_000baef0 CONDITIONAL_COMPUTED_CALL"
+   ]
+  },
+  "0x757F4": {
+   "total": 6,
+   "from": [
+    "0x85df4",
+    "0x85e04",
+    "0x85e0c",
+    "0x85e14 (FUN_00085d50)",
+    "0x85e9c FUN_00085e50",
+    "0x85eb0 thunk"
+   ]
+  },
+  "0xB30C4": {
+   "total": 1,
+   "from": [
+    "0xcbee4 UNCONDITIONAL_JUMP"
+   ]
+  },
+  "0xBDB08": {
+   "total": 1,
+   "from": [
+    "0xc4918 ui_system_menu PARAM"
+   ]
+  }
+ },
+ "run_script aufrufer.py (dry_run, data.ok true)": {
+  "0xB8DA0": "no function (inside FUN_000b8d98)",
+  "0x824BC": "FUN_000824bc 500 bytes, 1 call site in FUN_000b8d98",
+  "0xB8D98": "FUN_000b8d98 44 bytes, 16 call sites: 8x FUN_000b2d2c, 7x ui_main_loop, 1x no function (0xc33ec)",
+  "0x757F4": "FUN_000757f4 36 bytes, 5 call sites in FUN_00085d50 (4) and FUN_00085e50 (1), 1 other ref",
+  "0x85E50": "1 call site in FUN_00067f14",
+  "0x67F14": "4 call sites: FUN_00068ed8 (2), FUN_000698c8, FUN_00067f60",
+  "0x85D50": "1 call site in FUN_00067cac"
+ },
+ "disassemble_at / list_functions_in_range": {
+  "0xD8AE8": "defined code (hp45_set_address), formerly gap 0x280AE8 (CL-TOOL-REC-117)",
+  "0xD98B0-0xDED90": "31 functions; 0xD98B0-0xD9933 (132 bytes) still undefined",
+  "0xB2B94": "undefined, listing starts 0xB2BC0 (44 bytes skipped)",
+  "0x82690-0x8392F": "jump table at 0x82688 (ldrlo pc,[pc,r0,lsl #2], 12 entries); Ghidra keeps only chunks 0x824BC-0x8268F and 0x83078-0x83097 of FUN_000824bc"
+ }
+}

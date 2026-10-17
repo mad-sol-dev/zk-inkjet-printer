@@ -1,0 +1,3813 @@
+{
+ "app": "firmware/bin/ZK-INKJET-NANO-APP.bin",
+ "size": 2576940,
+ "base": "0x58000",
+ "controls": [
+  {
+   "mode": "lit",
+   "case": "0x0008A434 sd_raw primitive: 5 pool words (CL-FIRMWARE-REC-124/111)",
+   "got": 5,
+   "pass": true
+  },
+  {
+   "mode": "imm",
+   "case": "0x28800000 cond=AL: 8 sites incl. file+0x65FE4 (Ghidra search_scalars 8)",
+   "got": 8,
+   "pass": true
+  },
+  {
+   "mode": "adr",
+   "case": "'Please release the print key!' 0xB325C via adr at 0xB316C (CL-HARDWARE-REC-109)",
+   "got": [
+    "0xb316c"
+   ],
+   "pass": true
+  },
+  {
+   "mode": "chain",
+   "case": "file+0xC5CEC mov r0,#0x80000000; sub r0,r0,#0x400000 = 0x7FC00000 (CL-FIRMWARE-REC-111)",
+   "got": [
+    "0x11dcec",
+    "0x11f1e8",
+    "0x11f274"
+   ],
+   "pass": true
+  },
+  {
+   "mode": "bl",
+   "case": "boot_init -> 0xC7BF8 at 0xB3120 and 0xB31CC (CL-HARDWARE-REC-109)",
+   "got": [
+    "0xb3120",
+    "0xb31cc",
+    "0xb4424",
+    "0xb44e8"
+   ],
+   "pass": true
+  },
+  {
+   "mode": "bl/thumb",
+   "case": "Thumb BL pairs decoded in file+0x10000-0x1FFFF (plausibility, targets in image)",
+   "got": 81,
+   "pass": true
+  }
+ ],
+ "queries": [
+  {
+   "claim": "CL-HARDWARE-REC-112",
+   "label": "port pin reader FUN_00089EC4 (old FUN_00231EC4): callers",
+   "lo": "0x89ec4",
+   "hi": "0x89ec5",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 5,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 204332,
+      "va": 564780,
+      "target": 564932,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x8",
+       "r1": "0x4"
+      }
+     },
+     {
+      "file": 204376,
+      "va": 564824,
+      "target": 564932,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x2",
+       "r1": "0x0"
+      }
+     },
+     {
+      "file": 204464,
+      "va": 564912,
+      "target": 564932,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x2",
+       "r1": "0x0"
+      }
+     },
+     {
+      "file": 371524,
+      "va": 731972,
+      "target": 564932,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x2",
+       "r1": "0xe"
+      }
+     },
+     {
+      "file": 457736,
+      "va": 818184,
+      "target": 564932,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x10",
+       "r1": "0x9"
+      }
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-HARDWARE-REC-112",
+   "label": "GPE9 wrapper FUN_000C7BF8 (old FUN_0026FBF8): callers/pointers",
+   "lo": "0xc7bf8",
+   "hi": "0xc7bf9",
+   "counts": {
+    "lit": 1,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 4,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 1
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 390912,
+      "va": 751360,
+      "value": 818168,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       750928
+      ]
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 373024,
+      "va": 733472,
+      "target": 818168,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 373196,
+      "va": 733644,
+      "target": 818168,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 377892,
+      "va": 738340,
+      "target": 818168,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 378088,
+      "va": 738536,
+      "target": 818168,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-HARDWARE-REC-005",
+   "label": "pin config FUN_00089F34 (pin_mux_config, 2025-12 at 0x31F34): callers",
+   "lo": "0x89f34",
+   "hi": "0x89f35",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 22,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 204320,
+      "va": 564768,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x8",
+       "r1": "0x4",
+       "r2": "0x3"
+      }
+     },
+     {
+      "file": 204364,
+      "va": 564812,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "mov r0, r2",
+       "r1": "mov r1, r3",
+       "r2": "0x2"
+      }
+     },
+     {
+      "file": 204452,
+      "va": 564900,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "mov r0, r2",
+       "r1": "mov r1, r3",
+       "r2": "?"
+      }
+     },
+     {
+      "file": 205548,
+      "va": 565996,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x8",
+       "r1": "mov r1, r3",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 371560,
+      "va": 732008,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x2",
+       "r1": "0xd",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 371584,
+      "va": 732032,
+      "target": 565044,
+      "kind": "arm-b",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 371628,
+      "va": 732076,
+      "target": 565044,
+      "kind": "arm-b",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 377316,
+      "va": 737764,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x8",
+       "r1": "0x3",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 377360,
+      "va": 737808,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x2",
+       "r1": "0x6",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 377720,
+      "va": 738168,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x10",
+       "r1": "0x9",
+       "r2": "0x2"
+      }
+     },
+     {
+      "file": 377740,
+      "va": 738188,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x10",
+       "r1": "0xb",
+       "r2": "0x33"
+      }
+     },
+     {
+      "file": 377760,
+      "va": 738208,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x10",
+       "r1": "0xa",
+       "r2": "0x23"
+      }
+     },
+     {
+      "file": 377780,
+      "va": 738228,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x8",
+       "r1": "mov r1, r3",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 457860,
+      "va": 818308,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x10",
+       "r1": "0x8",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 457880,
+      "va": 818328,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x8",
+       "r1": "0xd",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 526180,
+      "va": 886628,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x1",
+       "r1": "mov r1, r4",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 526216,
+      "va": 886664,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x1",
+       "r1": "mov r1, r4",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 526252,
+      "va": 886700,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x8",
+       "r1": "mov r1, r4",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 526288,
+      "va": 886736,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x4",
+       "r1": "mov r1, r4",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 526324,
+      "va": 886772,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x10",
+       "r1": "mov r1, r4",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 526356,
+      "va": 886804,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x2",
+       "r1": "0xf",
+       "r2": "0x5"
+      }
+     },
+     {
+      "file": 526380,
+      "va": 886828,
+      "target": 565044,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x8",
+       "r1": "mov r1, r4",
+       "r2": "0x5"
+      }
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-HARDWARE-REC-005",
+   "label": "REG_GPBFUN 0xB0000084",
+   "lo": "0xb0000084",
+   "hi": "0xb0000085",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-HARDWARE-REC-005",
+   "label": "GCR_BA 0xB0000000 (base word)",
+   "lo": "0xb0000000",
+   "hi": "0xb0000001",
+   "counts": {
+    "lit": 7,
+    "imm": 42,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 316,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 962448,
+      "va": 1322896,
+      "value": 2952790016,
+      "kind": "data",
+      "loaded_by": []
+     },
+     {
+      "file": 1079164,
+      "va": 1439612,
+      "value": 2952790016,
+      "kind": "data",
+      "loaded_by": []
+     },
+     {
+      "file": 1126436,
+      "va": 1486884,
+      "value": 2952790016,
+      "kind": "data",
+      "loaded_by": []
+     },
+     {
+      "file": 1153940,
+      "va": 1514388,
+      "value": 2952790016,
+      "kind": "data",
+      "loaded_by": []
+     },
+     {
+      "file": 1190384,
+      "va": 1550832,
+      "value": 2952790016,
+      "kind": "data",
+      "loaded_by": []
+     },
+     {
+      "file": 1199460,
+      "va": 1559908,
+      "value": 2952790016,
+      "kind": "data",
+      "loaded_by": []
+     },
+     {
+      "file": 1441420,
+      "va": 1801868,
+      "value": 2952790016,
+      "kind": "data",
+      "loaded_by": []
+     }
+    ],
+    "imm": [
+     {
+      "file": 188204,
+      "va": 548652,
+      "value": 2952790016,
+      "word": 3818922507,
+      "region": "code"
+     },
+     {
+      "file": 204624,
+      "va": 565072,
+      "value": 2952790016,
+      "word": 3818934795,
+      "region": "code"
+     },
+     {
+      "file": 205588,
+      "va": 566036,
+      "value": 2952790016,
+      "word": 3818918411,
+      "region": "code"
+     },
+     {
+      "file": 206640,
+      "va": 567088,
+      "value": 2952790016,
+      "word": 3818918411,
+      "region": "code"
+     },
+     {
+      "file": 332068,
+      "va": 692516,
+      "value": 2952790016,
+      "word": 3818918411,
+      "region": "code"
+     },
+     {
+      "file": 332256,
+      "va": 692704,
+      "value": 2952790016,
+      "word": 3818947083,
+      "region": "code"
+     },
+     {
+      "file": 334444,
+      "va": 694892,
+      "value": 2952790016,
+      "word": 3818922507,
+      "region": "code"
+     },
+     {
+      "file": 334704,
+      "va": 695152,
+      "value": 2952790016,
+      "word": 3818918411,
+      "region": "code"
+     },
+     {
+      "file": 337516,
+      "va": 697964,
+      "value": 2952790016,
+      "word": 3818922507,
+      "region": "code"
+     },
+     {
+      "file": 377380,
+      "va": 737828,
+      "value": 2952790016,
+      "word": 3818930699,
+      "region": "code"
+     },
+     {
+      "file": 457764,
+      "va": 818212,
+      "value": 2952790016,
+      "word": 3818930699,
+      "region": "code"
+     },
+     {
+      "file": 527232,
+      "va": 887680,
+      "value": 2952790016,
+      "word": 3818930699,
+      "region": "code"
+     },
+     {
+      "file": 568784,
+      "va": 929232,
+      "value": 2952790016,
+      "word": 3818938891,
+      "region": "code"
+     },
+     {
+      "file": 662260,
+      "va": 1022708,
+      "value": 2952790016,
+      "word": 3818934795,
+      "region": "code"
+     },
+     {
+      "file": 662544,
+      "va": 1022992,
+      "value": 2952790016,
+      "word": 3818922507,
+      "region": "code"
+     },
+     {
+      "file": 662620,
+      "va": 1023068,
+      "value": 2952790016,
+      "word": 3818926603,
+      "region": "code"
+     },
+     {
+      "file": 718792,
+      "va": 1079240,
+      "value": 2952790016,
+      "word": 3818914315,
+      "region": "code"
+     },
+     {
+      "file": 718804,
+      "va": 1079252,
+      "value": 2952790016,
+      "word": 3818918411,
+      "region": "code"
+     },
+     {
+      "file": 719320,
+      "va": 1079768,
+      "value": 2952790016,
+      "word": 3818914315,
+      "region": "code"
+     },
+     {
+      "file": 719336,
+      "va": 1079784,
+      "value": 2952790016,
+      "word": 3818918411,
+      "region": "code"
+     },
+     {
+      "file": 719388,
+      "va": 1079836,
+      "value": 2952790016,
+      "word": 3818914315,
+      "region": "code"
+     },
+     {
+      "file": 719408,
+      "va": 1079856,
+      "value": 2952790016,
+      "word": 3818918411,
+      "region": "code"
+     },
+     {
+      "file": 719508,
+      "va": 1079956,
+      "value": 2952790016,
+      "word": 3818914315,
+      "region": "code"
+     },
+     {
+      "file": 719520,
+      "va": 1079968,
+      "value": 2952790016,
+      "word": 3818918411,
+      "region": "code"
+     },
+     {
+      "file": 719528,
+      "va": 1079976,
+      "value": 2952790016,
+      "word": 3818914315,
+      "region": "code"
+     },
+     {
+      "file": 719544,
+      "va": 1079992,
+      "value": 2952790016,
+      "word": 3818914315,
+      "region": "code"
+     },
+     {
+      "file": 734880,
+      "va": 1095328,
+      "value": 2952790016,
+      "word": 3818930699,
+      "region": "code"
+     },
+     {
+      "file": 1469136,
+      "va": 1829584,
+      "value": 2952790016,
+      "word": 3797730480,
+      "region": "data"
+     },
+     {
+      "file": 1475132,
+      "va": 1835580,
+      "value": 2952790016,
+      "word": 53347116,
+      "region": "data"
+     },
+     {
+      "file": 1499208,
+      "va": 1859656,
+      "value": 2952790016,
+      "word": 3802952492,
+      "region": "data"
+     },
+     {
+      "file": 1504652,
+      "va": 1865100,
+      "value": 2952790016,
+      "word": 3001516844,
+      "region": "data"
+     },
+     {
+      "file": 1515920,
+      "va": 1876368,
+      "value": 2952790016,
+      "word": 3797730480,
+      "region": "data"
+     },
+     {
+      "file": 1521916,
+      "va": 1882364,
+      "value": 2952790016,
+      "word": 53347116,
+      "region": "data"
+     },
+     {
+      "file": 1549720,
+      "va": 1910168,
+      "value": 2952790016,
+      "word": 38601227,
+      "region": "data"
+     },
+     {
+      "file": 1983392,
+      "va": 2343840,
+      "value": 2952790016,
+      "word": 2196223152,
+      "region": "data"
+     },
+     {
+      "file": 1988928,
+      "va": 2349376,
+      "value": 2952790016,
+      "word": 2464523440,
+      "region": "data"
+     },
+     {
+      "file": 2051048,
+      "va": 2411496,
+      "value": 2952790016,
+      "word": 3001713840,
+      "region": "data"
+     },
+     {
+      "file": 2051064,
+      "va": 2411512,
+      "value": 2952790016,
+      "word": 3001713840,
+      "region": "data"
+     },
+     {
+      "file": 2206448,
+      "va": 2566896,
+      "value": 2952790016,
+      "word": 2481370288,
+      "region": "data"
+     },
+     {
+      "file": 2252592,
+      "va": 2613040,
+      "value": 2952790016,
+      "word": 3001398448,
+      "region": "data"
+     },
+     {
+      "file": 2308080,
+      "va": 2668528,
+      "value": 2952790016,
+      "word": 3001463984,
+      "region": "data"
+     },
+     {
+      "file": 2371116,
+      "va": 2731564,
+      "value": 2952790016,
+      "word": 2212934832,
+      "region": "data"
+     }
+    ],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 316
+   }
+  },
+  {
+   "claim": "CL-HP45-REC-012",
+   "label": "adc_read_channel 0x85F28 (2025-12 at 0x2DF28): callers",
+   "lo": "0x85f28",
+   "hi": "0x85f29",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 3,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 188104,
+      "va": 548552,
+      "target": 548648,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x3",
+       "r1": "?"
+      }
+     },
+     {
+      "file": 188144,
+      "va": 548592,
+      "target": 548648,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x2",
+       "r1": "?"
+      }
+     },
+     {
+      "file": 737140,
+      "va": 1097588,
+      "target": 548648,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {
+       "r0": "0x3",
+       "r1": "?"
+      }
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-HP45-REC-012",
+   "label": "ADC_BA range 0xB800E000-0xB800E0FF",
+   "lo": "0xb800e000",
+   "hi": "0xb800e100",
+   "counts": {
+    "lit": 2,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 2
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 188380,
+      "va": 548828,
+      "value": 3087065088,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       548672
+      ]
+     },
+     {
+      "file": 569396,
+      "va": 929844,
+      "value": 3087065088,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       929236
+      ]
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-MMIO-REC-005",
+   "label": "UART range 0xB8008000-0xB80081FF (UART0/UART1)",
+   "lo": "0xb8008000",
+   "hi": "0xb8008200",
+   "counts": {
+    "lit": 1,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 1
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 120856,
+      "va": 481304,
+      "value": 3087040512,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       481268
+      ]
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-MMIO-REC-006",
+   "label": "0xB1006800-0xB10068FF",
+   "lo": "0xb1006800",
+   "hi": "0xb1006900",
+   "counts": {
+    "lit": 31,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 31
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 333528,
+      "va": 693976,
+      "value": 2969593856,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       692620
+      ]
+     },
+     {
+      "file": 333532,
+      "va": 693980,
+      "value": 2969593888,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       692648
+      ]
+     },
+     {
+      "file": 333536,
+      "va": 693984,
+      "value": 2969593896,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       692684
+      ]
+     },
+     {
+      "file": 333552,
+      "va": 694000,
+      "value": 2969593860,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       692816
+      ]
+     },
+     {
+      "file": 333908,
+      "va": 694356,
+      "value": 2969593888,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       694052
+      ]
+     },
+     {
+      "file": 333920,
+      "va": 694368,
+      "value": 2969593908,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       694228
+      ]
+     },
+     {
+      "file": 333924,
+      "va": 694372,
+      "value": 2969593904,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       694248
+      ]
+     },
+     {
+      "file": 333932,
+      "va": 694380,
+      "value": 2969593900,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       694288
+      ]
+     },
+     {
+      "file": 334240,
+      "va": 694688,
+      "value": 2969593888,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       694392
+      ]
+     },
+     {
+      "file": 334244,
+      "va": 694692,
+      "value": 2969593900,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       694460
+      ]
+     },
+     {
+      "file": 334416,
+      "va": 694864,
+      "value": 2969593888,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       694708
+      ]
+     },
+     {
+      "file": 334424,
+      "va": 694872,
+      "value": 2969593900,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       694816
+      ]
+     },
+     {
+      "file": 334608,
+      "va": 695056,
+      "value": 2969593888,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       694884
+      ]
+     },
+     {
+      "file": 335720,
+      "va": 696168,
+      "value": 2969593888,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       695256
+      ]
+     },
+     {
+      "file": 335724,
+      "va": 696172,
+      "value": 2969593892,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       695308
+      ]
+     },
+     {
+      "file": 335736,
+      "va": 696184,
+      "value": 2969593904,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       695432
+      ]
+     },
+     {
+      "file": 335804,
+      "va": 696252,
+      "value": 2969593856,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       696216
+      ]
+     },
+     {
+      "file": 336464,
+      "va": 696912,
+      "value": 2969593900,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       696312
+      ]
+     },
+     {
+      "file": 336472,
+      "va": 696920,
+      "value": 2969593912,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       696372
+      ]
+     },
+     {
+      "file": 336528,
+      "va": 696976,
+      "value": 2969593856,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       696940
+      ]
+     },
+     {
+      "file": 337156,
+      "va": 697604,
+      "value": 2969593900,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       697036
+      ]
+     },
+     {
+      "file": 337164,
+      "va": 697612,
+      "value": 2969593912,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       697096
+      ]
+     },
+     {
+      "file": 337868,
+      "va": 698316,
+      "value": 2969593900,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       697680
+      ]
+     },
+     {
+      "file": 337896,
+      "va": 698344,
+      "value": 2969593892,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       698248
+      ]
+     },
+     {
+      "file": 589736,
+      "va": 950184,
+      "value": 2969593856,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       950148
+      ]
+     },
+     {
+      "file": 589800,
+      "va": 950248,
+      "value": 2969593856,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       950212
+      ]
+     },
+     {
+      "file": 589864,
+      "va": 950312,
+      "value": 2969593856,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       950276
+      ]
+     },
+     {
+      "file": 589928,
+      "va": 950376,
+      "value": 2969593856,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       950340
+      ]
+     },
+     {
+      "file": 589992,
+      "va": 950440,
+      "value": 2969593856,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       950404
+      ]
+     },
+     {
+      "file": 590056,
+      "va": 950504,
+      "value": 2969593856,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       950468
+      ]
+     },
+     {
+      "file": 607508,
+      "va": 967956,
+      "value": 2969593900,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       967900
+      ]
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-HARDWARE-REC-111",
+   "label": "GPIOE 0xB8001040-0xB800104F (CFG/DIR/PUEN/DOUT/PIN)",
+   "lo": "0xb8001040",
+   "hi": "0xb8001050",
+   "counts": {
+    "lit": 3,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 3
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 204592,
+      "va": 565040,
+      "value": 3087011916,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       564992
+      ]
+     },
+     {
+      "file": 205368,
+      "va": 565816,
+      "value": 3087011904,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       565152
+      ]
+     },
+     {
+      "file": 205500,
+      "va": 565948,
+      "value": 3087011912,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       565924
+      ]
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-DISPLAY-REC-108",
+   "label": "string 'Print' 0x248500 (old 0x3F0500)",
+   "lo": "0x248500",
+   "hi": "0x248501",
+   "counts": {
+    "lit": 2,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 823184,
+      "va": 1183632,
+      "value": 2393344,
+      "kind": "data",
+      "loaded_by": []
+     },
+     {
+      "file": 1026868,
+      "va": 1387316,
+      "value": 2393344,
+      "kind": "data",
+      "loaded_by": []
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-DISPLAY-REC-108",
+   "label": "string 'Printing...' 0x24AB68 (old 0x3F2B68)",
+   "lo": "0x24ab68",
+   "hi": "0x24ab69",
+   "counts": {
+    "lit": 1,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 1027312,
+      "va": 1387760,
+      "value": 2403176,
+      "kind": "data",
+      "loaded_by": []
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-DISPLAY-REC-108",
+   "label": "string 'Drucken...' 0x2527A8 (old 0x3FA7A8)",
+   "lo": "0x2527a8",
+   "hi": "0x2527a9",
+   "counts": {
+    "lit": 1,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 1037080,
+      "va": 1397528,
+      "value": 2434984,
+      "kind": "data",
+      "loaded_by": []
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-STORAGE-REC-128",
+   "label": "settings RAM mirror 0x00000D00",
+   "lo": "0xd00",
+   "hi": "0xd01",
+   "counts": {
+    "lit": 30,
+    "imm": 22,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 67,
+    "lit_loaded": 30
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 75816,
+      "va": 436264,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       435528
+      ]
+     },
+     {
+      "file": 180332,
+      "va": 540780,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       538944,
+       539376,
+       539640,
+       540080,
+       540152,
+       540348
+      ]
+     },
+     {
+      "file": 372896,
+      "va": 733344,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       732644
+      ]
+     },
+     {
+      "file": 379840,
+      "va": 740288,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       739352
+      ]
+     },
+     {
+      "file": 383900,
+      "va": 744348,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       743816
+      ]
+     },
+     {
+      "file": 386456,
+      "va": 746904,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       746300,
+       746596
+      ]
+     },
+     {
+      "file": 390072,
+      "va": 750520,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       750192
+      ]
+     },
+     {
+      "file": 394948,
+      "va": 755396,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       751720,
+       752500,
+       754844,
+       755080
+      ]
+     },
+     {
+      "file": 396872,
+      "va": 757320,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       757164
+      ]
+     },
+     {
+      "file": 398604,
+      "va": 759052,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       758164
+      ]
+     },
+     {
+      "file": 399576,
+      "va": 760024,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       760004
+      ]
+     },
+     {
+      "file": 400712,
+      "va": 761160,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       761012
+      ]
+     },
+     {
+      "file": 403584,
+      "va": 764032,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       763772,
+       763792,
+       763984
+      ]
+     },
+     {
+      "file": 405228,
+      "va": 765676,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       765552
+      ]
+     },
+     {
+      "file": 406928,
+      "va": 767376,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       766344,
+       766652
+      ]
+     },
+     {
+      "file": 411104,
+      "va": 771552,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       771468
+      ]
+     },
+     {
+      "file": 411276,
+      "va": 771724,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       771568
+      ]
+     },
+     {
+      "file": 411504,
+      "va": 771952,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       771856
+      ]
+     },
+     {
+      "file": 413784,
+      "va": 774232,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       773948
+      ]
+     },
+     {
+      "file": 413988,
+      "va": 774436,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       774344
+      ]
+     },
+     {
+      "file": 415152,
+      "va": 775600,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       774540
+      ]
+     },
+     {
+      "file": 416468,
+      "va": 776916,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       776600
+      ]
+     },
+     {
+      "file": 417092,
+      "va": 777540,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       776968
+      ]
+     },
+     {
+      "file": 418064,
+      "va": 778512,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       777904
+      ]
+     },
+     {
+      "file": 418160,
+      "va": 778608,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       778592
+      ]
+     },
+     {
+      "file": 418300,
+      "va": 778748,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       778732
+      ]
+     },
+     {
+      "file": 437300,
+      "va": 797748,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       796796,
+       799340,
+       801352
+      ]
+     },
+     {
+      "file": 451100,
+      "va": 811548,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       811496
+      ]
+     },
+     {
+      "file": 452680,
+      "va": 813128,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       812948
+      ]
+     },
+     {
+      "file": 527620,
+      "va": 888068,
+      "value": 3328,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       888012
+      ]
+     }
+    ],
+    "imm": [
+     {
+      "file": 663088,
+      "va": 1023536,
+      "value": 3328,
+      "word": 3817655309,
+      "region": "code"
+     },
+     {
+      "file": 1310232,
+      "va": 1670680,
+      "value": 3328,
+      "word": 2750848013,
+      "region": "data"
+     },
+     {
+      "file": 1539372,
+      "va": 1899820,
+      "value": 3328,
+      "word": 3804986381,
+      "region": "data"
+     },
+     {
+      "file": 2067084,
+      "va": 2427532,
+      "value": 3328,
+      "word": 2194783952,
+      "region": "data"
+     },
+     {
+      "file": 2067896,
+      "va": 2428344,
+      "value": 3328,
+      "word": 2194775760,
+      "region": "data"
+     },
+     {
+      "file": 2068228,
+      "va": 2428676,
+      "value": 3328,
+      "word": 2194783952,
+      "region": "data"
+     },
+     {
+      "file": 2068328,
+      "va": 2428776,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2068560,
+      "va": 2429008,
+      "value": 3328,
+      "word": 2194783952,
+      "region": "data"
+     },
+     {
+      "file": 2069304,
+      "va": 2429752,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2069500,
+      "va": 2429948,
+      "value": 3328,
+      "word": 2194775760,
+      "region": "data"
+     },
+     {
+      "file": 2085880,
+      "va": 2446328,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2085952,
+      "va": 2446400,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2086832,
+      "va": 2447280,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2086976,
+      "va": 2447424,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2088336,
+      "va": 2448784,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2088356,
+      "va": 2448804,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2088372,
+      "va": 2448820,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2088584,
+      "va": 2449032,
+      "value": 3328,
+      "word": 3000024784,
+      "region": "data"
+     },
+     {
+      "file": 2092792,
+      "va": 2453240,
+      "value": 3328,
+      "word": 3000016592,
+      "region": "data"
+     },
+     {
+      "file": 2092816,
+      "va": 2453264,
+      "value": 3328,
+      "word": 3016802000,
+      "region": "data"
+     },
+     {
+      "file": 2092832,
+      "va": 2453280,
+      "value": 3328,
+      "word": 3016802000,
+      "region": "data"
+     },
+     {
+      "file": 2094380,
+      "va": 2454828,
+      "value": 3328,
+      "word": 3016793808,
+      "region": "data"
+     }
+    ],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 67
+   }
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-103",
+   "label": "Zint render FUN_000882EC (old FUN_002302EC): callers",
+   "lo": "0x882ec",
+   "hi": "0x882ed",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 3,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 178280,
+      "va": 538728,
+      "target": 557804,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 796200,
+      "va": 1156648,
+      "target": 557804,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 800328,
+      "va": 1160776,
+      "target": 557804,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-USB-REC-108",
+   "label": "store exporter FUN_000BDB08 (old FUN_00265B08): callers",
+   "lo": "0xbdb08",
+   "hi": "0xbdb09",
+   "counts": {
+    "lit": 1,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 1
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 445052,
+      "va": 805500,
+      "value": 776968,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       805144
+      ]
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-HARDWARE-REC-109",
+   "label": "boot_init 0xB30C4 (old 0x25B0C4): callers",
+   "lo": "0xb30c4",
+   "hi": "0xb30c5",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 1,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 474852,
+      "va": 835300,
+      "target": 733380,
+      "kind": "arm-b",
+      "region": "code",
+      "args": {}
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "hp45_set_address 0xD8AE8: callers",
+   "lo": "0xd8ae8",
+   "hi": "0xd8ae9",
+   "counts": {
+    "lit": 1,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 823084,
+      "va": 1183532,
+      "value": 887528,
+      "kind": "data",
+      "loaded_by": []
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "hp45_set_primitives 0xD8B44: callers",
+   "lo": "0xd8b44",
+   "hi": "0xd8b45",
+   "counts": {
+    "lit": 1,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 823088,
+      "va": 1183536,
+      "value": 887620,
+      "kind": "data",
+      "loaded_by": []
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-USB-REC-126",
+   "label": "FUN_0008A2C0: callers",
+   "lo": "0x8a2c0",
+   "hi": "0x8a2c1",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 2,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 429916,
+      "va": 790364,
+      "target": 565952,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 429928,
+      "va": 790376,
+      "target": 565952,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-USB-REC-126",
+   "label": "FUN_001079AC: callers",
+   "lo": "0x1079ac",
+   "hi": "0x1079ad",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 1,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 205508,
+      "va": 565956,
+      "target": 1079724,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-116",
+   "label": "file import FUN_000C7150: callers",
+   "lo": "0xc7150",
+   "hi": "0xc7151",
+   "counts": {
+    "lit": 1,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 1
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 439004,
+      "va": 799452,
+      "value": 815440,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       798872,
+       798960,
+       798996
+      ]
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "delay_us 0x9EEC0 (hp45 table +0x10, I2C table +0x1C): callers",
+   "lo": "0x9eec0",
+   "hi": "0x9eec1",
+   "counts": {
+    "lit": 2,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 823096,
+      "va": 1183544,
+      "value": 650944,
+      "kind": "data",
+      "loaded_by": []
+     },
+     {
+      "file": 823132,
+      "va": 1183580,
+      "value": 650944,
+      "kind": "data",
+      "loaded_by": []
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "hp45 ops table 0x120F28 (base)",
+   "lo": "0x120f28",
+   "hi": "0x120f29",
+   "counts": {
+    "lit": 2,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 2
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 180380,
+      "va": 540828,
+      "value": 1183528,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       539344,
+       539360,
+       540264
+      ]
+     },
+     {
+      "file": 406924,
+      "va": 767372,
+      "value": 1183528,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       766316,
+       769036
+      ]
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "I2C ops table 0x120F40 (base)",
+   "lo": "0x120f40",
+   "hi": "0x120f41",
+   "counts": {
+    "lit": 7,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 0,
+    "lit_u": 0,
+    "lit_loaded": 7
+   },
+   "hits": {
+    "lit": [
+     {
+      "file": 180384,
+      "va": 540832,
+      "value": 1183552,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       539440,
+       539508
+      ]
+     },
+     {
+      "file": 390932,
+      "va": 751380,
+      "value": 1183552,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       751108,
+       751184,
+       751244
+      ]
+     },
+     {
+      "file": 394936,
+      "va": 755384,
+      "value": 1183552,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       751448,
+       751516
+      ]
+     },
+     {
+      "file": 408064,
+      "va": 768512,
+      "value": 1183552,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       767788,
+       767856
+      ]
+     },
+     {
+      "file": 438968,
+      "va": 799416,
+      "value": 1183552,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       798036,
+       798104,
+       798352,
+       798420
+      ]
+     },
+     {
+      "file": 445040,
+      "va": 805488,
+      "value": 1183552,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       804556,
+       804660,
+       804864,
+       804952,
+       805020,
+       805208
+      ]
+     },
+     {
+      "file": 794100,
+      "va": 1154548,
+      "value": 1183552,
+      "kind": "arm-ldr",
+      "loaded_by": [
+       1154384,
+       1154456
+      ]
+     }
+    ],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [],
+    "lit_u": 0
+   }
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-103",
+   "label": "element renderer FUN_000824BC (jump table 0x82688, calls 0x882EC at 0x83868)",
+   "lo": "0x824bc",
+   "hi": "0x824bd",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 1,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 396704,
+      "va": 757152,
+      "target": 533692,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  },
+  {
+   "claim": "CL-MMIO-REC-005",
+   "label": "UART1 putc FUN_000757F4 (ldr 0xB8008000, FSR +0x118, THR +0x100)",
+   "lo": "0x757f4",
+   "hi": "0x757f5",
+   "counts": {
+    "lit": 0,
+    "imm": 0,
+    "adr": 0,
+    "chain": 0,
+    "bl": 6,
+    "lit_u": 0,
+    "lit_thumbptr": 0,
+    "lit_loaded": 0
+   },
+   "hits": {
+    "lit": [],
+    "imm": [],
+    "adr": [],
+    "chain": [],
+    "bl": [
+     {
+      "file": 187892,
+      "va": 548340,
+      "target": 481268,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 187908,
+      "va": 548356,
+      "target": 481268,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 187916,
+      "va": 548364,
+      "target": 481268,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 187924,
+      "va": 548372,
+      "target": 481268,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 188060,
+      "va": 548508,
+      "target": 481268,
+      "kind": "arm-bl",
+      "region": "code",
+      "args": {}
+     },
+     {
+      "file": 188080,
+      "va": 548528,
+      "target": 481268,
+      "kind": "arm-b",
+      "region": "code",
+      "args": {}
+     }
+    ],
+    "lit_u": 0,
+    "lit_thumbptr": []
+   }
+  }
+ ],
+ "indirect": {
+  "0x4": [
+   [
+    "0x5adb8",
+    "0x5adc0"
+   ],
+   [
+    "0x61ca8",
+    "0x61cbc"
+   ],
+   [
+    "0x6b7c0",
+    "0x6b7d4"
+   ],
+   [
+    "0x6c684",
+    "0x6c698"
+   ],
+   [
+    "0x6d96c",
+    "0x6d980"
+   ],
+   [
+    "0x70a54",
+    "0x70a5c"
+   ],
+   [
+    "0x710a8",
+    "0x710b0"
+   ],
+   [
+    "0x8fcf0",
+    "0x8fcf4"
+   ],
+   [
+    "0x8fe24",
+    "0x8fe28"
+   ],
+   [
+    "0x92694",
+    "0x9269c"
+   ],
+   [
+    "0x9280c",
+    "0x92814"
+   ],
+   [
+    "0x98210",
+    "0x98218"
+   ],
+   [
+    "0x9b4dc",
+    "0x9b4e8"
+   ],
+   [
+    "0x9b5a4",
+    "0x9b5ac"
+   ],
+   [
+    "0xac34c",
+    "0xac354"
+   ],
+   [
+    "0xac3b4",
+    "0xac3bc"
+   ],
+   [
+    "0xac478",
+    "0xac480"
+   ],
+   [
+    "0xac55c",
+    "0xac564"
+   ],
+   [
+    "0xac5f0",
+    "0xac5f8"
+   ],
+   [
+    "0xca8e0",
+    "0xca8e8"
+   ],
+   [
+    "0xeba20",
+    "0xeba38"
+   ],
+   [
+    "0xebbd0",
+    "0xebbe8"
+   ],
+   [
+    "0xebc90",
+    "0xebca8"
+   ],
+   [
+    "0xebd80",
+    "0xebd98"
+   ],
+   [
+    "0xf53b4",
+    "0xf53bc"
+   ],
+   [
+    "0xf5d78",
+    "0xf5d7c"
+   ],
+   [
+    "0xf693c",
+    "0xf6940"
+   ],
+   [
+    "0xf6968",
+    "0xf6970"
+   ],
+   [
+    "0xf6a90",
+    "0xf6a94"
+   ],
+   [
+    "0xf6d14",
+    "0xf6d20"
+   ],
+   [
+    "0xf8634",
+    "0xf8648"
+   ],
+   [
+    "0xf86bc",
+    "0xf86c0"
+   ],
+   [
+    "0xf86dc",
+    "0xf86e4"
+   ],
+   [
+    "0x101298",
+    "0x1012b0"
+   ],
+   [
+    "0x111ab4",
+    "0x111acc"
+   ],
+   [
+    "0x111f7c",
+    "0x111f90"
+   ],
+   [
+    "0x114548",
+    "0x114554"
+   ]
+  ],
+  "0x8": [
+   [
+    "0x5ae84",
+    "0x5ae8c"
+   ],
+   [
+    "0x6a9e4",
+    "0x6a9ec"
+   ],
+   [
+    "0x6b854",
+    "0x6b858"
+   ],
+   [
+    "0x6b8f8",
+    "0x6b8fc"
+   ],
+   [
+    "0x6c6e0",
+    "0x6c6f0"
+   ],
+   [
+    "0x6c6fc",
+    "0x6c700"
+   ],
+   [
+    "0x6c8a4",
+    "0x6c8ac"
+   ],
+   [
+    "0x6c9e0",
+    "0x6c9e4"
+   ],
+   [
+    "0x6ca30",
+    "0x6ca3c"
+   ],
+   [
+    "0x6ca54",
+    "0x6ca58"
+   ],
+   [
+    "0x6cb80",
+    "0x6cb84"
+   ],
+   [
+    "0x6cd24",
+    "0x6cd2c"
+   ],
+   [
+    "0x6d518",
+    "0x6d520"
+   ],
+   [
+    "0x6d538",
+    "0x6d53c"
+   ],
+   [
+    "0x6d550",
+    "0x6d554"
+   ],
+   [
+    "0x6d568",
+    "0x6d56c"
+   ],
+   [
+    "0x6d580",
+    "0x6d584"
+   ],
+   [
+    "0x6dbc0",
+    "0x6dbc4"
+   ],
+   [
+    "0x6dcbc",
+    "0x6dcc0"
+   ],
+   [
+    "0x6ece0",
+    "0x6ece4"
+   ],
+   [
+    "0x6ed30",
+    "0x6ed3c"
+   ],
+   [
+    "0x6ed54",
+    "0x6ed58"
+   ],
+   [
+    "0x6ed54",
+    "0x6ed6c"
+   ],
+   [
+    "0x6ed68",
+    "0x6ed6c"
+   ],
+   [
+    "0x6ef3c",
+    "0x6ef40"
+   ],
+   [
+    "0x6ef58",
+    "0x6ef5c"
+   ],
+   [
+    "0x6ef58",
+    "0x6ef70"
+   ],
+   [
+    "0x6ef64",
+    "0x6ef70"
+   ],
+   [
+    "0x6f078",
+    "0x6f07c"
+   ],
+   [
+    "0x6f094",
+    "0x6f098"
+   ],
+   [
+    "0x6f0ac",
+    "0x6f0b0"
+   ],
+   [
+    "0x6f974",
+    "0x6f978"
+   ],
+   [
+    "0x6f98c",
+    "0x6f990"
+   ],
+   [
+    "0x6f9a4",
+    "0x6f9a8"
+   ],
+   [
+    "0x6fce4",
+    "0x6fcf0"
+   ],
+   [
+    "0x6fd5c",
+    "0x6fd60"
+   ],
+   [
+    "0x6fd90",
+    "0x6fd94"
+   ],
+   [
+    "0x70aa4",
+    "0x70aa8"
+   ],
+   [
+    "0x70b44",
+    "0x70b48"
+   ],
+   [
+    "0x70d20",
+    "0x70d24"
+   ],
+   [
+    "0x70d58",
+    "0x70d5c"
+   ],
+   [
+    "0x71108",
+    "0x7110c"
+   ],
+   [
+    "0x712e0",
+    "0x712e4"
+   ],
+   [
+    "0x71460",
+    "0x71464"
+   ],
+   [
+    "0x95cf0",
+    "0x95d00"
+   ],
+   [
+    "0x9a954",
+    "0x9a95c"
+   ],
+   [
+    "0x9a96c",
+    "0x9a974"
+   ],
+   [
+    "0x9b010",
+    "0x9b014"
+   ],
+   [
+    "0x9b518",
+    "0x9b524"
+   ],
+   [
+    "0x9b558",
+    "0x9b564"
+   ],
+   [
+    "0x9efb4",
+    "0x9efb8"
+   ],
+   [
+    "0x9f008",
+    "0x9f018"
+   ],
+   [
+    "0x9f024",
+    "0x9f030"
+   ],
+   [
+    "0x9f058",
+    "0x9f05c"
+   ],
+   [
+    "0x9f0ac",
+    "0x9f0b8"
+   ],
+   [
+    "0x9f0cc",
+    "0x9f0d4"
+   ],
+   [
+    "0x9f104",
+    "0x9f118"
+   ],
+   [
+    "0x9f13c",
+    "0x9f140"
+   ],
+   [
+    "0xabe04",
+    "0xabe08"
+   ],
+   [
+    "0xac0a4",
+    "0xac0a8"
+   ],
+   [
+    "0xac468",
+    "0xac46c"
+   ],
+   [
+    "0xac468",
+    "0xac480"
+   ],
+   [
+    "0xac54c",
+    "0xac550"
+   ],
+   [
+    "0xac54c",
+    "0xac564"
+   ],
+   [
+    "0xac994",
+    "0xac9a0"
+   ],
+   [
+    "0xace14",
+    "0xace1c"
+   ],
+   [
+    "0xd241c",
+    "0xd242c"
+   ],
+   [
+    "0xd2438",
+    "0xd243c"
+   ],
+   [
+    "0xd2464",
+    "0xd2468"
+   ],
+   [
+    "0xd2490",
+    "0xd2494"
+   ],
+   [
+    "0xd2490",
+    "0xd24a8"
+   ],
+   [
+    "0xd24a0",
+    "0xd24a8"
+   ],
+   [
+    "0xeb940",
+    "0xeb944"
+   ],
+   [
+    "0xebb3c",
+    "0xebb40"
+   ],
+   [
+    "0xebd18",
+    "0xebd1c"
+   ]
+  ],
+  "0x10": [
+   [
+    "0x593b4",
+    "0x593bc"
+   ],
+   [
+    "0x9a618",
+    "0x9a620"
+   ],
+   [
+    "0xac0fc",
+    "0xac104"
+   ],
+   [
+    "0xeb69c",
+    "0xeb6a4"
+   ],
+   [
+    "0xeb69c",
+    "0xeb6b0"
+   ],
+   [
+    "0xeb6b4",
+    "0xeb6bc"
+   ],
+   [
+    "0xeb6b4",
+    "0xeb6c8"
+   ],
+   [
+    "0xeb70c",
+    "0xeb718"
+   ],
+   [
+    "0xeb70c",
+    "0xeb724"
+   ],
+   [
+    "0xeb74c",
+    "0xeb754"
+   ],
+   [
+    "0xeb74c",
+    "0xeb760"
+   ],
+   [
+    "0xeb764",
+    "0xeb76c"
+   ],
+   [
+    "0xeb764",
+    "0xeb778"
+   ],
+   [
+    "0xeb784",
+    "0xeb790"
+   ],
+   [
+    "0xeb784",
+    "0xeb79c"
+   ],
+   [
+    "0xeb7c4",
+    "0xeb7cc"
+   ],
+   [
+    "0xeb7c4",
+    "0xeb7d8"
+   ],
+   [
+    "0xeb7dc",
+    "0xeb7e4"
+   ],
+   [
+    "0xeb7dc",
+    "0xeb7f0"
+   ],
+   [
+    "0xeb82c",
+    "0xeb834"
+   ],
+   [
+    "0xeb82c",
+    "0xeb840"
+   ],
+   [
+    "0xeb854",
+    "0xeb860"
+   ],
+   [
+    "0xeb854",
+    "0xeb86c"
+   ],
+   [
+    "0xeb88c",
+    "0xeb898"
+   ],
+   [
+    "0xeb88c",
+    "0xeb8a4"
+   ],
+   [
+    "0xeb8b4",
+    "0xeb8bc"
+   ],
+   [
+    "0xeb8b4",
+    "0xeb8c8"
+   ],
+   [
+    "0xeb8f4",
+    "0xeb8fc"
+   ],
+   [
+    "0xeb8f4",
+    "0xeb908"
+   ],
+   [
+    "0xeb954",
+    "0xeb95c"
+   ],
+   [
+    "0xeb954",
+    "0xeb968"
+   ],
+   [
+    "0xeba3c",
+    "0xeba44"
+   ],
+   [
+    "0xeba3c",
+    "0xeba50"
+   ],
+   [
+    "0xebb50",
+    "0xebb58"
+   ],
+   [
+    "0xebb50",
+    "0xebb64"
+   ],
+   [
+    "0xebbec",
+    "0xebbf4"
+   ],
+   [
+    "0xebbec",
+    "0xebc00"
+   ],
+   [
+    "0xebcac",
+    "0xebcb4"
+   ],
+   [
+    "0xebcac",
+    "0xebcc0"
+   ],
+   [
+    "0xebd2c",
+    "0xebd34"
+   ],
+   [
+    "0xebd2c",
+    "0xebd40"
+   ],
+   [
+    "0xebd9c",
+    "0xebda4"
+   ],
+   [
+    "0xebd9c",
+    "0xebdb0"
+   ],
+   [
+    "0xefb6c",
+    "0xefb7c"
+   ],
+   [
+    "0xf2664",
+    "0xf2674"
+   ],
+   [
+    "0xfa80c",
+    "0xfa81c"
+   ],
+   [
+    "0xfa974",
+    "0xfa98c"
+   ],
+   [
+    "0x101550",
+    "0x10155c"
+   ],
+   [
+    "0x101590",
+    "0x101598"
+   ],
+   [
+    "0x1015e0",
+    "0x1015e4"
+   ],
+   [
+    "0x101630",
+    "0x10163c"
+   ],
+   [
+    "0x116664",
+    "0x116670"
+   ],
+   [
+    "0x1169ac",
+    "0x1169b8"
+   ],
+   [
+    "0x1170d8",
+    "0x1170e4"
+   ],
+   [
+    "0x1170ec",
+    "0x1170f8"
+   ],
+   [
+    "0x11d490",
+    "0x11d49c"
+   ]
+  ],
+  "0x1c": [
+   [
+    "0x59e40",
+    "0x59e48"
+   ],
+   [
+    "0x5a02c",
+    "0x5a034"
+   ],
+   [
+    "0x5a294",
+    "0x5a29c"
+   ],
+   [
+    "0x6d910",
+    "0x6d91c"
+   ],
+   [
+    "0x6fd78",
+    "0x6fd84"
+   ],
+   [
+    "0x7b238",
+    "0x7b24c"
+   ],
+   [
+    "0x9644c",
+    "0x96454"
+   ],
+   [
+    "0x96478",
+    "0x96480"
+   ],
+   [
+    "0xea424",
+    "0xea434"
+   ],
+   [
+    "0xea4b4",
+    "0xea4c4"
+   ],
+   [
+    "0xeaeb8",
+    "0xeaec0"
+   ],
+   [
+    "0xeb6a8",
+    "0xeb6b0"
+   ],
+   [
+    "0xeb6c0",
+    "0xeb6c8"
+   ],
+   [
+    "0xeb71c",
+    "0xeb724"
+   ],
+   [
+    "0xeb71c",
+    "0xeb730"
+   ],
+   [
+    "0xeb740",
+    "0xeb748"
+   ],
+   [
+    "0xeb740",
+    "0xeb754"
+   ],
+   [
+    "0xeb758",
+    "0xeb760"
+   ],
+   [
+    "0xeb758",
+    "0xeb76c"
+   ],
+   [
+    "0xeb770",
+    "0xeb778"
+   ],
+   [
+    "0xeb794",
+    "0xeb79c"
+   ],
+   [
+    "0xeb794",
+    "0xeb7a8"
+   ],
+   [
+    "0xeb7b8",
+    "0xeb7c0"
+   ],
+   [
+    "0xeb7b8",
+    "0xeb7cc"
+   ],
+   [
+    "0xeb7d0",
+    "0xeb7d8"
+   ],
+   [
+    "0xeb7d0",
+    "0xeb7e4"
+   ],
+   [
+    "0xeb7e8",
+    "0xeb7f0"
+   ],
+   [
+    "0xeb838",
+    "0xeb840"
+   ],
+   [
+    "0xeb838",
+    "0xeb84c"
+   ],
+   [
+    "0xeb864",
+    "0xeb86c"
+   ],
+   [
+    "0xeb89c",
+    "0xeb8a4"
+   ],
+   [
+    "0xeb89c",
+    "0xeb8b0"
+   ],
+   [
+    "0xeb8c0",
+    "0xeb8c8"
+   ],
+   [
+    "0xeb8dc",
+    "0xeb8e8"
+   ],
+   [
+    "0xeb900",
+    "0xeb908"
+   ],
+   [
+    "0xeb960",
+    "0xeb968"
+   ],
+   [
+    "0xeb960",
+    "0xeb974"
+   ],
+   [
+    "0xeb978",
+    "0xeb980"
+   ],
+   [
+    "0xeb978",
+    "0xeb98c"
+   ],
+   [
+    "0xeb990",
+    "0xeb998"
+   ],
+   [
+    "0xeba48",
+    "0xeba50"
+   ],
+   [
+    "0xeba48",
+    "0xeba5c"
+   ],
+   [
+    "0xeba60",
+    "0xeba68"
+   ],
+   [
+    "0xeba60",
+    "0xeba74"
+   ],
+   [
+    "0xeba78",
+    "0xeba80"
+   ],
+   [
+    "0xebb5c",
+    "0xebb64"
+   ],
+   [
+    "0xebb5c",
+    "0xebb70"
+   ],
+   [
+    "0xebb74",
+    "0xebb7c"
+   ],
+   [
+    "0xebb74",
+    "0xebb88"
+   ],
+   [
+    "0xebb8c",
+    "0xebb94"
+   ],
+   [
+    "0xebbf8",
+    "0xebc00"
+   ],
+   [
+    "0xebbf8",
+    "0xebc0c"
+   ],
+   [
+    "0xebc10",
+    "0xebc18"
+   ],
+   [
+    "0xebc10",
+    "0xebc24"
+   ],
+   [
+    "0xebc28",
+    "0xebc30"
+   ],
+   [
+    "0xebcb8",
+    "0xebcc0"
+   ],
+   [
+    "0xebcb8",
+    "0xebccc"
+   ],
+   [
+    "0xebcd0",
+    "0xebcd8"
+   ],
+   [
+    "0xebcd0",
+    "0xebce4"
+   ],
+   [
+    "0xebce8",
+    "0xebcf0"
+   ],
+   [
+    "0xebd38",
+    "0xebd40"
+   ],
+   [
+    "0xebd38",
+    "0xebd4c"
+   ],
+   [
+    "0xebd50",
+    "0xebd58"
+   ],
+   [
+    "0xebd50",
+    "0xebd64"
+   ],
+   [
+    "0xebd68",
+    "0xebd70"
+   ],
+   [
+    "0xebd68",
+    "0xebd7c"
+   ],
+   [
+    "0xebd74",
+    "0xebd7c"
+   ],
+   [
+    "0xebda8",
+    "0xebdb0"
+   ],
+   [
+    "0xebda8",
+    "0xebdbc"
+   ],
+   [
+    "0xebdc0",
+    "0xebdc8"
+   ],
+   [
+    "0xebdc0",
+    "0xebdd4"
+   ],
+   [
+    "0xebdd8",
+    "0xebde0"
+   ],
+   [
+    "0xebdd8",
+    "0xebdf0"
+   ],
+   [
+    "0xebde8",
+    "0xebdf0"
+   ],
+   [
+    "0xebe14",
+    "0xebe1c"
+   ]
+  ]
+ },
+ "gcr": [
+  {
+   "mov": "0x85f2c",
+   "reg": "r2",
+   "accesses": [
+    "ldr@0x85F30:r2, #0x18",
+    "str@0x85F38:r2, #0x18",
+    "ldr@0x85F3C:r2, #0x18",
+    "str@0x85F48:r2, #0x18"
+   ]
+  },
+  {
+   "mov": "0x89f50",
+   "reg": "r5",
+   "accesses": [
+    "ldr@0x89F6C:r5, #0x84",
+    "str@0x89F84:r5, #0x84",
+    "ldr@0x89FB4:r5, #0x90",
+    "str@0x89FBC:r5, #0x90"
+   ]
+  },
+  {
+   "mov": "0x8a314",
+   "reg": "r1",
+   "accesses": [
+    "ldr@0x8A318:r1, #0x8c",
+    "str@0x8A328:r1, #0x8c",
+    "ldr@0x8A32C:r1, #0x8c",
+    "str@0x8A344:r1, #0x8c",
+    "ldr@0x8A348:r1, #0x208",
+    "str@0x8A350:r1, #0x208",
+    "str@0x8A354:r1, #0x18",
+    "ldr@0x8A358:r1, #0x18",
+    "str@0x8A368:r1, #0x18"
+   ]
+  },
+  {
+   "mov": "0x8a730",
+   "reg": "r1",
+   "accesses": [
+    "ldr@0x8A738:r1, #0x20",
+    "str@0x8A740:r1, #0x20"
+   ]
+  },
+  {
+   "mov": "0xa9124",
+   "reg": "r1",
+   "accesses": [
+    "ldr@0xA9130:r1, #0x204",
+    "str@0xA913C:r1, #0x204",
+    "ldr@0xA9140:r1, #0x204",
+    "str@0xA9150:r1, #0x204",
+    "ldr@0xA9154:r1, #0x204",
+    "str@0xA915C:r1, #0x204"
+   ]
+  },
+  {
+   "mov": "0xa91e0",
+   "reg": "r8",
+   "accesses": []
+  },
+  {
+   "mov": "0xa9a6c",
+   "reg": "r2",
+   "accesses": [
+    "ldr@0xA9A88:r2, #0x90",
+    "str@0xA9A94:r2, #0x90",
+    "ldr@0xA9A98:r2, #0x8c",
+    "str@0xA9AA4:r2, #0x8c"
+   ]
+  },
+  {
+   "mov": "0xa9b70",
+   "reg": "r1",
+   "accesses": [
+    "ldr@0xA9B74:r1, #0x214",
+    "str@0xA9B7C:r1, #0x214",
+    "ldr@0xA9B80:r1, #0x214",
+    "str@0xA9B88:r1, #0x214",
+    "ldr@0xA9BAC:r1, #0x214",
+    "str@0xA9BBC:r1, #0x214"
+   ]
+  },
+  {
+   "mov": "0xaa66c",
+   "reg": "r2",
+   "accesses": [
+    "ldr@0xAA670:r2, #0x214",
+    "str@0xAA67C:r2, #0x214",
+    "ldr@0xAA680:r2, #0x214",
+    "str@0xAA68C:r2, #0x214",
+    "ldr@0xAA698:r2, #0x214",
+    "str@0xAA6AC:r2, #0x214"
+   ]
+  },
+  {
+   "mov": "0xb4224",
+   "reg": "r4",
+   "accesses": [
+    "ldr@0xB422C:r4, #0x208",
+    "str@0xB4234:r4, #0x208",
+    "ldr@0xB424C:r4, #0x208",
+    "str@0xB425C:r4, #0x208",
+    "ldr@0xB4260:r4, #0x18",
+    "str@0xB4268:r4, #0x18",
+    "ldr@0xB426C:r4, #0x18",
+    "str@0xB4274:r4, #0x18",
+    "ldr@0xB42BC:r4, #0x208",
+    "str@0xB42C4:r4, #0x208"
+   ]
+  },
+  {
+   "mov": "0xc7c24",
+   "reg": "r4",
+   "accesses": [
+    "ldr@0xC7C28:r4, #0x204",
+    "str@0xC7C34:r4, #0x204",
+    "ldr@0xC7C38:r4, #0x14",
+    "str@0xC7C40:r4, #0x14",
+    "ldr@0xC7C44:r4, #0x14",
+    "str@0xC7C4C:r4, #0x14",
+    "ldr@0xC7C50:r4, #0x204",
+    "str@0xC7C58:r4, #0x204",
+    "ldr@0xC7C5C:r4, #0x14",
+    "str@0xC7C64:r4, #0x14",
+    "ldr@0xC7C68:r4, #0x14",
+    "str@0xC7C70:r4, #0x14",
+    "ldr@0xC7CB8:r4, #0x208",
+    "str@0xC7CC0:r4, #0x208",
+    "ldr@0xC7CC4:r4, #0x18",
+    "str@0xC7CCC:r4, #0x18",
+    "ldr@0xC7CD0:r4, #0x18",
+    "str@0xC7CD8:r4, #0x18"
+   ]
+  },
+  {
+   "mov": "0xd8b80",
+   "reg": "r4",
+   "accesses": [
+    "ldr@0xD8B84:r4, #0x208",
+    "str@0xD8B90:r4, #0x208",
+    "ldr@0xD8B94:r4, #0x18",
+    "str@0xD8B9C:r4, #0x18",
+    "ldr@0xD8BA0:r4, #0x18",
+    "str@0xD8BA8:r4, #0x18",
+    "ldr@0xD8BC4:r4, #0x8c",
+    "str@0xD8BD0:r4, #0x8c"
+   ]
+  },
+  {
+   "mov": "0xe2dd0",
+   "reg": "r6",
+   "accesses": [
+    "ldr@0xE2DD8:r6, #0x18",
+    "str@0xE2DE8:r6, #0x18",
+    "ldr@0xE2DEC:r6, #0x18",
+    "str@0xE2DF4:r6, #0x18",
+    "ldr@0xE2E68:r6, #0x18",
+    "str@0xE2E70:r6, #0x18",
+    "ldr@0xE2E74:r6, #0x18",
+    "str@0xE2E7C:r6, #0x18"
+   ]
+  },
+  {
+   "mov": "0xf9af4",
+   "reg": "r5",
+   "accesses": [
+    "ldr@0xF9AF8:r5, #0x20c",
+    "ldr@0xF9B08:r5, #0x20c",
+    "ldr@0xF9B18:r5, #0x20c",
+    "ldr@0xF9B34:r5, #0x20c",
+    "ldr@0xF9B58:r5, #0x20c",
+    "ldr@0xF9B74:r5, #0x21c"
+   ]
+  },
+  {
+   "mov": "0xf9c10",
+   "reg": "r2",
+   "accesses": [
+    "ldr@0xF9C14:r2, #4"
+   ]
+  },
+  {
+   "mov": "0xf9c5c",
+   "reg": "r3",
+   "accesses": [
+    "ldreq@0xF9C64:r3, #0x220",
+    "ldreq@0xF9C70:r3, #0x224"
+   ]
+  },
+  {
+   "mov": "0x1077c8",
+   "reg": "r0",
+   "accesses": [
+    "ldr@0x1077CC:r0, #0x204"
+   ]
+  },
+  {
+   "mov": "0x1077d4",
+   "reg": "r1",
+   "accesses": [
+    "str@0x1077D8:r1, #0x204"
+   ]
+  },
+  {
+   "mov": "0x1079d8",
+   "reg": "r0",
+   "accesses": [
+    "ldr@0x1079DC:r0, #0x214"
+   ]
+  },
+  {
+   "mov": "0x1079e8",
+   "reg": "r1",
+   "accesses": [
+    "str@0x1079EC:r1, #0x214"
+   ]
+  },
+  {
+   "mov": "0x107a1c",
+   "reg": "r0",
+   "accesses": [
+    "ldr@0x107A20:r0, #0x214"
+   ]
+  },
+  {
+   "mov": "0x107a30",
+   "reg": "r1",
+   "accesses": [
+    "str@0x107A34:r1, #0x214"
+   ]
+  },
+  {
+   "mov": "0x107a94",
+   "reg": "r0",
+   "accesses": [
+    "ldr@0x107A98:r0, #0x204"
+   ]
+  },
+  {
+   "mov": "0x107aa0",
+   "reg": "r1",
+   "accesses": [
+    "str@0x107AA4:r1, #0x204",
+    "str@0x107AB4:r1, #0x14",
+    "str@0x107AC4:r1, #0x14"
+   ]
+  },
+  {
+   "mov": "0x107aa8",
+   "reg": "r0",
+   "accesses": [
+    "ldr@0x107AAC:r0, #0x14"
+   ]
+  },
+  {
+   "mov": "0x107ab8",
+   "reg": "r0",
+   "accesses": [
+    "ldr@0x107ABC:r0, #0x14"
+   ]
+  },
+  {
+   "mov": "0x10b6a0",
+   "reg": "r4",
+   "accesses": [
+    "ldr@0x10B6B4:r4, #0x208",
+    "str@0x10B6BC:r4, #0x208",
+    "ldr@0x10B6C0:r4, #0x18",
+    "str@0x10B6C8:r4, #0x18",
+    "ldr@0x10B6CC:r4, #0x18",
+    "str@0x10B6D4:r4, #0x18",
+    "ldr@0x10B720:r4, #0x208",
+    "str@0x10B728:r4, #0x208"
+   ]
+  }
+ ],
+ "tool120": {
+  "span": "0x1D4000-0x1F2000",
+  "words": 30720,
+  "in_old_code_range_0x200000_0x2D0000": 23382,
+  "in_new_code_range_0x58000_0x120000": 5,
+  "aligned_new_code_addresses_hit": 0,
+  "in_whole_image": 23862,
+  "run_0x1F17A0": [
+   "0x28a198",
+   "0x28a1a0",
+   "0x28a1a8",
+   "0x28a1b8",
+   "0x28a1b0",
+   "0x28a1c0",
+   "0x28a1c8",
+   "0x28a1d0",
+   "0x28a1d8",
+   "0x28a1e0"
+  ],
+  "bytes_at_0x28A198_utf8": "\u7784\u51c6..\u82d7\u65cf..\u5bc6\u95ed..",
+  "run_0x1DEFC0": [
+   "0x263a40",
+   "0x263cfc",
+   "0x263fb8",
+   "0x264274",
+   "0x264530",
+   "0x2647e8",
+   "0x264aa4",
+   "0x264d60",
+   "0x26501c",
+   "0x2652d8"
+  ]
+ }
+}
