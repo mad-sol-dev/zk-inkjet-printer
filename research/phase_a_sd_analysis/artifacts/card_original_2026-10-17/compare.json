@@ -1,0 +1,27 @@
+{
+ "source": "original 4 GB card, imaged 2026-10-17 by the maintainer with sudo dd if=/dev/sdc (read-only) to backup/sdcard.original_2026-10-17.img next to the repository (not committed); compared here",
+ "card": {"bytes": 4026531840, "sha256": "7efd306912adab7610419268ae21d03e0298a7ce2e909130282c33aaaa79b3d0"},
+ "repo_images_rehashed_2026-10-17": {
+  "sdcard.work.img": "6c19248aa79b6f990b45aa1d4f18c58c92d1317a23d0bd36c285d83cadb8b95b (= CHECKSUMS.txt)",
+  "sdcard.clean-raw.img": "fb2b1cda43d26ee92a4a48f36acf175730492ac2f357500bb1003db45455d5e4 (= CHECKSUMS.txt)",
+  "sdcard.clean_after_boot.img": "8ea53796a0549d30208efb3ad5fea85cdccc448ccfb650a65d118143e280509a (= CHECKSUMS.txt)",
+  "sdcard.minimal.img": "32d14c1288dad191a5c73b3dc32703b9e0410c64d6d79f5d587d814f1cff081f (not listed in CHECKSUMS.txt)"
+ },
+ "diff_card_vs_work_img_4KiB_blocks": [
+  ["0x28000000", "0x28001000", "settings block, 29 bytes differ"],
+  ["0x28800000", "0x28801000", "store slot 0 header, 11 bytes differ (+0x28..+0x3C, +0x4F..+0x53)"],
+  ["0x2A61B000", "0x2A61D000", "MINI volume boot sector / FAT"],
+  ["0x2A624000", "0x2A625000", "MINI root directory"],
+  ["0x2A628000", "0x2A629000", "MINI data"],
+  ["0x2A62B000", "0x2A63B000", "MINI data"]
+ ],
+ "diff_total_bytes": 90112,
+ "mini_root_card": "live marker.txt (58 bytes, 2025-10-01 13:43); 24 deleted update-name probes dated 2025-10-01 13:17 (FW.BIN, UPGRADE.BIN, update.img, firmware.upd, update.zip, SystemUpdate.zip, system_update.zip, auto_update.img, package.zip, system.upd, update.upd, upgrade.upg, MINI.UPD, MINI.FW, UPDATE.TAR, INSTALL.BIN, firmware.pkg, update.pkg, update.ota, ota_update.zip, update.tar.gz, FW.SIGN, update_package_a.zip, FW_PACKAGE.zip)",
+ "mini_root_work_img": "deleted ZK-INKJET-UI-QVGA.bin (307200 bytes, 2022-09-30 18:15) only",
+ "ext_superblocks_work_img": [
+  {"at": "0x18900000", "fs_bytes": 7.94e9, "volume_name": "rootfs", "block_group": 3, "wtime_utc": "2015-06-16 12:22", "mkfs_utc": "2015-06-16 12:22", "uuid": "11bf1134-ed79-497f-bdb1-5a75c9d73601"},
+  {"at": "0x19F00600", "fs_bytes": 0.54e9, "volume_name": "", "block_group": 49, "times": "0 (1970-01-01)", "uuid": "4891e26c-8f15-4be8-bba9-759c7d531f53"},
+  {"at": ["0x21700600", "0x21936600", "0x21944600", "0x2194B600"], "fs_bytes": 0.54e9, "last_mounted": "/cache", "block_group": 0, "mtime_utc": "2015-06-16 12:21 (first), 1970-01-02 00:03 (others)", "uuid": "57f8f4bc-abf4-655f-bf67-946fc0f9f25b"}
+ ],
+ "ext_filter": "512-aligned, magic 0xEF53 at +0x38, log block size <= 6, rev 0/1, blocks per group 8192/16384/32768, creator OS 0-4"
+}

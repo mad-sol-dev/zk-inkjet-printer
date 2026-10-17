@@ -17,9 +17,14 @@ writes report.txt and raw.json there.
      APP.bin and in the resource files, ASCII and UTF-16, case-insensitive,
      with fonts the firmware does name as control; the font path table.
 
-    python3 tools/scripts/card_recheck.py [--out DIR]
+  C  ext superblocks in sdcard.work.img (CL-STORAGE-REC-108/-014): volume
+     name, size, times, uuid -- whose file systems lie in the gaps.
+  D  with --card IMAGE: sha256 of an image of the original card and the
+     4 KiB blocks in which it differs from sdcard.work.img.
+
+    python3 tools/scripts/card_recheck.py [--card IMAGE] [--out DIR]
 """
-import json, os, re, struct, sys
+import datetime, hashlib, json, mmap, os, re, struct, sys, uuid
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import neg_recheck as n  # noqa: E402
@@ -269,13 +274,75 @@ def part_b(p, raw):
       % (len(pt), ', '.join(pt)))
 
 
+def part_c(p, raw):
+    p('\n== C: ext superblocks in sdcard.work.img (CL-STORAGE-REC-108, CL-STORAGE-REC-014) ==')
+    p('  filter: 512-aligned, magic 0xEF53 at +0x38, log block size <= 6, rev 0/1,')
+    p('  blocks per group 8192/16384/32768, creator OS 0-4')
+    out = raw['C'] = []
+
+    def ts(t):
+        return datetime.datetime.fromtimestamp(t, datetime.timezone.utc).strftime('%Y-%m-%d %H:%M') if t else '0'
+    with open(WORK, 'rb') as f:
+        m = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+        i = m.find(b'\x53\xef')
+        while i != -1:
+            sb = i - 0x38
+            if sb >= 0 and sb % 512 == 0:
+                b = m[sb:sb + 1024]
+                v = struct.unpack_from('<IIIIIIIIIIIIIHhHHHHIIII', b, 0)
+                blocks, logbs, bpg, mtime, wtime, magic, creator, rev = v[1], v[6], v[8], v[11], v[12], v[15], v[21], v[22]
+                if magic == 0xEF53 and logbs <= 6 and rev in (0, 1) and bpg in (8192, 16384, 32768) and creator <= 4:
+                    e = {'at': hex(sb), 'fs_bytes': blocks * (1024 << logbs),
+                         'name': b[0x78:0x88].split(b'\0')[0].decode('latin-1'),
+                         'last_mounted': b[0x88:0xC8].split(b'\0')[0].decode('latin-1'),
+                         'mtime': ts(mtime), 'wtime': ts(wtime),
+                         'mkfs': ts(struct.unpack_from('<I', b, 0x108)[0]),
+                         'group': struct.unpack_from('<H', b, 0x5A)[0],
+                         'uuid': str(uuid.UUID(bytes=b[0x68:0x78]))}
+                    out.append(e)
+                    p('  0x%09X %5.2f GB name %-8r mounted %-8r mtime %s wtime %s mkfs %s group %d uuid %s'
+                      % (sb, e['fs_bytes'] / 1e9, e['name'], e['last_mounted'], e['mtime'], e['wtime'],
+                         e['mkfs'], e['group'], e['uuid']))
+            i = m.find(b'\x53\xef', i + 1)
+
+
+def part_d(p, raw, card):
+    p('\n== D: original card image against sdcard.work.img ==')
+    h = hashlib.sha256()
+    runs = []
+    off = 0
+    with open(card, 'rb') as fa, open(WORK, 'rb') as fb:
+        while True:
+            x, y = fa.read(1 << 22), fb.read(1 << 22)
+            if not x:
+                break
+            h.update(x)
+            if x != y:
+                for k in range(0, len(x), 4096):
+                    if x[k:k + 4096] != y[k:k + 4096]:
+                        s0 = off + k
+                        if runs and runs[-1][1] == s0:
+                            runs[-1][1] = s0 + 4096
+                        else:
+                            runs.append([s0, s0 + 4096])
+            off += len(x)
+    raw['D'] = {'bytes': off, 'sha256': h.hexdigest(), 'runs': [(hex(a), hex(b)) for a, b in runs]}
+    p('  %d bytes, sha256 %s' % (off, h.hexdigest()))
+    p('  %d differing runs, %d bytes: %s' % (len(runs), sum(b - a for a, b in runs),
+                                            ', '.join('%X-%X' % (a, b) for a, b in runs)))
+
+
 def main():
     out_dir = sys.argv[sys.argv.index('--out') + 1] if '--out' in sys.argv else None
+    card = sys.argv[sys.argv.index('--card') + 1] if '--card' in sys.argv else None
     lines, raw = [], {}
     p = lines.append
     p('card_recheck.py -- CL-STORAGE-REC-118/-119/-120, read-only, card addresses are image offsets')
     part_a(p, raw)
     part_b(p, raw)
+    part_c(p, raw)
+    if card:
+        part_d(p, raw, card)
     txt = '\n'.join(lines)
     print(txt)
     if out_dir:

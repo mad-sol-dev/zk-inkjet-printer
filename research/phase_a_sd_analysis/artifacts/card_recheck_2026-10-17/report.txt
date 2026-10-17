@@ -135,3 +135,17 @@ card_recheck.py -- CL-STORAGE-REC-118/-119/-120, read-only, card addresses are i
   enumeration patterns in APP.bin: *.ttf=0, *.ttc=0, *.otf=0, *.*=2, .ttf=22, .ttc=4, .otf=3, ttf=24, 0:/=33, 0:/user/font=5, user/font=5, %s.ttf=0
   "Calibri" in APP.bin: VA 0x2493A4, in the list ['Droid', 'Calibri', 'Arial', 'TimesNewRoman', 'Open Sans', 'Montserrat']
   font path table 0x12B094 (ldr at 0xB501C, 0xB708C, 0xB71E0, 0xB96FC), 15 entries: 0:/arial.ttf, 0:/DroidSansFallback.ttf, 0:/Montserrat-Regular.otf, 0:/OpenSans-Regular.ttf, 0:/times.ttf, 0:/msyh.ttc, 0:/simsun.ttc, 0:/simfang.ttf, 0:/simhei.ttf, 0:/simkai.ttf, 0:/SIMLI.TTF, 0:/SIMYOU.TTF, 0:/FZHTJW.TTF, 0:/FZFSJW.ttf, 0:/FZKTJW.ttf
+
+== C: ext superblocks in sdcard.work.img (CL-STORAGE-REC-108, CL-STORAGE-REC-014) ==
+  filter: 512-aligned, magic 0xEF53 at +0x38, log block size <= 6, rev 0/1,
+  blocks per group 8192/16384/32768, creator OS 0-4
+  0x018900000  7.94 GB name 'rootfs' mounted ''       mtime 0 wtime 2015-06-16 12:22 mkfs 2015-06-16 12:22 group 3 uuid 11bf1134-ed79-497f-bdb1-5a75c9d73601
+  0x019F00600  0.54 GB name ''       mounted ''       mtime 0 wtime 1970-01-01 00:00 mkfs 1970-01-01 00:00 group 49 uuid 4891e26c-8f15-4be8-bba9-759c7d531f53
+  0x021700600  0.54 GB name ''       mounted '/cache' mtime 2015-06-16 12:21 wtime 2015-06-16 12:22 mkfs 0 group 0 uuid 57f8f4bc-abf4-655f-bf67-946fc0f9f25b
+  0x021936600  0.54 GB name ''       mounted '/cache' mtime 1970-01-02 00:03 wtime 1970-01-02 00:03 mkfs 0 group 0 uuid 57f8f4bc-abf4-655f-bf67-946fc0f9f25b
+  0x021944600  0.54 GB name ''       mounted '/cache' mtime 1970-01-02 00:03 wtime 1970-01-02 00:03 mkfs 0 group 0 uuid 57f8f4bc-abf4-655f-bf67-946fc0f9f25b
+  0x02194B600  0.54 GB name ''       mounted '/cache' mtime 1970-01-02 00:03 wtime 1970-01-02 00:03 mkfs 0 group 0 uuid 57f8f4bc-abf4-655f-bf67-946fc0f9f25b
+
+== D: original card image against sdcard.work.img ==
+  4026531840 bytes, sha256 7efd306912adab7610419268ae21d03e0298a7ce2e909130282c33aaaa79b3d0
+  6 differing runs, 90112 bytes: 28000000-28001000, 28800000-28801000, 2A61B000-2A61D000, 2A624000-2A625000, 2A628000-2A629000, 2A62B000-2A63B000
