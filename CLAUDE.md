@@ -268,10 +268,13 @@ gegen eine Kandidatenmenge beweist ohne Dichte-Vergleich nichts.
   die APP.bin sich beim Start selbst anlegt: 0x00000000-0x00044FC0, mit der
   ARM-Vektortabelle bei 0 (CL-BOOT-REC-114). Absolute Adressen wie `0x7D8` oder
   `0x82EC` sind Globals dort und stehen in keiner Datei.
-- **ARM/Thumb gemischt.** Thumb-Code liegt im Bereich file+0x10000-0x1FFFF
-  (CL-BOOT-REC-016, dort noch als 0x00210000-0x0021FFFF notiert). Das heisst
-  *nicht*, dass ARM auf die ersten 64 KiB beschraenkt waere -- der weitaus
-  groesste Teil des Bildes darueber ist ebenfalls ARM, etwa
+- **ARM/Thumb gemischt.** Thumb-Code liegt laut Ghidra-Listing vor allem bei
+  file+0xC74C-0x11B72, file+0x27550-0x29F62 und file+0xC3A18-0xC3FF8, dazu
+  einige Kleinstlaeufe (CL-BOOT-REC-117, gemessen mit
+  `tools/scripts/ghidra/thumb_ranges.py`). Das fruehere Fenster
+  file+0x10000-0x1FFFF (CL-BOOT-REC-016) war falsch. Eigene Decoder nehmen
+  die Thumb-Bereiche aus dem Listing, nicht aus einem festen Fenster; das
+  Listing selbst ist eine Untergrenze. Alles uebrige Code ist ARM, etwa
   `mov r8,#0x28800000` bei file+0x65FE4.
 
 ## Repository
