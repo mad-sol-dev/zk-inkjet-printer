@@ -42,6 +42,16 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
    Validator prueft es). Der Weg dorthin steht in den Commit-Nachrichten mit
    der Claim-ID. Ein Ergebnis, das fuer sich gilt, wird eine eigene Zeile.
 
+10. **Das Repository ist englisch.** Was neu ins Repository kommt, wird
+    englisch geschrieben: Zellen in `TRUTH.csv` (Topic, Statement,
+    Next_Test, Evidenz), Commit-Nachrichten, Kommentare und Docstrings,
+    Ausgaben und Meldungen von Skripten, neue Dateien. Die Unterhaltung mit
+    dem Maintainer bleibt deutsch. Der deutsche Bestand wird nicht
+    nachtraeglich uebersetzt; wer eine Zelle ohnehin neu schreibt, schreibt
+    sie englisch. Ergaenzungen in einer bestehenden deutschen Datei folgen
+    der Sprache der Datei, bis sie als Ganzes uebersetzt wird -- eine Datei
+    halb deutsch, halb englisch hilft niemandem.
+
 <!-- ZK-TRUTH-RULES: Ende -->
 
 # Agent & Repository Guidelines
