@@ -16,3 +16,12 @@ NEUE_ZEILE = {
     "Evidence_E0": "0", "Evidence_E3New": "0", "Evidence_E1": "0",
     "Evidence_E3Old": "0", "Evidence_E4": "0", "Authority": "E0",
 }
+
+# Fuer die Ansicht (truth_ansicht.py): Seitentitel und was die Pruefstufen hier heissen.
+ANSICHT_TITEL = "ZK-Inkjet truth register"
+ANSICHT_ORACLE = {
+    "O1": ("derived", "Derived from other rows, documents or plausibility. Nothing was measured."),
+    "O2": ("file", "A repeatable command over a file (firmware image, card dump, capture) "
+                   "produces the statement."),
+    "O3": ("device", "Observed on the printer itself."),
+}

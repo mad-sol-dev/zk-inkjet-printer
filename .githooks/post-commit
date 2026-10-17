@@ -1,0 +1,13 @@
+#!/bin/bash
+# Erneuert nach jedem Commit die Ansicht des Registers (build/truth_ansicht.html,
+# gitignored). Laeuft erst nach dem Commit und kann ihn nicht aufhalten; schlaegt
+# die Ansicht fehl, gibt es nur einen Hinweis. post-merge, post-checkout und
+# post-rewrite rufen diese Datei ebenfalls, damit die Ansicht auch nach pull,
+# Branchwechsel und rebase zum Arbeitsbaum passt.
+for s in tools/truth_ansicht.py tools/scripts/truth_ansicht.py; do
+  if [ -f "$s" ]; then
+    python3 "$s" --leise || echo "Hinweis: Register-Ansicht nicht erneuert ($s)." >&2
+    break
+  fi
+done
+exit 0

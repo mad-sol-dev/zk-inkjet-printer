@@ -74,6 +74,15 @@ Daten (Login, Hostname, Heimatpfad, MAC-Adressen/BSSIDs, dazu lokale Muster aus
 in `.githooks/` (aktiv ueber `git config core.hooksPath .githooks`); Selbsttest:
 `python3 tools/scripts/check_privat_selbsttest.py`.
 
+Nach jedem Commit (ebenso nach pull, Branchwechsel, rebase) erzeugt ein
+post-commit-Hook die Ansicht des Registers neu: `build/truth_ansicht.html`
+(gitignored), eine Seite mit Front, tragenden Zeilen, Registertabelle mit
+Filtern, Verweisen in beide Richtungen und dem Laborjournal je Zeile. Sie ist
+aus `TRUTH.csv` und `git log` abgeleitet und fuehrt nichts Eigenes. Von Hand:
+`python3 tools/scripts/truth_ansicht.py --oeffnen`. Oeffentlich baut
+`.github/workflows/register-ansicht.yml` dieselbe Seite bei jedem Push fuer
+GitHub Pages, sobald Pages im Repository auf "GitHub Actions" steht.
+
 ## Register lesen und aendern -- tools/scripts/truth.py
 
 Seit 2026-10-15 gibt es dafuer ein Werkzeug, statt dass jede Sitzung ihr
@@ -88,6 +97,7 @@ python3 tools/scripts/truth.py find --offen --subsystem USB
 python3 tools/scripts/truth.py show CL-USB-REC-131 --felder Statement,Next_Test
 python3 tools/scripts/truth.py deps CL-BOOT-REC-113
 python3 tools/scripts/truth.py journal CL-USB-REC-128        # das Laborjournal einer Zeile
+python3 tools/scripts/truth_ansicht.py --oeffnen             # das ganze Register im Browser
 python3 tools/scripts/truth.py add --subsystem USB --topic "..." --statement "..." \
         --oracle O1 --confidence 0.5 --next-test "..." --prio next --depends CL-BOOT-REC-113
 python3 tools/scripts/truth.py close CL-USB-REC-131 --oracle O3 --confidence 0.95 \

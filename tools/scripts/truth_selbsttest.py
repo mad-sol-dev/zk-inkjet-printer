@@ -9,6 +9,7 @@ unveraendert lassen. Danach dasselbe einmal ueber den MCP-Server.
     python3 tools/truth_selbsttest.py
 """
 import csv, hashlib, json, os, shutil, subprocess, sys, tempfile
+from html.parser import HTMLParser
 
 HIER = os.path.dirname(os.path.abspath(__file__))
 
@@ -79,6 +80,104 @@ class Lauf:
         self.soll(name, rc == 1 and self.hash() == vorher and erwartet in out,
                   "rc=%d, Datei %s\n%s" % (rc, "gleich" if self.hash() == vorher else "VERAENDERT", out))
         return out
+
+
+class _Seite(HTMLParser):
+    """Liest aus der Ansicht, was der Test braucht: Zeilen mit ihren Attributen,
+    alle ids, alle Verweise und je Zeile die Journal-Hashes."""
+    def __init__(self):
+        super().__init__()
+        self.zeilen, self.ids, self.verweise, self.journal = {}, [], [], {}
+        self._zeile = None
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if "id" in a:
+            self.ids.append(a["id"])
+        if tag == "a" and (a.get("href") or "").startswith("#") and not a["href"].startswith("#?"):
+            self.verweise.append(a["href"][1:])
+        if tag == "details" and "zeile" in (a.get("class") or "").split():
+            self._zeile = a["id"]
+            self.zeilen[a["id"]] = a
+            self.journal[a["id"]] = []
+        if tag == "li" and "data-hash" in a and self._zeile:
+            self.journal[self._zeile].append(a["data-hash"])
+
+
+def ansicht_pruefen(t):
+    """Die Ansicht (truth_ansicht.py): nur lesend, byte-gleich, Verweise vollstaendig."""
+    tools = os.path.join(t.root, TOOLS_REL)
+    skript = os.path.join(tools, "truth_ansicht.py")
+    if not os.path.exists(skript):
+        print("--   Ansicht: uebersprungen, truth_ansicht.py fehlt")
+        return
+    t.erlaubt("Ansicht: Zeile mit HTML im Text anlegen (nicht committet)", "add", "--subsystem",
+              "SELBSTTEST", "--id", "T-SELBSTTEST-009", "--topic", "Escape <b>", "--statement",
+              'Text mit <script>alert(1)</script> & "x", steht auf T-SELBSTTEST-001.',
+              "--oracle", "O1", "--confidence", "0.5", "--next-test", "nichts", "--prio", "next",
+              "--depends", "T-SELBSTTEST-001")
+
+    def lauf(*a):
+        p = subprocess.run([sys.executable, skript] + list(a), cwd=t.root, capture_output=True, text=True)
+        return p.returncode, p.stdout + p.stderr
+
+    out = os.path.join(t.root, "build", "truth_ansicht.html")
+    status = lambda: set(t.git("status", "--porcelain", "--untracked-files=all").stdout.splitlines())
+    vorher, st_vorher = t.hash(), status()
+    rc, aus = lauf("--leise")
+    t.soll("Ansicht: erzeugt", rc == 0 and os.path.exists(out), aus)
+    if rc:
+        return
+    erst = open(out, "rb").read()
+    t.soll("Ansicht: TRUTH.csv unveraendert, nur die Ausgabedatei ist neu",
+           t.hash() == vorher and status() - st_vorher == {"?? build/truth_ansicht.html"},
+           str(status() - st_vorher))
+    lauf("--leise")
+    t.soll("Ansicht: zweiter Lauf byte-gleich", open(out, "rb").read() == erst)
+    rc, aus = lauf("--out", os.path.join(t.root, "research", "x.html"))
+    t.soll("Ansicht: Ziel unter research/ abgelehnt, nichts geschrieben",
+           rc != 0 and not os.path.exists(os.path.join(t.root, "research", "x.html"))
+           and t.hash() == vorher, aus)
+
+    html_ = erst.decode("utf-8")
+    seite = _Seite()
+    seite.feed(html_)
+    rows = t.zeilen()
+    ids = [r["Claim_ID"] for r in rows]
+    t.soll("Ansicht: jede Zeile genau einmal, in Registerreihenfolge", list(seite.zeilen) == ids)
+    t.soll("Ansicht: keine id doppelt", len(seite.ids) == len(set(seite.ids)))
+    fehlt = sorted(set(seite.verweise) - set(seite.ids))
+    t.soll("Ansicht: jeder Verweis hat ein Ziel", not fehlt, str(fehlt[:10]))
+
+    def teile(feld):
+        return [d.strip() for d in (feld or "").split(";") if d.strip()]
+    falsch = []
+    for r in rows:
+        a = seite.zeilen.get(r["Claim_ID"], {})
+        unten = [x["Claim_ID"] for x in rows if r["Claim_ID"] in teile(x["Depends_On"])]
+        if a.get("data-oben", "").split() != teile(r["Depends_On"]) or a.get("data-unten", "").split() != unten:
+            falsch.append(r["Claim_ID"])
+        if ("alt" in a.get("class", "").split()) != bool(r["Superseded_By"].strip()):
+            falsch.append(r["Claim_ID"] + " (abgeloest)")
+    t.soll("Ansicht: Abhaengigkeiten in beide Richtungen, Abloesungen markiert", not falsch, str(falsch[:10]))
+    t.soll("Ansicht: Text wird maskiert, nicht als Markup eingesetzt",
+           "<script>alert(1)" not in html_ and "&lt;script&gt;alert(1)&lt;/script&gt;" in html_)
+    t.soll("Ansicht: nicht committete Aenderung wird im Kopf gemeldet", "uncommitted changes" in html_)
+
+    sys.path.insert(0, tools)
+    import truth
+    abweichend = []
+    for cid in ids:
+        cli = [z.split()[1] for z in truth.journal(cid).splitlines() if not z.startswith("keine Commits")]
+        if cli != seite.journal.get(cid):
+            abweichend.append(cid)
+    t.soll("Ansicht: Laborjournal je Zeile gleich `truth.py journal`", not abweichend, str(abweichend[:10]))
+
+    mit = os.path.join(t.root, "build", "mit_links.html")
+    rc, aus = lauf("--out", mit, "--commit-url", "https://example.invalid/c/{hash}", "--leise")
+    kopf = t.git("rev-parse", "HEAD").stdout.strip()
+    t.soll("Ansicht: --commit-url verlinkt die Commits",
+           rc == 0 and ("https://example.invalid/c/" + kopf) in open(mit, encoding="utf-8").read(), aus)
 
 
 def main():
@@ -176,6 +275,7 @@ def main():
         t.soll("Commit mit Claim-ID", rc == 0, out)
         rc, out = t.cli("journal", "T-SELBSTTEST-001")
         t.soll("Journal findet den Commit", rc == 0 and "Weg zum Urteil" in out, out)
+        ansicht_pruefen(t)
 
         # MCP: gleiche Funktionen ueber JSON-RPC
         msgs = [{"jsonrpc": "2.0", "id": 1, "method": "initialize",
