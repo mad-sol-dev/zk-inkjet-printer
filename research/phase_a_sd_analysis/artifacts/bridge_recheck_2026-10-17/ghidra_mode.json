@@ -1,0 +1,39 @@
+{
+ "source": "zk-inkjet-ghidramcpd, program ZK-INKJET-NANO-APP.bin.orig (state READY), base 0x58000 (CL-TOOL-REC-121); read-only queries 2026-10-17 on plugin 1.3.71, transcribed from the tool responses",
+ "bridge_cutoff": {
+  "repo": "GhidraMCPd (local), main 0d338a1",
+  "read_tools": "fixed 2026-10-10 23:49 .. 2026-10-11 11:14 (a6379fa, 21ba8ab, fc8da25, b307f19, 8463d6e, 6a8b50b plugin 1.3.66 built 10:36, 29ffdae, af6656e); before that a failed xref/string search returned [] (cached 300 s), scalar search caps read as complete, string_xrefs/analyze xref lists were cut at 20/40 without a flag, disassemble_at errors became [] and read_words failures 'unmapped'",
+  "disassemble_at_silent_skip": "fixed 2026-08-31 (aa47065)",
+  "run_script": "exists since 2026-10-11; Jython exceptions reported as data.ok=false only from plugin 1.3.71, built 2026-10-11 22:38 (d9a757a)",
+  "zk_inkjet_side": "first register commit using the rebased database 2026-10-11 21:39; MCP evidence before 2026-10-11 is pre-cutoff, run_script evidence before 22:38 that day too"
+ },
+ "thumb_ranges.py s256 (dry run)": {
+  "ok": true,
+  "instructions": {"ARM": 188032, "Thumb": 10691},
+  "functions": 1708, "thumb_entry": 208,
+  "runs_va": ["0x5820C-0x582E4", "0x6474C-0x6490A", "0x64C7C-0x65DBC", "0x66288-0x6676A", "0x66A58-0x69B72", "0x6A50C-0x6A520", "0x7F550-0x7FA04", "0x81310-0x81DDC", "0x81F18-0x81F62", "0x84658-0x84664", "0x85C24-0x85C32", "0xA8E24-0xA8E40", "0xAB058-0xAB078", "0x11BA18-0x11BFF8", "0x11D958-0x11D964", "0x11F70E-0x11F712"],
+  "first_attempt": "data.ok=false, 'AttributeError: long object has no attribute intValue' with outer ok=true (CL-TOOL-REC-124 behaviour), fixed with int(v)"
+ },
+ "CL-USB-REC-117": {
+  "search_xrefs_to 0xD0BB0": {"total": 3, "from": ["0xcf86c mscdMassBulk", "0xcf888 mscdMassBulk", "0xcf8b0 mscdMassBulk"], "truncated": false},
+  "search_xrefs_to 0x74A60": {"total": 2, "from": ["0xd0c50 mscdWt10_Command", "0xd0cd0 mscdWt10_Command"], "truncated": false},
+  "list_functions_in_range 0x74A00-0x74B00": ["usb_lun_write_blocks 0x74A60 size 76", "lcd_blit 0x74AB0"],
+  "list_functions_in_range 0xCF500-0xD0D80": ["mscdMassBulk 0xCF5D0 size 2276", "mscdWt10_Command 0xD0BB0 size 300", "mscdUSB2SDRAM_Bulk 0xD0AC8", "mscdRdCurCap_Command 0xD0514"],
+  "read_words 0x74AAC": "0x2a614000",
+  "read_words 0xCFEC8": "0x43425355"
+ },
+ "CL-USB-REC-120": {
+  "disassemble_at 0x7184C": "mov r1,r0; ldr r0,=0x82EC; ldr r0,[r0,#0x94]; cmp r0,r1; bne; ldr r0,=0x7D8; ldr r0,[r0]; ldr r0,[r0,#0x98]; mov r0,r0,lsl #1; ldr r2,=0x82EC; str r0,[r2,#0x3c]; mov r0,#0; bx lr",
+  "read_words 0x71880": ["0x000082ec", "0x000007d8"],
+  "search_xrefs_to 0x7184C": {"total": 1, "from": ["0xcee40 mscdFlashInit"]},
+  "disassemble_at 0xD0514 (mscdRdCurCap_Command)": "clears 0x24 bytes, LUN [CBW+0xD] against [0x82EC+0x94], then [0x82EC+0x3C]-1"
+ },
+ "CL-BOOT-REC-017": {
+  "search_xrefs_to 0x22BE00": {"total": 0},
+  "read_words 0x22BE00": ["0x002c4524", "0x001fae0c", "0x00000001", "0x002c4118", "0x001fae10", "0x00000002"],
+  "search_xrefs_to 0x66AEC": {"total": 1, "from": ["0x6475c FUN_0006474c (Thumb)"]},
+  "list_functions_in_range 0x66800-0x66C00": "FUN_00066aec size 148, Thumb",
+  "dekompilieren.py 0x66aec 0x6474c (dry run)": "FUN_00066aec walks a free-block list and calls a printf-style callback with '%d bytes in %d free blocks (avge ...)' and '%d blocks 2^%d+1 to 2^%d' -- a heap statistics routine; FUN_0006474c passes it the heap descriptor from FUN_00066a38"
+ },
+ "control_search_xrefs_to 0x120F40": {"total": 21, "returned": 20, "truncated": true, "note": "cut list now flagged (truncated, has_more) -- the old bridge did not flag it"}
+}

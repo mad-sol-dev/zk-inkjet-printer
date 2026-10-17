@@ -1,0 +1,171 @@
+bridge_recheck.py -- bridge-era findings and the Thumb window, VA = file + 0x58000
+== Part 1: neg_recheck.py queries with Thumb decoding over the Ghidra Thumb runs ==
+  Thumb ldr pool loads: old window 152 words, Ghidra runs 185 words
+  control  PASS Thumb bl 0x6475C -> FUN_00066aec, outside the old window: [('0x6475c', 'thumb-bl')]
+  queries without a new hit: 27 of 27
+
+== Part 2: bridge-era rows ==
+  controls of neg_recheck.py: lit=PASS, imm=PASS, adr=PASS, chain=PASS, bl=PASS, bl/thumb=PASS
+
+-- CL-USB-REC-117 (2026-08-20, old base): WRITE path --
+  control: the three known dispatch sites 0xCF86C/0xCF888/0xCF8B0 must appear
+  mscdWt10_Command 0xD0BB0 (old msc_write_data_phase_278bb0): bl=3 (+0 Thumb outside the old window), lit=0, lit_thumbptr=0, adr=0
+    arm-bl 0xCF86C 
+    arm-bl 0xCF888 
+    arm-bl 0xCF8B0 
+  usb_lun_write_blocks 0x74A60: bl=2 (+0 Thumb outside the old window), lit=0, lit_thumbptr=0, adr=0
+    arm-bl 0xD0C50 
+    arm-bl 0xD0CD0 
+  literal 0x74AAC = 0x2a614000, CBW signature 0xCFEC8 = 0x43425355
+  nop/zero words inside dispatcher, data phase, lun_write: {'0xcf5d0': ['0xcf604', '0xcfeac'], '0xd0bb0': [], '0x74a60': []}
+
+-- CL-FIRMWARE-REC-118 (2026-10-12, aufrufer.py = Ghidra xrefs, a lower bound) --
+  sysInstallISR 0xF9E88: bl=7 (+0 Thumb outside the old window), lit=0, lit_thumbptr=0, adr=0
+    arm-bl 0x8A184 r0=0x7 r1=0x5
+    arm-bl 0x8A1AC r0=0x4 r1=0x2
+    arm-bl 0x8A1D8 r0=0x5 r1=0x3
+    arm-bl 0x8A218 r0=0x6 r1=0x4
+    arm-bl 0xB429C r0=0x2 r1=0xf
+    arm-bl 0x1078CC r0=0x1 r1=0x10
+    arm-bl 0x10B6E4 r0=0x1 r1=0xe
+  sysEnableInterrupt 0xF99D0: bl=7 (+0 Thumb outside the old window), lit=0, lit_thumbptr=0, adr=0
+    arm-bl 0x8A18C r0=0x5
+    arm-bl 0x8A1B4 r0=0x2
+    arm-bl 0x8A1E0 r0=0x3
+    arm-bl 0x8A220 r0=0x4
+    arm-bl 0xB42A4 r0=0xf
+    arm-bl 0x1078D4 r0=0x10
+    arm-bl 0x10B6EC r0=0xe
+  FUN_00089F34 GPIO config: bl=22 (+0 Thumb outside the old window), lit=0, lit_thumbptr=0, adr=0
+    arm-bl 0x89E20 r0=0x8 r1=0x4 r2=0x3
+    arm-bl 0x89E4C r0=mov r0, r2 r1=mov r1, r3 r2=0x2
+    arm-bl 0x89EA4 r0=mov r0, r2 r1=mov r1, r3 r2=?
+    arm-bl 0x8A2EC r0=0x8 r1=mov r1, r3 r2=0x5
+    arm-bl 0xB2B68 r0=0x2 r1=0xd r2=0x5
+    arm-b 0xB2B80 
+    arm-b 0xB2BAC 
+    arm-bl 0xB41E4 r0=0x8 r1=0x3 r2=0x5
+    arm-bl 0xB4210 r0=0x2 r1=0x6 r2=0x5
+    arm-bl 0xB4378 r0=0x10 r1=0x9 r2=0x2
+    arm-bl 0xB438C r0=0x10 r1=0xb r2=0x33
+    arm-bl 0xB43A0 r0=0x10 r1=0xa r2=0x23
+    arm-bl 0xB43B4 r0=0x8 r1=mov r1, r3 r2=0x5
+    arm-bl 0xC7C84 r0=0x10 r1=0x8 r2=0x5
+    arm-bl 0xC7C98 r0=0x8 r1=0xd r2=0x5
+    arm-bl 0xD8764 r0=0x1 r1=mov r1, r4 r2=0x5
+    arm-bl 0xD8788 r0=0x1 r1=mov r1, r4 r2=0x5
+    arm-bl 0xD87AC r0=0x8 r1=mov r1, r4 r2=0x5
+    arm-bl 0xD87D0 r0=0x4 r1=mov r1, r4 r2=0x5
+    arm-bl 0xD87F4 r0=0x10 r1=mov r1, r4 r2=0x5
+    arm-bl 0xD8814 r0=0x2 r1=0xf r2=0x5
+    arm-bl 0xD882C r0=0x8 r1=mov r1, r4 r2=0x5
+  the b at 0xB2BAC (in 0xB2B94-0xB2BBF, no Ghidra function):
+    0xB2B94: cmp r0, #0
+    0xB2B98: movne r2, #3
+    0xB2B9C: moveq r2, #5
+    0xB2BA0: mov r3, #0
+    0xB2BA4: mov r1, #0xe
+    0xB2BA8: mov r0, #2
+    0xB2BAC: b #0x89f34
+
+-- CL-DISPLAY-REC-004 (2026-08-31): call sites of the SPI0 display primitives --
+  the row counted BL with condition AL (0xEB) only; here every condition, B and Thumb
+  FUN_000c7d90 (old 0x26FD90): bl=31 (+0 Thumb outside the old window), lit=0, lit_thumbptr=0, adr=0
+    arm-bl 0x74AEC 
+    arm-bl 0x74B08 
+    arm-bl 0x74B24 
+    arm-bl 0x75074 
+    arm-bl 0x7508C 
+    arm-bl 0x750A4 
+    arm-bl 0x75120 
+    arm-bl 0x75140 
+    arm-bl 0x75160 
+    arm-bl 0x7517C 
+    arm-bl 0x75194 
+    arm-bl 0x751AC 
+    arm-bl 0x751D8 
+    arm-bl 0x751EC 
+    arm-bl 0x75200 
+    arm-bl 0x75258 
+    arm-bl 0x75268 
+    arm-bl 0x75304 
+    arm-bl 0x75328 
+    arm-bl 0x7534C 
+    arm-bl 0x75370 
+    arm-bl 0x75394 
+    arm-bl 0x753B8 
+    arm-bl 0x753F8 
+    arm-bl 0x75588 
+    arm-bl 0x75718 
+    arm-bl 0x7573C 
+    arm-bl 0x75760 
+    arm-bl 0x75798 
+    arm-bl 0x757B8 
+    arm-bl 0x757D8 
+  FUN_000c7dd4 (old 0x26FDD4): bl=39 (+0 Thumb outside the old window), lit=0, lit_thumbptr=0, adr=0
+    arm-bl 0x74AF4 
+    arm-bl 0x74B00 
+    arm-bl 0x74B10 
+    arm-bl 0x74B1C 
+    arm-bl 0x74C0C 
+    arm-bl 0x74C2C 
+    arm-bl 0x74C8C 
+    arm-bl 0x74CAC 
+    arm-bl 0x74D0C 
+    arm-bl 0x74D2C 
+    arm-bl 0x74D8C 
+    arm-bl 0x74DAC 
+    arm-bl 0x74E5C 
+    arm-bl 0x74ED0 
+    arm-bl 0x74EF8 
+    arm-bl 0x74F1C 
+    arm-bl 0x74F64 
+    arm-bl 0x74F90 
+    arm-bl 0x74FDC 
+    arm-bl 0x75010 
+    arm-bl 0x7507C 
+    arm-bl 0x75084 
+    arm-bl 0x75094 
+    arm-bl 0x7509C 
+    arm-bl 0x7512C 
+    arm-bl 0x75138 
+    arm-bl 0x7514C 
+    arm-bl 0x75158 
+    arm-bl 0x75184 
+    arm-bl 0x7518C 
+    arm-bl 0x7519C 
+    arm-bl 0x751A4 
+    arm-bl 0x751E4 
+    arm-bl 0x751F8 
+    arm-bl 0x757A8 
+    arm-bl 0x757B0 
+    arm-bl 0x757C8 
+    arm-bl 0x757D0 
+    arm-bl 0x757E4 
+  FUN_000c7d70 (old 0x26FD70): bl=8 (+0 Thumb outside the old window), lit=0, lit_thumbptr=0, adr=0
+    arm-bl 0x74AD4 
+    arm-b 0x750B4 
+    arm-bl 0x750DC 
+    arm-b 0x751B8 
+    arm-bl 0x751D0 
+    arm-bl 0x75214 
+    arm-bl 0x75790 
+    arm-b 0x757F0 
+
+-- CL-STORAGE-REC-103 (RE-KB 2026-01): only 0:/ and 3:/ --
+  controls 0:/ and 3:/ (ascii) must be > 0: {'0:/ ascii': 33, '3:/ ascii': 21, '3:\\ ascii': 1}
+  3:\ is "3:\inkjet-lite-vadj-sample.csv" (drive 3 as well)
+  all other patterns: 0
+
+-- CL-BOOT-REC-017/-018 (ghidra-v1, 2025): "287-entry handler table" at 0x22BE00 (old 0x3D3E00) --
+  0x22BE00 starts a run of 287 (pointer, pointer, count<16) records forward and 1267 before it
+  first fields: 1554 of 1554 point at a lowercase ASCII word (pinyin), 0 into code
+  run 0x22829C-0x22CB74, first word "zacao", last "zuzong"
+    0x2C4524 "zixiao"  0x1FAE0C -> 0x29E378 "自销"  1
+    0x2C4118 "zixin"  0x1FAE10 -> 0x29E380 "自信"  2
+    0x2C25B0 "zixing"  0x1FAE18 -> 0x29E390 "自行"  1
+    0x2C183C "zixingche"  0x1FAE1C -> 0x29E398 "自行车"  1
+  old view (VA = file + 0x200000): first field 0x2C4524 was file+0xC4524, i.e. code at today's 0x11C524
+  control, a real function table (I2C ops 0x120F40, CL-FIRMWARE-REC-127): 0x874 0x64 0xb2b54 0xb2bb0 0xb2b84 0xb2b94 0xb2b38 0x9eec0
+  old "upgrade orchestrator" 0x66AEC (Thumb): bl=0 (+1 Thumb outside the old window), lit=0, lit_thumbptr=0, adr=0
+    thumb-bl 0x6475C

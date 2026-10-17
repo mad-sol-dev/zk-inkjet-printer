@@ -1,0 +1,936 @@
+{
+ "app": "firmware/bin/ZK-INKJET-NANO-APP.bin",
+ "thumb_runs": [
+  [
+   "0x5820c",
+   "0x582e4"
+  ],
+  [
+   "0x6474c",
+   "0x6490a"
+  ],
+  [
+   "0x64c7c",
+   "0x65dbc"
+  ],
+  [
+   "0x66288",
+   "0x6676a"
+  ],
+  [
+   "0x66a58",
+   "0x69b72"
+  ],
+  [
+   "0x6a50c",
+   "0x6a520"
+  ],
+  [
+   "0x7f550",
+   "0x7fa04"
+  ],
+  [
+   "0x81310",
+   "0x81ddc"
+  ],
+  [
+   "0x81f18",
+   "0x81f62"
+  ],
+  [
+   "0x84658",
+   "0x84664"
+  ],
+  [
+   "0x85c24",
+   "0x85c32"
+  ],
+  [
+   "0xa8e24",
+   "0xa8e40"
+  ],
+  [
+   "0xab058",
+   "0xab078"
+  ],
+  [
+   "0x11ba18",
+   "0x11bff8"
+  ],
+  [
+   "0x11d958",
+   "0x11d964"
+  ],
+  [
+   "0x11f70e",
+   "0x11f712"
+  ]
+ ],
+ "thumb_control": {
+  "pass": true,
+  "hits": [
+   {
+    "va": 411484,
+    "target": 420588,
+    "kind": "thumb-bl",
+    "old_window": false
+   }
+  ]
+ },
+ "thumb_delta": [
+  {
+   "claim": "CL-HARDWARE-REC-112",
+   "label": "port pin reader FUN_00089EC4 (old FUN_00231EC4): callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-HARDWARE-REC-112",
+   "label": "GPE9 wrapper FUN_000C7BF8 (old FUN_0026FBF8): callers/pointers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-HARDWARE-REC-005",
+   "label": "pin config FUN_00089F34 (pin_mux_config, 2025-12 at 0x31F34): callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-HARDWARE-REC-005",
+   "label": "REG_GPBFUN 0xB0000084",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-HARDWARE-REC-005",
+   "label": "GCR_BA 0xB0000000 (base word)",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-HP45-REC-012",
+   "label": "adc_read_channel 0x85F28 (2025-12 at 0x2DF28): callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-HP45-REC-012",
+   "label": "ADC_BA range 0xB800E000-0xB800E0FF",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-MMIO-REC-005",
+   "label": "UART range 0xB8008000-0xB80081FF (UART0/UART1)",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-MMIO-REC-006",
+   "label": "0xB1006800-0xB10068FF",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-HARDWARE-REC-111",
+   "label": "GPIOE 0xB8001040-0xB800104F (CFG/DIR/PUEN/DOUT/PIN)",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-DISPLAY-REC-108",
+   "label": "string 'Print' 0x248500 (old 0x3F0500)",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-DISPLAY-REC-108",
+   "label": "string 'Printing...' 0x24AB68 (old 0x3F2B68)",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-DISPLAY-REC-108",
+   "label": "string 'Drucken...' 0x2527A8 (old 0x3FA7A8)",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-STORAGE-REC-128",
+   "label": "settings RAM mirror 0x00000D00",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-103",
+   "label": "Zint render FUN_000882EC (old FUN_002302EC): callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-USB-REC-108",
+   "label": "store exporter FUN_000BDB08 (old FUN_00265B08): callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-HARDWARE-REC-109",
+   "label": "boot_init 0xB30C4 (old 0x25B0C4): callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "hp45_set_address 0xD8AE8: callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "hp45_set_primitives 0xD8B44: callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-USB-REC-126",
+   "label": "FUN_0008A2C0: callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-USB-REC-126",
+   "label": "FUN_001079AC: callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-116",
+   "label": "file import FUN_000C7150: callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "delay_us 0x9EEC0 (hp45 table +0x10, I2C table +0x1C): callers",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "hp45 ops table 0x120F28 (base)",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-113",
+   "label": "I2C ops table 0x120F40 (base)",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-FIRMWARE-REC-103",
+   "label": "element renderer FUN_000824BC (jump table 0x82688, calls 0x882EC at 0x83868)",
+   "bl": [],
+   "ldr": []
+  },
+  {
+   "claim": "CL-MMIO-REC-005",
+   "label": "UART1 putc FUN_000757F4 (ldr 0xB8008000, FSR +0x118, THR +0x100)",
+   "bl": [],
+   "ldr": []
+  }
+ ],
+ "part2": {
+  "USB-117": {
+   "data_phase_0xD0BB0": {
+    "counts": {
+     "lit": 0,
+     "imm": 0,
+     "adr": 0,
+     "chain": 0,
+     "bl": 3,
+     "lit_u": 0,
+     "lit_thumbptr": 0,
+     "lit_loaded": 0
+    },
+    "bl": [
+     [
+      "0xcf86c",
+      "arm-bl"
+     ],
+     [
+      "0xcf888",
+      "arm-bl"
+     ],
+     [
+      "0xcf8b0",
+      "arm-bl"
+     ]
+    ]
+   },
+   "lun_write_0x74A60": {
+    "counts": {
+     "lit": 0,
+     "imm": 0,
+     "adr": 0,
+     "chain": 0,
+     "bl": 2,
+     "lit_u": 0,
+     "lit_thumbptr": 0,
+     "lit_loaded": 0
+    },
+    "bl": [
+     [
+      "0xd0c50",
+      "arm-bl"
+     ],
+     [
+      "0xd0cd0",
+      "arm-bl"
+     ]
+    ]
+   },
+   "literal_0x74AAC": "0x2a614000",
+   "signature_0xCFEC8": "0x43425355",
+   "nop_or_zero_words": {
+    "0xcf5d0": [
+     "0xcf604",
+     "0xcfeac"
+    ],
+    "0xd0bb0": [],
+    "0x74a60": []
+   }
+  },
+  "FIRMWARE-118": {
+   "sysInstallISR": {
+    "counts": {
+     "lit": 0,
+     "imm": 0,
+     "adr": 0,
+     "chain": 0,
+     "bl": 7,
+     "lit_u": 0,
+     "lit_thumbptr": 0,
+     "lit_loaded": 0
+    },
+    "bl": [
+     [
+      "0x8a184",
+      "arm-bl"
+     ],
+     [
+      "0x8a1ac",
+      "arm-bl"
+     ],
+     [
+      "0x8a1d8",
+      "arm-bl"
+     ],
+     [
+      "0x8a218",
+      "arm-bl"
+     ],
+     [
+      "0xb429c",
+      "arm-bl"
+     ],
+     [
+      "0x1078cc",
+      "arm-bl"
+     ],
+     [
+      "0x10b6e4",
+      "arm-bl"
+     ]
+    ]
+   },
+   "sysEnableInterrupt": {
+    "counts": {
+     "lit": 0,
+     "imm": 0,
+     "adr": 0,
+     "chain": 0,
+     "bl": 7,
+     "lit_u": 0,
+     "lit_thumbptr": 0,
+     "lit_loaded": 0
+    },
+    "bl": [
+     [
+      "0x8a18c",
+      "arm-bl"
+     ],
+     [
+      "0x8a1b4",
+      "arm-bl"
+     ],
+     [
+      "0x8a1e0",
+      "arm-bl"
+     ],
+     [
+      "0x8a220",
+      "arm-bl"
+     ],
+     [
+      "0xb42a4",
+      "arm-bl"
+     ],
+     [
+      "0x1078d4",
+      "arm-bl"
+     ],
+     [
+      "0x10b6ec",
+      "arm-bl"
+     ]
+    ]
+   },
+   "gpio_cfg": {
+    "counts": {
+     "lit": 0,
+     "imm": 0,
+     "adr": 0,
+     "chain": 0,
+     "bl": 22,
+     "lit_u": 0,
+     "lit_thumbptr": 0,
+     "lit_loaded": 0
+    },
+    "bl": [
+     [
+      "0x89e20",
+      "arm-bl"
+     ],
+     [
+      "0x89e4c",
+      "arm-bl"
+     ],
+     [
+      "0x89ea4",
+      "arm-bl"
+     ],
+     [
+      "0x8a2ec",
+      "arm-bl"
+     ],
+     [
+      "0xb2b68",
+      "arm-bl"
+     ],
+     [
+      "0xb2b80",
+      "arm-b"
+     ],
+     [
+      "0xb2bac",
+      "arm-b"
+     ],
+     [
+      "0xb41e4",
+      "arm-bl"
+     ],
+     [
+      "0xb4210",
+      "arm-bl"
+     ],
+     [
+      "0xb4378",
+      "arm-bl"
+     ],
+     [
+      "0xb438c",
+      "arm-bl"
+     ],
+     [
+      "0xb43a0",
+      "arm-bl"
+     ],
+     [
+      "0xb43b4",
+      "arm-bl"
+     ],
+     [
+      "0xc7c84",
+      "arm-bl"
+     ],
+     [
+      "0xc7c98",
+      "arm-bl"
+     ],
+     [
+      "0xd8764",
+      "arm-bl"
+     ],
+     [
+      "0xd8788",
+      "arm-bl"
+     ],
+     [
+      "0xd87ac",
+      "arm-bl"
+     ],
+     [
+      "0xd87d0",
+      "arm-bl"
+     ],
+     [
+      "0xd87f4",
+      "arm-bl"
+     ],
+     [
+      "0xd8814",
+      "arm-bl"
+     ],
+     [
+      "0xd882c",
+      "arm-bl"
+     ]
+    ]
+   }
+  },
+  "DISPLAY-004": {
+   "cmd_0xC7D90": {
+    "counts": {
+     "lit": 0,
+     "imm": 0,
+     "adr": 0,
+     "chain": 0,
+     "bl": 31,
+     "lit_u": 0,
+     "lit_thumbptr": 0,
+     "lit_loaded": 0
+    },
+    "bl": [
+     [
+      "0x74aec",
+      "arm-bl"
+     ],
+     [
+      "0x74b08",
+      "arm-bl"
+     ],
+     [
+      "0x74b24",
+      "arm-bl"
+     ],
+     [
+      "0x75074",
+      "arm-bl"
+     ],
+     [
+      "0x7508c",
+      "arm-bl"
+     ],
+     [
+      "0x750a4",
+      "arm-bl"
+     ],
+     [
+      "0x75120",
+      "arm-bl"
+     ],
+     [
+      "0x75140",
+      "arm-bl"
+     ],
+     [
+      "0x75160",
+      "arm-bl"
+     ],
+     [
+      "0x7517c",
+      "arm-bl"
+     ],
+     [
+      "0x75194",
+      "arm-bl"
+     ],
+     [
+      "0x751ac",
+      "arm-bl"
+     ],
+     [
+      "0x751d8",
+      "arm-bl"
+     ],
+     [
+      "0x751ec",
+      "arm-bl"
+     ],
+     [
+      "0x75200",
+      "arm-bl"
+     ],
+     [
+      "0x75258",
+      "arm-bl"
+     ],
+     [
+      "0x75268",
+      "arm-bl"
+     ],
+     [
+      "0x75304",
+      "arm-bl"
+     ],
+     [
+      "0x75328",
+      "arm-bl"
+     ],
+     [
+      "0x7534c",
+      "arm-bl"
+     ],
+     [
+      "0x75370",
+      "arm-bl"
+     ],
+     [
+      "0x75394",
+      "arm-bl"
+     ],
+     [
+      "0x753b8",
+      "arm-bl"
+     ],
+     [
+      "0x753f8",
+      "arm-bl"
+     ],
+     [
+      "0x75588",
+      "arm-bl"
+     ],
+     [
+      "0x75718",
+      "arm-bl"
+     ],
+     [
+      "0x7573c",
+      "arm-bl"
+     ],
+     [
+      "0x75760",
+      "arm-bl"
+     ],
+     [
+      "0x75798",
+      "arm-bl"
+     ],
+     [
+      "0x757b8",
+      "arm-bl"
+     ],
+     [
+      "0x757d8",
+      "arm-bl"
+     ]
+    ]
+   },
+   "data_0xC7DD4": {
+    "counts": {
+     "lit": 0,
+     "imm": 0,
+     "adr": 0,
+     "chain": 0,
+     "bl": 39,
+     "lit_u": 0,
+     "lit_thumbptr": 0,
+     "lit_loaded": 0
+    },
+    "bl": [
+     [
+      "0x74af4",
+      "arm-bl"
+     ],
+     [
+      "0x74b00",
+      "arm-bl"
+     ],
+     [
+      "0x74b10",
+      "arm-bl"
+     ],
+     [
+      "0x74b1c",
+      "arm-bl"
+     ],
+     [
+      "0x74c0c",
+      "arm-bl"
+     ],
+     [
+      "0x74c2c",
+      "arm-bl"
+     ],
+     [
+      "0x74c8c",
+      "arm-bl"
+     ],
+     [
+      "0x74cac",
+      "arm-bl"
+     ],
+     [
+      "0x74d0c",
+      "arm-bl"
+     ],
+     [
+      "0x74d2c",
+      "arm-bl"
+     ],
+     [
+      "0x74d8c",
+      "arm-bl"
+     ],
+     [
+      "0x74dac",
+      "arm-bl"
+     ],
+     [
+      "0x74e5c",
+      "arm-bl"
+     ],
+     [
+      "0x74ed0",
+      "arm-bl"
+     ],
+     [
+      "0x74ef8",
+      "arm-bl"
+     ],
+     [
+      "0x74f1c",
+      "arm-bl"
+     ],
+     [
+      "0x74f64",
+      "arm-bl"
+     ],
+     [
+      "0x74f90",
+      "arm-bl"
+     ],
+     [
+      "0x74fdc",
+      "arm-bl"
+     ],
+     [
+      "0x75010",
+      "arm-bl"
+     ],
+     [
+      "0x7507c",
+      "arm-bl"
+     ],
+     [
+      "0x75084",
+      "arm-bl"
+     ],
+     [
+      "0x75094",
+      "arm-bl"
+     ],
+     [
+      "0x7509c",
+      "arm-bl"
+     ],
+     [
+      "0x7512c",
+      "arm-bl"
+     ],
+     [
+      "0x75138",
+      "arm-bl"
+     ],
+     [
+      "0x7514c",
+      "arm-bl"
+     ],
+     [
+      "0x75158",
+      "arm-bl"
+     ],
+     [
+      "0x75184",
+      "arm-bl"
+     ],
+     [
+      "0x7518c",
+      "arm-bl"
+     ],
+     [
+      "0x7519c",
+      "arm-bl"
+     ],
+     [
+      "0x751a4",
+      "arm-bl"
+     ],
+     [
+      "0x751e4",
+      "arm-bl"
+     ],
+     [
+      "0x751f8",
+      "arm-bl"
+     ],
+     [
+      "0x757a8",
+      "arm-bl"
+     ],
+     [
+      "0x757b0",
+      "arm-bl"
+     ],
+     [
+      "0x757c8",
+      "arm-bl"
+     ],
+     [
+      "0x757d0",
+      "arm-bl"
+     ],
+     [
+      "0x757e4",
+      "arm-bl"
+     ]
+    ]
+   },
+   "dc_0xC7D70": {
+    "counts": {
+     "lit": 0,
+     "imm": 0,
+     "adr": 0,
+     "chain": 0,
+     "bl": 8,
+     "lit_u": 0,
+     "lit_thumbptr": 0,
+     "lit_loaded": 0
+    },
+    "bl": [
+     [
+      "0x74ad4",
+      "arm-bl"
+     ],
+     [
+      "0x750b4",
+      "arm-b"
+     ],
+     [
+      "0x750dc",
+      "arm-bl"
+     ],
+     [
+      "0x751b8",
+      "arm-b"
+     ],
+     [
+      "0x751d0",
+      "arm-bl"
+     ],
+     [
+      "0x75214",
+      "arm-bl"
+     ],
+     [
+      "0x75790",
+      "arm-bl"
+     ],
+     [
+      "0x757f0",
+      "arm-b"
+     ]
+    ]
+   }
+  },
+  "STORAGE-103": {
+   "0:/ ascii": 33,
+   "0:/ utf-16-le": 0,
+   "3:/ ascii": 21,
+   "3:/ utf-16-le": 0,
+   "1:/ ascii": 0,
+   "1:/ utf-16-le": 0,
+   "2:/ ascii": 0,
+   "2:/ utf-16-le": 0,
+   "4:/ ascii": 0,
+   "4:/ utf-16-le": 0,
+   "0:\\ ascii": 0,
+   "0:\\ utf-16-le": 0,
+   "1:\\ ascii": 0,
+   "1:\\ utf-16-le": 0,
+   "2:\\ ascii": 0,
+   "2:\\ utf-16-le": 0,
+   "3:\\ ascii": 1,
+   "3:\\ utf-16-le": 0,
+   "%d:/ ascii": 0,
+   "%d:/ utf-16-le": 0,
+   "%c:/ ascii": 0,
+   "%c:/ utf-16-le": 0,
+   "%s:/ ascii": 0,
+   "%s:/ utf-16-le": 0
+  },
+  "BOOT-017": {
+   "forward": 287,
+   "before": 1267,
+   "pinyin_first_field": 1554,
+   "into_code": 0,
+   "sample": [
+    [
+     "0x2c4524",
+     "zixiao",
+     "0x1fae0c",
+     1
+    ],
+    [
+     "0x2c4118",
+     "zixin",
+     "0x1fae10",
+     2
+    ],
+    [
+     "0x2c25b0",
+     "zixing",
+     "0x1fae18",
+     1
+    ],
+    [
+     "0x2c183c",
+     "zixingche",
+     "0x1fae1c",
+     1
+    ]
+   ],
+   "control_0x120F40": [
+    "0x874",
+    "0x64",
+    "0xb2b54",
+    "0xb2bb0",
+    "0xb2b84",
+    "0xb2b94",
+    "0xb2b38",
+    "0x9eec0"
+   ],
+   "orchestrator": {
+    "counts": {
+     "lit": 0,
+     "imm": 0,
+     "adr": 0,
+     "chain": 0,
+     "bl": 0,
+     "lit_u": 0,
+     "lit_thumbptr": 0,
+     "lit_loaded": 0
+    },
+    "bl": [
+     [
+      "0x6475c",
+      "thumb-bl"
+     ]
+    ]
+   }
+  }
+ }
+}
