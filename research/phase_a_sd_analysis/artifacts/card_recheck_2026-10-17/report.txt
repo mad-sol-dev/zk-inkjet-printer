@@ -1,0 +1,137 @@
+card_recheck.py -- CL-STORAGE-REC-118/-119/-120, read-only, card addresses are image offsets
+== A: CL-STORAGE-REC-118 -- volume 0 hidden_sectors and card sector 0x03FFFE00 ==
+  sdcard.work.img                                      hidden=1  0x03FFFE00 zero
+  sdcard.clean_after_boot.img                          hidden=None  0x03FFFE00 zero
+  sdcard.clean-raw.img                                 hidden=1  0x03FFFE00 zero
+  sdcard.minimal.img                                   hidden=1  0x03FFFE00 zero
+  sdcard.after_saving_Neu-001-minimal.img              hidden=1  0x03FFFE00 zero
+  sdcard.after_saving_textplusbarcode-minimal.img      hidden=1  0x03FFFE00 zero
+  sdcard.after_unbenanntxls_auf_mini-minimal.img       hidden=1  0x03FFFE00 zero
+  sdcard.afterboot-minimal.img                         hidden=1  0x03FFFE00 zero
+  sdcard.afterlangset-de-minimal.img                   hidden=1  0x03FFFE00 zero
+  sdcard.afterlangset-en-minimal.img                   hidden=1  0x03FFFE00 zero
+
+  write measurement: sdcard.minimal.img against each dump (4 KiB blocks)
+  control: the same diff must show the firmware's own writes (settings, store slots)
+  sdcard.after_saving_Neu-001-minimal.img              106 changed runs, first 28000000-28001000, 28800000-28801000, 28806000-28807000, 2884C000-2884E000; 0x03FFFE00 unchanged
+  sdcard.after_saving_textplusbarcode-minimal.img      108 changed runs, first 28000000-28001000, 28800000-28801000, 28806000-28807000, 2884C000-2884E000; 0x03FFFE00 unchanged
+  sdcard.after_unbenanntxls_auf_mini-minimal.img       121 changed runs, first 28000000-28001000, 28800000-28801000, 28806000-28807000, 2884C000-2884E000; 0x03FFFE00 unchanged
+  sdcard.afterboot-minimal.img                         104 changed runs, first 28000000-28001000, 28800000-28801000, 2884D000-2884E000, 2889A000-2889B000; 0x03FFFE00 unchanged
+  sdcard.afterlangset-de-minimal.img                   104 changed runs, first 28000000-28001000, 28800000-28801000, 2884D000-2884E000, 2889A000-2889B000; 0x03FFFE00 unchanged
+  sdcard.afterlangset-en-minimal.img                   104 changed runs, first 28000000-28001000, 28800000-28801000, 2884D000-2884E000, 2889A000-2889B000; 0x03FFFE00 unchanged
+
+  APP.bin, all modes: sector 0x1FFFF and byte address 0x3FFFE00 of that sector;
+  controls: 0x2A614000 (volume 3 MBR, literal at 0x74AAC, CL-USB-REC-117);
+  0x4000000 / 0x20000 (volume 0 base) are common constants: counts only
+  control vol3 MBR 0x2A614000  lit=2 (loaded 2) imm=0 adr=0 chain=0
+      lit 0x74A5C arm-ldr 0x7499c
+      lit 0x74AAC arm-ldr 0x74a64
+  sector 0x1FFFF               lit=0 (loaded 0) imm=0 adr=0 chain=0
+  byte 0x3FFFE00               lit=0 (loaded 0) imm=0 adr=0 chain=0
+  vol0 base 0x4000000          lit=78 (loaded 0) imm=19 adr=0 chain=0
+  vol0 sector 0x20000          lit=24 (loaded 1) imm=55 adr=0 chain=0
+
+== B: CL-STORAGE-REC-119/-120 -- volume 0 root directory (sdcard.work.img) ==
+  live ARIAL.TTF                                         cl     2    1036584
+  live DROIDS~1.TTF   DroidSansFallback.ttf              cl    18    3081908
+  live DZPMYD.TTF                                        cl    66   10401360
+  live FZFSJW.TTF                                        cl   225    3724408
+  live FZHTJW.TTF                                        cl   282    3190376
+  live FZKTJW.TTF                                        cl   331    3927980
+  live FZSSJW.TTF                                        cl   391    3081292
+  live MONTSE~1.OTF   Montserrat-Regular.otf             cl   439     228620
+  live MSYH.TTC                                          cl   443   19647736
+  live OPENSA~1.TTF   OpenSans-Regular.ttf               cl   743     217360
+  live QISIAA~1.TTF   QisiAaSpot.ttf                     cl   747    5156504
+  live SIMFANG.TTF                                       cl   826   10578152
+  live SIMHEI.TTF                                        cl   988    9753388
+  live SIMKAI.TTF                                        cl  1137   11787328
+  live SIMLI.TTF                                         cl  1317    9223160
+  live SIMSUN.TTC                                        cl  1458   18214472
+  live SIMYOU.TTF                                        cl  1736    6700204
+  live SOURCE~1.TTC   SourceHanSans-Regular.ttc          cl  1839   20331260
+  live SOURCE~2.TTC   SourceHanSerif-Regular.ttc         cl  2150   24810724
+  live SYMBOL.TTF                                        cl  2529      35212
+  live TIMES.TTF                                         cl  2530    1195688
+  live USER                                              cl  2626          0
+  DEL  åIMPLE~1.MOD   simple-handwriting-zh_CN.m         cl  2549    1994504
+  DEL  åK-INK~1.ZKM   ZK-INKJET-GUI-RES.zkml             cl  2580    3934892
+  live CALIBRI.TTF                                       cl  2641    1648120
+  live MICROSS.TTF                                       cl  2667     876256
+  live ZK-INK~1.ZKM   ZK-INKJET-RES-HW.zkml              cl  2549    1994504
+  live LEELAWUI.TTF   LeelawUI.ttf                       cl  2580     393764
+  DEL  åEELUISL.TTF   LeelUIsl.ttf                       cl  2587     386264
+  DEL  åEELAUIB.TTF   LeelaUIb.ttf                       cl  2593     327420
+  live NIRMALA.TTF    Nirmala.ttf                        cl  2587    1522948
+  DEL  åIRMALAS.TTF   NirmalaS.ttf                       cl  2611    1557544
+  DEL  åIRMALAB.TTF   NirmalaB.ttf                       cl  2681    1477428
+  DEL  åEGOEUI.TTF                                       cl  2611     955804
+  DEL  åEGUIBL.TTF                                       cl  2626     324260
+  DEL  åEGOEUIL.TTF                                      cl  2681     913712
+  DEL  åEGUISB.TTF                                       cl  2695     971080
+  DEL  åEGOEU~1.TTF   segoeuisl.ttf                      cl  2710     854140
+  DEL  åEGOEUIB.TTF                                      cl  2724     951724
+  DEL  åEGOEUIZ.TTF                                      cl  2739     541468
+  DEL  åEGOEUII.TTF                                      cl  2748     529712
+  DEL  åEGUIBLI.TTF                                      cl  2757     356008
+  DEL  åEGUILI.TTF                                       cl  2763     459940
+  DEL  åEGUISBI.TTF                                      cl  2771     457892
+  DEL  åEGUISLI.TTF                                      cl  2778     467180
+  live SEGOEUI.TTF                                       cl  2611     955804
+  live SEGUIHIS.TTF                                      cl  2681    1604572
+  live SEGUISYM.TTF                                      cl  2706    2454728
+
+  clusters named by a live and a deleted entry, with the first 4 bytes found there:
+    cl  2549 live ZK-INKJET-RES-HW.zkml  deleted simple-handwriting-zh_CN.m head 01000000  live chain 31 of 31 clusters
+    cl  2580 live LeelawUI.ttf           deleted ZK-INKJET-GUI-RES.zkml   head 00010000  live chain 7 of 7 clusters
+    cl  2587 live Nirmala.ttf            deleted LeelUIsl.ttf             head 00010000  live chain 24 of 24 clusters
+    cl  2611 live SEGOEUI.TTF            deleted NirmalaS.ttf             head 00010000  live chain 15 of 15 clusters
+    cl  2681 live SEGUIHIS.TTF           deleted NirmalaB.ttf             head 00010000  live chain 25 of 25 clusters
+    cl  2611 live SEGOEUI.TTF            deleted åEGOEUI.TTF              head 00010000  live chain 15 of 15 clusters
+    cl  2681 live SEGUIHIS.TTF           deleted åEGOEUIL.TTF             head 00010000  live chain 25 of 25 clusters
+    (a TrueType/OpenType file starts with 00010000, 74727565, 4f54544f or 74746366)
+
+  cluster 2580 = card 0xE12D000: 3934892 bytes == firmware/resources/ZK-INKJET-GUI-RES.zkml
+  is that file one font, or the clusters 2580.. carved in a row? (control: a font's own
+  table directory says where it ends; each live file read through its FAT chain)
+    the file's table directory: 22 tables, last table ends at 393764 of 3934892 bytes
+    font headers at cluster boundaries: +0x0 (cluster 2580), +0x70000 (cluster 2587), +0x1F0000 (cluster 2611)
+    live LeelawUI.ttf   cluster 2580 = file+0x000000, 393764 bytes: identical, its own tables end at 393764
+    live Nirmala.ttf    cluster 2587 = file+0x070000, 1522948 bytes: identical, its own tables end at 1522948
+    live SEGOEUI.TTF    cluster 2611 = file+0x1F0000, 955804 bytes: identical, its own tables end at 955804
+    control: firmware/resources/ZK-INKJET-RES-HW.zkml == live file through its FAT chain (2549..2579, 31 clusters): True
+
+  font names in APP.bin and in the resource files (ASCII + UTF-16LE, case-insensitive)
+    ARIAL.TTF                    APP.bin=2  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    DroidSansFallback.ttf        APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0  APP.bin short=0
+    DZPMYD.TTF                   APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    FZFSJW.TTF                   APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    FZHTJW.TTF                   APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    FZKTJW.TTF                   APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    FZSSJW.TTF                   APP.bin=0  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    Montserrat-Regular.otf       APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0  APP.bin short=0
+    MSYH.TTC                     APP.bin=2  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    OpenSans-Regular.ttf         APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0  APP.bin short=0
+    QisiAaSpot.ttf               APP.bin=0  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0  APP.bin short=0
+    SIMFANG.TTF                  APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    SIMHEI.TTF                   APP.bin=6  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    SIMKAI.TTF                   APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    SIMLI.TTF                    APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    SIMSUN.TTC                   APP.bin=2  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    SIMYOU.TTF                   APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    SourceHanSans-Regular.ttc    APP.bin=0  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0  APP.bin short=0
+    SourceHanSerif-Regular.ttc   APP.bin=0  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0  APP.bin short=0
+    SYMBOL.TTF                   APP.bin=23  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    TIMES.TTF                    APP.bin=5  ZK-INKJET-GUI-RES.zkml=4  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    CALIBRI.TTF                  APP.bin=1  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    MICROSS.TTF                  APP.bin=0  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    ZK-INKJET-RES-HW.zkml        APP.bin=3  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0  APP.bin short=0
+    LeelawUI.ttf                 APP.bin=0  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    Nirmala.ttf                  APP.bin=0  ZK-INKJET-GUI-RES.zkml=8  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    SEGOEUI.TTF                  APP.bin=0  ZK-INKJET-GUI-RES.zkml=2  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    SEGUIHIS.TTF                 APP.bin=0  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+    SEGUISYM.TTF                 APP.bin=0  ZK-INKJET-GUI-RES.zkml=0  ZK-INKJET-RES-HW.zkml=0  ZK-INKJET-UI-QVGA.bin=0  ZK-INKJET-NANO-BOOT.bin=0
+
+  enumeration patterns in APP.bin: *.ttf=0, *.ttc=0, *.otf=0, *.*=2, .ttf=22, .ttc=4, .otf=3, ttf=24, 0:/=33, 0:/user/font=5, user/font=5, %s.ttf=0
+  "Calibri" in APP.bin: VA 0x2493A4, in the list ['Droid', 'Calibri', 'Arial', 'TimesNewRoman', 'Open Sans', 'Montserrat']
+  font path table 0x12B094 (ldr at 0xB501C, 0xB708C, 0xB71E0, 0xB96FC), 15 entries: 0:/arial.ttf, 0:/DroidSansFallback.ttf, 0:/Montserrat-Regular.otf, 0:/OpenSans-Regular.ttf, 0:/times.ttf, 0:/msyh.ttc, 0:/simsun.ttc, 0:/simfang.ttf, 0:/simhei.ttf, 0:/simkai.ttf, 0:/SIMLI.TTF, 0:/SIMYOU.TTF, 0:/FZHTJW.TTF, 0:/FZFSJW.ttf, 0:/FZKTJW.ttf
