@@ -328,15 +328,20 @@ keinen Block, dessen Pruefwert [0x558] nicht 0 ist (sonst Dauerton und
 
 Grenzen:
 
-- **Ohne Batterie** haengt der Drucker beim Start eines Drucks und startet
-  im Diagnosemenue neu; Druck- und Diagnosetests also mit Batterie. Ohne
-  Batterie kommt ausserdem zuerst der Ladebildschirm, und Hooks in
-  `ui_main_loop` laufen erst nach einem Tippen auf den Bildschirm.
+- **Ohne Batterie** startet der Drucker beim Oeffnen des Druck- oder
+  Diagnosemenues oft neu, zufaellig und auch beim Kartenboot, also nicht
+  wegen des USB-Boots (CL-HARDWARE-REC-118). Tests, die diese Menues
+  oeffnen, also mit Batterie. Ohne Batterie kommt ausserdem zuerst der
+  Ladebildschirm, und Hooks in `ui_main_loop` laufen erst nach einem Tippen
+  auf den Bildschirm.
 - **Die RAM-Kopie verschwindet erst stromlos.** Zum Aufraeumen USB und
   Batterie ab.
 - **Ein Reset bootet die Karte.** Steckt die Karte, startet nach einem Reset
-  (etwa dem Watchdog) die Firmware von der Karte. Ein Reset zeigt sich also am
-  Startlogo, nicht am Boot-ROM auf dem Bus.
+  (etwa dem Watchdog oder dem Neustart ohne Batterie) die Firmware von der
+  Karte, und alle weiteren Versuche laufen dann unbemerkt auf ihr. Deshalb
+  einen sichtbaren Marker mitpatchen, etwa ein geaendertes Etikett in einer
+  Diagnosezeile (so in CL-HARDWARE-REC-118 mit 'VOFF'), und nach jedem
+  Neustart neu hochladen.
 
 ## Repository
 
