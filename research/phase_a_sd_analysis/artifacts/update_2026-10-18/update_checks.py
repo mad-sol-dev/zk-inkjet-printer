@@ -117,3 +117,8 @@ F = 0x25800
 for i in range(len(ui) // F):
     fr = unmask(ui[i * F:(i + 1) * F])
     P('  file frame %d unmasked == raw frame at 0x3800000/0x3825800/0x384B000:' % i, [fr == m[a:a + F] for a in (0x3800000, 0x3825800, 0x384B000)])
+
+P('\n11. Drive paths with user/record per build (the USER volume holds the directories user, user/font, user/record)')
+for nm, b, L in imgs:
+    d = bytes(m[b:b + L])
+    P('  %-9s' % nm, sorted(set(s.group().decode() for s in re.finditer(rb'[0-9]:/user[A-Za-z0-9_/\-.%]*', d))))

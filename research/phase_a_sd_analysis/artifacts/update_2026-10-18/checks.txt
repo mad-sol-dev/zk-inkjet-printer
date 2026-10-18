@@ -464,3 +464,9 @@ V/V 2095109:	$OrphanFiles	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	00
   file frame 0 unmasked == raw frame at 0x3800000/0x3825800/0x384B000: [False, False, False]
   file frame 1 unmasked == raw frame at 0x3800000/0x3825800/0x384B000: [False, False, False]
   file frame 2 unmasked == raw frame at 0x3800000/0x3825800/0x384B000: [False, False, True]
+
+11. Drive paths with user/record per build (the USER volume holds the directories user, user/font, user/record)
+  NANO      ['0:/user', '0:/user/font', '0:/user/font/%s']
+  ZK-INKJET ['1:/user', '1:/user/font/', '1:/user/record/']
+  TIJSPS    ['1:/user', '1:/user/font/', '1:/user/record/']
+  CUTE      ['1:/user', '1:/user/font/', '1:/user/record/']
