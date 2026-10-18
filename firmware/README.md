@@ -1,6 +1,6 @@
 # Firmware Files
 
-> Text written by Claude from `research/TRUTH.csv` on 2026-10-18; not yet fact-checked by the maintainer. The claim IDs point into that register, which is authoritative where this page disagrees.
+> Text written by Claude from `research/TRUTH.csv` on 2026-10-18; read and fact-checked by the maintainer. The claim IDs point into that register, which is authoritative where this page disagrees.
 
 The firmware binaries, resource files and SD card images the analysis works on. The binaries and resource files come from the device's original 4 GB SD card; the images are dumps of that card and of a test card. `bin/` and `image/` are not edited in place.
 
