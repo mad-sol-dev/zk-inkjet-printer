@@ -34,6 +34,12 @@ jobs:
         run: >
           python3 tools/scripts/truth_ansicht.py --out _site/index.html
           --commit-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/{hash}"
+      - name: Kartenkarte erzeugen
+        # Zweite Seite neben der Ansicht: Lage der Bereiche und Update-Weg aus
+        # belegten Registerzeilen. Ist eine zitierte Zeile kein Fakt mehr, bricht
+        # card_map.py ab; die Ansicht wird trotzdem veroeffentlicht, nur ohne Karte.
+        continue-on-error: true
+        run: python3 tools/scripts/card_map.py --out _site/card_map.html --register-url index.html
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

@@ -95,6 +95,16 @@ Paket graphviz); fehlt es, entsteht die Seite ohne Graph. Von Hand:
 `.github/workflows/register-ansicht.yml` dieselbe Seite bei jedem Push auf
 master: https://mad-sol-dev.github.io/zk-inkjet-printer/
 
+Derselbe Hook und derselbe Workflow erzeugen die Kartenkarte
+`build/card_map.html` (oeffentlich `.../card_map.html`): was wo auf der Karte
+liegt, wer es schreibt und liest, und den Update-Weg. Inhalt sind die Tabellen
+`REGIONS`, `FLOW` und `FACTS` in `tools/scripts/card_map.py`; jeder Eintrag
+nennt seine Claim-IDs. Geschrieben wird die Seite nur, wenn jede zitierte Zeile
+entschieden, nicht abgeloest, nicht O1 und mit Konfidenz ab 0.9 ist; sonst
+nennt das Skript die Zeilen und bricht ab. Wer eine dort zitierte Zeile
+abloest oder einen Bereich neu klaert, zieht die Tabelle nach. Pruefen ohne
+Schreiben: `python3 tools/scripts/card_map.py --check`.
+
 ## Register lesen und aendern -- tools/scripts/truth.py
 
 Seit 2026-10-15 gibt es dafuer ein Werkzeug, statt dass jede Sitzung ihr

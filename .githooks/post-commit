@@ -10,4 +10,10 @@ for s in tools/truth_ansicht.py tools/scripts/truth_ansicht.py; do
     break
   fi
 done
+# Kartenkarte (build/card_map.html): Lage der Bereiche auf der Karte und Update-Weg,
+# nur aus entschiedenen Registerzeilen. Bricht das Skript ab, ist eine dort zitierte
+# Zeile kein Fakt mehr; dann die Tabellen in tools/scripts/card_map.py nachziehen.
+if [ -f tools/scripts/card_map.py ]; then
+  python3 tools/scripts/card_map.py --leise || echo "Hinweis: Kartenkarte nicht erneuert (siehe oben)." >&2
+fi
 exit 0
