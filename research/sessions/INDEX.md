@@ -3,8 +3,8 @@
 Chronological overview of all reverse engineering sessions.
 For documentation format and purpose, see [README.md](README.md).
 
-| Datum | Datei | Zusammenfassung |
-|-------|-------|-----------------|
+| Date | File | Summary |
+|------|------|---------|
 | 2025-10-09 | 2025-10-09_documentation-status-archive.md | Archive of firmware analysis status and navigation. |
 | 2025-10-10 | 2025-10-10_session-notes.md | Consolidated session notes and I/O mapping issues. |
 | 2025-11-03 | 2025-11-03_soc-identification.md | SoC identification confirms Nuvoton N3290X. |
@@ -32,6 +32,10 @@ For documentation format and purpose, see [README.md](README.md).
 | 2026-01-08 | 2026-01-08_usb-session-sd-image-integrity.md | USB init/IRQ notes, SD image carve validation, checksum hygiene. |
 | 2026-01-08 | 2026-01-08_update-chain-sd-raw-mapping.md | Update-chain mapping, raw SD offsets, APP integrity fix, unknown stub characterization. |
 | 2026-01-13 | 2026-01-13_ui-blob-decode-analysis.md | UI blob decode algorithm (XOR 0x4949 + BGR565 swap), rebranding timeline, finding-0008. |
+| 2026-01-13 | 2026-01-13_old-ui-qvga-recovery.md | Recovery of the deleted ZK-INKJET-UI-QVGA.bin from volume 3 and decode of its frames. |
+| 2026-01-13 | 2026-01-13_raw-ui-offsets-decode.md | Three UI frames decoded from raw SD offsets 0x03800000 ff., compared with the FAT copies. |
+| 2026-01-14 | 2026-01-14_sd-memory-map-ibr-headers-cleanup.md | SD memory map, IBR header locations, duplicate findings cleaned up, clean image strategy. |
+| 2026-08-22 | 2026-08-22_register-graph-oracle-encoder.md | Register: Depends_On graph and oracle levels; encoder question resolved (German). |
+| 2026-08-29 | 2026-08-29_ungeprueft-tragend-poll-bruecke.md | Lessons from the agent incident reports: the unverified-but-load-bearing view in next.py, a sharper USB poll test (German). |
+| 2026-10-18 | 2026-10-18_battery-restarts-vadj-regulator-pin.md | Random restarts without battery (parked), PWM2 as VADJ regulator, diagnostic PIN, 0x8A730 callers corrected. |
 | N/A | ANALYSIS_red-threads-IMPROVED.md | Red-thread overview for analysis topics. |
-| N/A | ANONYMIZATION_COMPLETE.md | Anonymization completion marker for repository cleanup. |
-| N/A | PRIVACY_SCAN_REPORT.md | Privacy scan report and findings summary. |

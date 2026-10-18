@@ -1,105 +1,87 @@
-# Research Session Logs
+# Session logs
 
-Session logs capture detailed, chronological reverse-engineering work on the ZK inkjet printer firmware. They provide the narrative context and technical depth behind RE-KB findings and ongoing investigations.
+Written by Claude; not yet reviewed by the maintainer.
 
-## Session Index
+This folder holds the logs of working sessions on the firmware. Until 2025-12
+they were, next to the RE-KB, where findings were written down. Since August
+2026 only `research/TRUTH.csv` is authoritative (rules in `research/TRUTH.md`),
+and the RE-KB is frozen. From October 2026 the maintainer (@mad-sol-dev)
+collects session logs again, for the story of how the work went, not as a
+second register.
 
-For a chronological overview of all sessions, see **[INDEX.md](INDEX.md)**.
+## What a log is
 
-## Purpose & Usage
+A log tells the story of a session: where it started, what was tried in which
+order, what did not hold, what the device did, and which threads are left
+open. It is a source, not an authority (rule 7 in `CLAUDE.md`).
 
-Session logs serve as:
-1. **Detailed documentation** of discoveries not yet in RE-KB
-2. **Backup storage** for findings when RE-KB tools fail
-3. **Context preservation** for future work
-4. **Decision tracking** - why certain approaches were taken
-5. **Bug reports** for tooling issues
+A finding exists only as a row in `TRUTH.csv`. A log names the claim IDs and
+commits that carry it and does not restate the rows. Where a log and the
+register disagree, the register is right.
 
-## Session Log Format
+The step-by-step path to a single row stays in the commit messages
+(`python3 tools/scripts/truth.py journal <ID>`). The log covers what spans
+several rows, and what never became a row: refuted ideas, handling at the
+device, mistakes.
 
-Each session log should include:
-- Date and time
-- Session goals
-- Major discoveries
-- Technical details (addresses, function chains, evidence)
-- Findings that couldn't be stored in RE-KB
-- Cross-references to RE-KB findings
-- Next steps and open questions
+## Older logs
 
-## Naming Convention
+The logs up to 2026-01 were written for the RE-KB. Their finding IDs are no
+valid reference, because the two RE-KBs reuse each other's IDs
+(CL-TOOL-REC-103).
 
-Format: `YYYY-MM-DD_topic-description.md`
+Addresses in the logs up to 2026-08 use older counts: VA = file offset +
+0x200000, which is 0x1A8000 too high, and in parts of 2025-12 VA = file
+offset. The file offsets are right in all of them. The current count is VA =
+file offset + 0x58000 (CL-BOOT-REC-113).
 
-Examples:
-- `2025-12-27_arm-thumb-analysis-mmio-extraction.md`
-- `2025-12-15_raw-write-chain-discovery.md`
+The logs of 2026-08 are in German. They are not translated (rule 10 in
+`CLAUDE.md`).
 
-## Privacy & Anonymization
+## Writing a new log
 
-**CRITICAL:** Session logs are public and committed to GitHub. All sensitive information must be anonymized before committing.
+### Name and language
 
-### Anonymization Rules
+`YYYY-MM-DD_topic-description.md`, in English. Add a line to
+[INDEX.md](INDEX.md).
 
-**Always replace:**
-- Real names: login name → `user`, first name → `User`
-- Home paths: `/home/<login>/` → `$HOME/`
-- Project paths: `$HOME/<project dir>/` → `$HOME/workspace/`
-- Hostnames: `<hostname>` → `host`
-- System paths: `/usr/lib/jvm/jdk-21.0.8-oracle-x64/` → `$JAVA_HOME/`
+### Head
 
-**Never commit:**
-- API keys, tokens, passwords
-- Private email addresses (use `mad-sol-dev@users.noreply.github.com`)
-- Absolute paths containing usernames
-- Internal hostnames or network information
+The first lines say that the log is not authoritative, list the commits of
+the session, and say whether they are pushed:
 
-### Verification Before Commit
-
-Before committing a new session log:
-
-```bash
-# Check for sensitive data
-grep -n "<login>\|<hostname>\|/home/<login>" research/sessions/YYYY-MM-DD_*.md
-
-# Anonymize if needed
-sed -i 's|$HOME/<project dir>/|$HOME/workspace/|g' research/sessions/YYYY-MM-DD_*.md
-sed -i 's|/home/<login>/|$HOME/|g' research/sessions/YYYY-MM-DD_*.md
-sed -i 's|<login>|user|g' research/sessions/YYYY-MM-DD_*.md
-sed -i 's|<hostname>|host|g' research/sessions/YYYY-MM-DD_*.md
+```markdown
+Not authoritative. Authoritative is `research/TRUTH.csv`.
+Commits: `63dd232`, `f43c79c` (pushed to origin/master).
 ```
 
-**Golden Rule:** When documenting anonymization procedures (like in session logs about privacy work), those documents must also be anonymized. Meta-documentation is not exempt.
+### Facts and story
 
-### Reference
+Device observations and code readings appear as the register records them,
+with their oracle level (O1 derived, O2 reproducible command, O3 seen on the
+device). The account of the session is written by Claude in the first person,
+so a misunderstanding reads as Claude's reading and not as a fact.
 
-See `2025-12-28_repository-anonymization-security-cleanup.md` for complete anonymization process and security audit.
+### Sections
 
-## Relationship to RE-KB
+Use what the session needs: starting point, what was done, results (claim
+IDs), what did not hold, device and artefacts (what ran, what was written,
+state at the end), open threads with the row that carries each, and mistakes
+of the session. Keep it short; a log is read to pick up a thread.
 
-Session logs are **complementary** to RE-KB:
-- **RE-KB:** Structured, validated findings database
-- **Session Logs:** Narrative documentation with context
+## Privacy
 
-When RE-KB tools work properly, findings migrate from session logs to RE-KB. Session logs remain as historical context and detailed technical notes.
+Session logs are public. No real names (the maintainer is @mad-sol-dev), no
+home paths, hostnames, MAC addresses or BSSIDs, no e-mail addresses other than
+noreply ones, no keys or tokens. When documenting how anonymization works,
+anonymize that text as well.
 
-## When to Create a Session Log
+The pre-push hook checks every outgoing commit with
+`tools/scripts/check_privat.py`; local patterns live in
+`.git/info/privat-muster`. By hand, before a push:
 
-Create a session log when:
-- Major discoveries are made
-- RE-KB tools fail or findings are blocked
-- Complex analysis needs detailed documentation
-- Multiple findings are interconnected
-- Tooling bugs are encountered
-- Architectural insights emerge
+```bash
+python3 tools/scripts/check_privat.py --bereich origin/master..HEAD
+```
 
-## Reading Session Logs
-
-Session logs are designed to be:
-- **Self-contained:** Include all context needed
-- **Technical:** Specific addresses, code snippets, evidence
-- **Referenced:** Link to RE-KB findings, Ghidra programs, transcripts
-- **Actionable:** Clear next steps and open questions
-
----
-
-*See [INDEX.md](INDEX.md) for chronological session overview.*
+Background: `2025-12-28_repository-anonymization-security-cleanup.md`.
