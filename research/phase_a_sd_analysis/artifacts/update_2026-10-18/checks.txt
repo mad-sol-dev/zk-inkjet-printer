@@ -1,0 +1,460 @@
+Checks for the update-path pass, 2026-10-18 (generated, raw output).
+card image firmware/image/sdcard.work.img, 0xf0000000 bytes; APP VA = file + 0x58000 (CL-BOOT-REC-113)
+
+1. NANO APP update code (capstone over firmware/bin/ZK-INKJET-NANO-APP.bin)
+  -- VA 0xc087c
+   0c087c: push {r4, r5, r6, lr}
+   0c0880: ldr r6, [pc, #0x64]
+   0c0884: sub sp, sp, #0x18
+   0c0888: mov r0, #0
+   0c088c: mov r4, #1
+   0c0890: sub r5, r6, #0x7e
+   0c0894: add r1, pc, #0x54
+   0c0898: str r0, [sp, #0x10]
+   0c089c: str r4, [sp, #0xc]
+   0c08a0: stm sp, {r1, r5, r6}
+   0c08a4: mov r3, r0
+   0c08a8: add r2, pc, #0x4c
+   0c08ac: mov r1, r0
+   0c08b0: bl #0xc4cf8
+   0c08b4: cmp r0, #0
+   0c08b8: bne #0xc08e0
+   0c08bc: ldr r0, [pc, #0x54]
+   0c08c0: str r4, [sp, #0xc]
+   0c08c4: str r4, [sp, #0x10]
+   0c08c8: stm sp, {r0, r5, r6}
+   0c08cc: mov r3, #0
+   0c08d0: add r2, pc, #0x44
+   0c08d4: mov r1, #0x3000000
+   0c08d8: mov r0, r3
+   0c08dc: bl #0xc4cf8
+   0c08e0: mov r0, #0
+   0c08e4: add sp, sp, #0x18
+   0c08e8: pop {r4, r5, r6, pc}
+  -- VA 0xc4d8c
+   0c4d8c: ldr r0, [pc, #0x210]
+   0c4d90: add r4, sp, #0x10
+   0c4d94: ldm r0!, {r1, r2, r3, ip}
+   0c4d98: stm sp, {r1, r2, r3, ip}
+   0c4d9c: ldm r0!, {r1, r2, r3, ip}
+   0c4da0: stm r4, {r1, r2, r3, ip}
+   0c4da4: ldm r0!, {r1, r2, r3, ip}
+   0c4da8: add r4, sp, #0x20
+   0c4dac: stm r4, {r1, r2, r3, ip}
+   0c4db0: ldm r0, {r0, r1, r2, r3}
+   0c4db4: add r4, sp, #0x30
+   0c4db8: stm r4, {r0, r1, r2, r3}
+  -- VA 0xc4dd0
+   0c4dd0: add r0, pc, #0x1d0
+   0c4dd4: str r1, [sp, #0x48]
+   0c4dd8: ldm r0!, {r2, r3, ip}
+   0c4ddc: str r1, [sp, #0x44]
+   0c4de0: ldr r1, [r0], #4
+   0c4de4: add r4, sp, #0x60
+   0c4de8: str r1, [sp, #0x5c]
+   0c4dec: add r1, sp, #0x50
+   0c4df0: stm r1, {r2, r3, ip}
+   0c4df4: ldm r0, {r0, r1, r2, r3}
+   0c4df8: ldr ip, [pc, #0x1c8]
+   0c4dfc: mvn r7, #0
+   0c4e00: str ip, [sp, #0x10]
+   0c4e04: stm r4, {r0, r1, r2, r3}
+   0c4e08: mov r8, #0
+   0c4e0c: mov r0, sp
+  -- VA 0xc4ec8
+   0c4ec8: ldr r0, [sp, #0x7c]
+   0c4ecc: add r1, pc, #0x10c
+   0c4ed0: bl #0x66158
+   0c4ed4: cmp r0, #0
+   0c4ed8: orr r4, r5, r5, lsl #22
+   0c4edc: beq #0xc5080
+   0c4ee0: ldr r0, [sp, #0x7c]
+   0c4ee4: add r1, pc, #0x110
+   0c4ee8: bl #0x66158
+   0c4eec: cmp r0, #0
+   0c4ef0: beq #0xc5080
+   0c4ef4: ldr r0, [sp, #0x7c]
+   0c4ef8: add r1, pc, #0x118
+   0c4efc: bl #0x66158
+  -- VA 0xc5080
+   0c5080: add r0, r7, #0x20
+   0c5084: blx #0x64798
+   0c5088: cmp r0, #0
+   0c508c: str r0, [sp, #0x44]
+   0c5090: beq #0xc5214
+   0c5094: ldr r0, [pc, #0x258]
+   0c5098: str r0, [sp, #0x10]
+   0c509c: mov r0, sp
+   0c50a0: bl #0x116bb0
+   0c50a4: ldr r0, [sp, #0x44]
+   0c50a8: add r1, sp, #0x50
+   0c50ac: mov r2, #0x20
+   0c50b0: bl #0x65dbc
+   0c50b4: ldr r0, [sp, #0x44]
+   0c50b8: ldr r3, [sp, #0x40]
+   0c50bc: mov r2, r7
+   0c50c0: mov r1, #1
+   0c50c4: add r0, r0, #0x20
+   0c50c8: blx #0x6911c
+   0c50cc: cmp r0, r7
+   0c50d0: bne #0xc5214
+   0c50d4: ldr r0, [pc, #0x21c]
+   0c50d8: str r0, [sp, #0x10]
+   0c50dc: mov r0, sp
+   0c50e0: bl #0x116bb0
+   0c50e4: ldr r0, [sp, #0x78]
+   0c50e8: ldr r1, [sp, #0x44]
+   0c50ec: add r2, r7, #0x20
+   0c50f0: add r0, r0, #0x200
+   0c50f4: bl #0x8a500
+   0c50f8: mov r8, r7
+   0c50fc: mov r0, sp
+   0c5100: str r4, [sp, #0x10]
+   0c5104: bl #0x116bb0
+  -- VA 0xc5168
+   0c5168: ldr r0, [sp, #0x74]
+   0c516c: cmp r0, #0
+   0c5170: bne #0xc5188
+   0c5174: ldr r0, [sp, #0x78]
+   0c5178: mov r2, r5
+   0c517c: add r0, r0, r8
+   0c5180: mov r1, sb
+   0c5184: bl #0x8a500
+  -- VA 0xc5248
+   0c5248: mov r0, #0x1f4
+   0c524c: bl #0x9ee48
+   0c5250: ldr r0, [sp, #0x7c]
+   0c5254: bl #0xa83a8
+  -- VA 0xc52a0
+   0c52a0: ldr r0, [sp, #0xb8]
+   0c52a4: cmp r0, #0
+   0c52a8: beq #0xc52b8
+   0c52ac: mov r0, #0x64
+   0c52b0: bl #0x9ee48
+   0c52b4: bl #0x8a730
+  -- VA 0x8a500
+   08a500: push {r4, r5, r6, lr}
+   08a504: mov r4, r0
+   08a508: lsls r0, r0, #0x17
+   08a50c: mov r5, r2
+   08a510: mov r6, r1
+   08a514: mvnne r0, #0
+   08a518: popne {r4, r5, r6, pc}
+   08a51c: mov r0, #8
+   08a520: bl #0xf9aa4
+   08a524: add r1, r5, #0x100
+   08a528: add r1, r1, #0xff
+   08a52c: lsr r0, r4, #9
+   08a530: lsr r1, r1, #9
+   08a534: mov r2, r6
+   08a538: bl #0xec584
+   08a53c: mov r4, r0
+   08a540: mov r0, #8
+   08a544: bl #0xf9aa4
+   08a548: mov r0, r4
+   08a54c: pop {r4, r5, r6, pc}
+  -- VA 0x8a730
+   08a730: mov r1, #0xb0000000
+   08a734: ldr r0, [pc, #0x1c]
+   08a738: ldr r2, [r1, #0x20]
+   08a73c: orr r2, r2, #0x1000000
+   08a740: str r2, [r1, #0x20]
+   08a744: ldr r1, [r0, #0x1c]
+   08a748: bic r1, r1, #0x37c
+   08a74c: orr r1, r1, #0x83
+   08a750: str r1, [r0, #0x1c]
+   08a754: b #0x8a754
+  -- VA 0xa83a8
+   0a83a8: push {r0, r4, r5, r6, r7, r8, sb, sl, lr}
+   0a83ac: sub sp, sp, #0xfc
+   0a83b0: mov r2, #2
+   0a83b4: mov r1, sp
+   0a83b8: add r0, sp, #0xfc
+   0a83bc: bl #0xce0e8
+   0a83c0: movs r4, r0
+   0a83c4: bne #0xa85b8
+   0a83c8: ldr r0, [sp]
+   0a83cc: str r0, [sp, #0xa0]
+   0a83d0: mov r0, #0x460
+   0a83d4: bl #0xa8c64
+   0a83d8: movs r6, r0
+   0a83dc: moveq r0, #0x11
+   0a83e0: addeq sp, sp, #0x100
+   0a83e4: popeq {r4, r5, r6, r7, r8, sb, sl, pc}
+  -- VA 0xa8404
+   0a8404: movs r4, r0
+   0a8408: bne #0xa85b0
+   0a840c: ldrb r0, [sp, #0xeb]
+   0a8410: tst r0, #0x80
+   0a8414: movne r4, #6
+   0a8418: bne #0xa85b0
+  -- VA 0xb3120
+   0b3120: bl #0xc7bf8
+   0b3124: tst r0, #1
+   0b3128: beq #0xb3148
+   0b312c: bl #0x117e9c
+   0b3130: cmp r0, #0
+   0b3134: movne r0, #1
+   0b3138: beq #0xb3148
+   0b313c: b #0xb314c
+  -- VA 0xb31cc
+   0b31cc: bl #0xc7bf8
+   0b31d0: tst r0, #1
+   0b31d4: beq #0xb31e4
+   0b31d8: bl #0x9bf60
+   0b31dc: cmp r5, r0
+   0b31e0: bhi #0xb31cc
+   0b31e4: ldr r0, [pc, #0x94]
+   0b31e8: bl #0xc444c
+   0b31ec: bl #0xc087c
+  pool VA 0x8A758 = 0xb8002000 (TMR_BA; +0x1C is WTCR)
+  template VA 0xC4FA8 (file+0x6CFA8): ['0x57425aa5', '0x700000', '0x3100', '0xa55a4257', '0x1010', '0x888800', '0x0', '0x0']
+  string VA 0xc08f0: 'NANO BOOT'
+  string VA 0xc08fc: '3:/ZK-INKJET-NANO-BOOT.bin'
+  string VA 0xc091c: '3:/ZK-INKJET-NANO-APP.bin'
+  string VA 0xc4fe0: '3:/ZK-INKJET-TINY-BOOT.bin'
+  string VA 0xc4ffc: '3:/ZK-INKJET-PUNY-BOOT.bin'
+  string VA 0xc5018: '3:/ZK-INKJET-NANO-BOOT.bin'
+  string VA 0xc5034: '3:/ZK-INKJET-UI.bin'
+  string VA 0xc5048: '3:/ZK-INKJET-UI-QVGA.bin'
+  string VA 0xc5064: '3:/ZK-TIJSPS-800x480-UI.bin'
+
+2. Boot header and BOOT.bin on the card
+  card 0x200..0x220 == template: True
+  card 0x220.. == BOOT.bin (0x31c0 bytes): True
+  card 0x33E0..0x3400 (sector tail after BOOT): a9c0a9c0080200001c6e4a00a4a8a8a8541a2a2a2a440000a9d8a9d8b81f0f00
+
+3. All copies of the 32-byte template on the card
+  full template: ['0x200', '0x179dcc', '0x247aa68', '0x306cfa8', '0x3c7bd70', '0x24098fa8']
+  marker word 0x57425AA5 alone: ['0x200', '0x179dcc', '0x247aa68', '0x306cfa8', '0x3c7bd70', '0x24098fa8', '0x62d3f2c7']
+
+4. Firmware builds on the card
+  card 0x3000000.. == APP.bin: True
+  NANO      card 0x3000000 word0 0xe321f0db stamps [('0xa39b4', 'Dec  9 2022', '17:13:09')]
+  ZK-INKJET card 0x100000 word0 0xea000014 stamps [('0xba328', 'Aug 11 2023', '18:43:26')]
+  TIJSPS    card 0x2400000 word0 0xea000014 stamps [('0xbaa68', 'Aug 11 2023', '18:47:56')]
+  CUTE      card 0x3c00000 word0 0xea000014 stamps [('0xbc93c', 'Aug 11 2023', '18:45:54')]
+
+5. Calls of each build's update_flash_file_to_raw (file offsets; r0/r1 = last mov/add/sub/ldr into them within 16 instructions, heuristic -- r1 is the raw card offset)
+  == NANO function at file+0x6ccf8
+     bl at file+0x5d008  r0=r7  r1=r7  file=3:/obds/res/ZK-INKJET-RES-HW.zkml
+     bl at file+0x5d084  r0=r1  r1=#0  file=%s
+     bl at file+0x5d0b4  r0=r1  r1=#0  file=3:/obds/fonts/SYMBOL.TTF
+     bl at file+0x5d0d8  r0=r3  r1=#0x800000  file=3:/obds/res/GT32L24M0140.spiflash
+     bl at file+0x5d0f8  r0=r3  r1=#0xc00000  file=3:/obds/res/GT30L24A3W.ZB25VQ32.spiflash
+     bl at file+0x688b0  r0=#0  r1=r0  file=3:/ZK-INKJET-NANO-BOOT.bin
+     bl at file+0x688dc  r0=r3  r1=#0x3000000  file=3:/ZK-INKJET-NANO-APP.bin
+     bl at file+0x6cac0  r0=#0  r1=#0x3800000  file=3:/ZK-INKJET-UI-QVGA.bin
+     bl at file+0xb3530  r0=#0  r1=r0  file=None
+  == ZK-INKJET function at file+0x79a94
+     bl at file+0x6a344  r0=r7  r1=r7  file=3:/obds/res/ZK-INKJET-RES-HW.zkml
+     bl at file+0x6a3c0  r0=r1  r1=#0  file=%s
+     bl at file+0x6a3f0  r0=r1  r1=#0  file=3:/obds/fonts/SYMBOL.TTF
+     bl at file+0x6a414  r0=r3  r1=#0x800000  file=3:/obds/res/GT32L24M0140.spiflash
+     bl at file+0x6a434  r0=r3  r1=#0xc00000  file=3:/obds/res/GT30L24A3W.ZB25VQ32.spiflash
+     bl at file+0x748c8  r0=#4  r1=r0  file=3:/ZK-INKJET-BOOT.bin
+     bl at file+0x748f4  r0=r3  r1=#0x100000  file=3:/ZK-INKJET-APP.bin
+     bl at file+0x79860  r0=#0  r1=#0x500000  file=3:/ZK-INKJET-UI.bin
+     bl at file+0xcc638  r0=#0  r1=r0  file=None
+  == TIJSPS function at file+0x7a730
+     bl at file+0x68e20  r0=r7  r1=r7  file=3:/obds/res/ZK-INKJET-RES-HW.zkml
+     bl at file+0x68e9c  r0=r1  r1=#0  file=%s
+     bl at file+0x68ecc  r0=r1  r1=#0  file=3:/obds/fonts/SYMBOL.TTF
+     bl at file+0x68ef0  r0=r3  r1=#0x800000  file=3:/obds/res/GT32L24M0140.spiflash
+     bl at file+0x68f10  r0=r3  r1=#0xc00000  file=3:/obds/res/GT30L24A3W.ZB25VQ32.spiflash
+     bl at file+0x752a0  r0=#4  r1=r0  file=3:/ZK-TIJSPS-800x480-BOOT.bin
+     bl at file+0x752cc  r0=r3  r1=#0x2400000  file=3:/ZK-TIJSPS-800x480-APP.bin
+     bl at file+0x7a4f4  r0=#0  r1=#0x2800000  file=3:/ZK-TIJSPS-800x480-UI.bin
+     bl at file+0xccd78  r0=#0  r1=r0  file=None
+  == CUTE function at file+0x7ba38
+     bl at file+0x6bcfc  r0=r7  r1=r7  file=3:/obds/res/ZK-INKJET-RES-HW.zkml
+     bl at file+0x6bd78  r0=r1  r1=#0  file=%s
+     bl at file+0x6bda8  r0=r1  r1=#0  file=3:/obds/fonts/SYMBOL.TTF
+     bl at file+0x6bdcc  r0=r3  r1=#0x800000  file=3:/obds/res/GT32L24M0140.spiflash
+     bl at file+0x6bdec  r0=r3  r1=#0xc00000  file=3:/obds/res/GT30L24A3W.ZB25VQ32.spiflash
+     bl at file+0x76460  r0=#4  r1=r0  file=3:/ZK-INKJET-CUTE-BOOT.bin
+     bl at file+0x7648c  r0=r3  r1=#0x3c00000  file=3:/ZK-INKJET-CUTE-APP.bin
+     bl at file+0x7b7fc  r0=#0  r1=#0x3800000  file=3:/ZK-INKJET-UI-QVGA.bin
+     bl at file+0xce9e4  r0=#0  r1=r0  file=None
+
+6. Set-A BOOT path of the ZK-INKJET build (image linked at 0, card 0x100000)
+  -- 0x79cc8
+     079cc8: ldr r0, [sp, #0x43c]
+     079ccc: add r1, pc, #0x138
+     079cd0: bl #0x1e08
+     079cd4: cmp r0, #0
+     079cd8: add fp, r4, #0x800000
+     079cdc: orr sl, r4, r4, lsl #22
+     079ce0: beq #0x79f00
+     079ce4: ldr r0, [sp, #0x43c]
+     079ce8: add r1, pc, #0x134
+     079cec: bl #0x1e08
+     079cf0: cmp r0, #0
+     079cf4: beq #0x79f00
+     079cf8: ldr r0, [sp, #0x43c]
+     079cfc: add r1, pc, #0x13c
+     079d00: bl #0x1e08
+     079d04: cmp r0, #0
+     079d08: beq #0x79f00
+     079d0c: ldr r0, [sp, #0x43c]
+     079d10: add r1, pc, #0x148
+     079d14: bl #0x1e08
+     079d18: cmp r0, #0
+     079d1c: beq #0x79fe8
+     079d20: ldr r0, [sp, #0x43c]
+     079d24: add r1, pc, #0x150
+     079d28: bl #0x1e08
+     079d2c: cmp r0, #0
+     079d30: beq #0x79fe8
+     079d34: ldr r0, [sp, #0x43c]
+     079d38: add r1, pc, #0x158
+     079d3c: bl #0x1e08
+     079d40: cmp r0, #0
+     079d44: movne sb, #0
+     079d48: beq #0x79fe8
+     079d4c: ldr r0, [sp, #0x3b4]
+  -- 0x79f00
+     079f00: mov r4, r7
+     079f04: mov sb, #0x190
+     079f08: bl #0x2abfc
+     079f0c: cmp r0, #0x1000000
+     079f10: moveq sb, #0x1d0
+     079f14: add r0, r5, sb
+     079f18: addeq r4, sp, #0x40
+     079f1c: mov r7, r0
+     079f20: blx #0x3d4
+     079f24: cmp r0, #0
+     079f28: str r0, [sp, #0x3a8]
+     079f2c: beq #0x7a22c
+  -- 0x79f80
+     079f80: ldr r0, [pc, #0x38c]   ; =0xe5190
+     079f84: bl #0xcd9f4
+     079f88: cmp r0, #0
+     079f8c: blt #0x7a22c
+     079f90: add r0, r7, #0xf00
+     079f94: add r0, r0, #0xff
+     079f98: asr r1, r0, #0x1f
+     079f9c: add r0, r0, r1, lsr #20
+     079fa0: asrs r6, r0, #0xc
+     079fa4: mov r4, #0
+     079fa8: beq #0x79fc4
+     079fac: ldr r0, [pc, #0x360]   ; =0xe5190
+     079fb0: add r1, r8, r4, lsl #12
+     079fb4: bl #0xcd738
+     079fb8: add r4, r4, #1
+     079fbc: cmp r6, r4
+     079fc0: bhi #0x79fac
+     079fc4: ldr r0, [pc, #0x348]   ; =0xe5190
+     079fc8: ldr r2, [sp, #0x3a8]
+     079fcc: mov r3, r7
+  -- 0x79fe8
+     079fe8: bl #0x2b9b8
+     079fec: add r0, r5, #0x20
+     079ff0: blx #0x3d4
+     079ff4: cmp r0, #0
+     079ff8: str r0, [sp, #0x3a8]
+     079ffc: beq #0x7a22c
+     07a000: mov r4, sp
+     07a004: mov r0, r4
+     07a008: str fp, [sp, #0x10]
+     07a00c: bl #0xd93f8
+     07a010: add r1, sp, #0x400
+     07a014: ldr r0, [sp, #0x3a8]
+     07a018: add r1, r1, #8
+     07a01c: mov r2, #0x20
+     07a020: bl #0x1a6c
+     07a024: ldr r0, [sp, #0x3a8]
+     07a028: ldr r3, [sp, #0x3ac]
+     07a02c: mov r2, r5
+     07a030: mov r1, #1
+     07a034: add r0, r0, #0x20
+     07a038: blx #0x4b4c
+     07a03c: cmp r0, r5
+     07a040: bne #0x7a22c
+     07a044: ldr r0, [pc, #0x2c4]   ; =0x3f19999a
+     07a048: str r0, [sp, #0x10]
+     07a04c: mov r0, r4
+     07a050: bl #0xd93f8
+     07a054: ldr r1, [sp, #0x3a8]
+     07a058: add r2, r5, #0x20
+     07a05c: add r0, r8, #0x200
+     07a060: bl #0x2afc8
+     07a064: mov r6, r5
+  -- 0x7a104
+     07a104: ldr r0, [sp, #0x434]
+     07a108: cmp r0, #4
+     07a10c: beq #0x7a11c
+     07a110: cmp r0, #0
+     07a114: beq #0x7a17c
+     07a118: b #0x7a18c
+  -- 0xaa568
+     0aa568: push {r4, lr}
+     0aa56c: mov r0, #0xb0000000
+     0aa570: ldr r1, [r0, #0x78]
+     0aa574: bic r1, r1, #0xff000000
+     0aa578: orr r1, r1, #0xbb000000
+     0aa57c: str r1, [r0, #0x78]
+     0aa580: ldr r1, [r0, #0x7c]
+     0aa584: bic r1, r1, #0xff
+     0aa588: orr r1, r1, #0xbb
+     0aa58c: str r1, [r0, #0x7c]
+     0aa590: mov r0, #0
+     0aa594: bl #0xaa124
+  -- 0xaa438
+     0aa438: cmp r0, #2
+     0aa43c: mvnhs r0, #0
+     0aa440: bxhs lr
+     0aa444: ldr r1, [pc, #0xd8]   ; =0x330230
+     0aa448: add r2, r1, r0, lsl #3
+     0aa44c: ldrb r1, [r2, #4]
+     0aa450: cmp r1, #0
+     0aa454: mvnne r0, #1
+     0aa458: bxne lr
+     0aa45c: mov r1, #0xb0000000
+  -- 0xaa4d0
+     0aa4d0: str r3, [r1, #0x1fc]
+     0aa4d4: str r3, [r2]
+     0aa4d8: ldrne r0, [pc, #0x48]   ; =0xb8006300
+     0aa4dc: ldreq r0, [pc, #0x48]   ; =0xb8006200
+  driver table 0xE5190: ['0xaa568', '0xaa66c', '0xaa630', '0xaa5e4', '0x63698', '0x63a6c', '0x63a8c', '0x63a4c']
+  header table A 0x190 at 0xe8158: ['0x4e565420', '0x800000', '0x5000', '0xffffffff', '0xaa55aa55', '0x2e', '0xb0000220', '0x1000000', '0xb0000264', '0xc0000018', '0xb0000220', '0x1000018', '0x55aa55aa', '0x1', '0x55aa55aa', '0x1']
+  header table B 0x1D0 at 0xe82e8: ['0x4e565420', '0x800000', '0x5000', '0xffffffff', '0xaa55aa55', '0x36', '0xb0000220', '0x1000000', '0xb0000264', '0xc0000018', '0xb0000220', '0x1000018', '0x55aa55aa', '0x1', '0x55aa55aa', '0x1']
+
+7. Peripheral base words per build (aligned 32-bit words in [base, base+0x400))
+  NANO      N3290x UDC=15, N3290x SPIMS0=8, N3290x GPIO=24, N3290x RTC / other GPIO=3, SPI 0xB8006200=0, unlock 0xB00001FC=0, EHCI 0xB0005000=0, OHCI 0xB0007000=0, USBD 0xB0006000=0
+  ZK-INKJET N3290x UDC=0, N3290x SPIMS0=0, N3290x GPIO=4, N3290x RTC / other GPIO=45, SPI 0xB8006200=2, unlock 0xB00001FC=16, EHCI 0xB0005000=1, OHCI 0xB0007000=5, USBD 0xB0006000=0
+  TIJSPS    N3290x UDC=0, N3290x SPIMS0=0, N3290x GPIO=4, N3290x RTC / other GPIO=38, SPI 0xB8006200=2, unlock 0xB00001FC=16, EHCI 0xB0005000=1, OHCI 0xB0007000=5, USBD 0xB0006000=0
+  CUTE      N3290x UDC=0, N3290x SPIMS0=0, N3290x GPIO=4, N3290x RTC / other GPIO=48, SPI 0xB8006200=2, unlock 0xB00001FC=16, EHCI 0xB0005000=1, OHCI 0xB0007000=5, USBD 0xB0006000=16
+
+8. Tail after APP.bin at card 0x03000000 (update writes whole sectors from a reused 0x1000 buffer)
+  card 0x327522c..0x3275400 (468 bytes) == APP bytes 0x27422c..0x274400: True
+
+9. Volume USER (MBR at card 0x24000000, FAT16 at 0x24007E00) and MINI
+  MBR 0x24000000 entry 1: 00010100060282083f000000c1ff0700 sig 55aa
+d/d 4:	user	2005-01-01 00:00:16 (CET)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	8192	0	0
+d/d 517:	user/font	2005-01-01 00:00:16 (CET)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	8192	0	0
+d/d 518:	user/record	2005-01-01 00:00:16 (CET)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	8192	0	0
+d/d 7:	System Volume Information	2024-01-24 10:24:28 (CET)	2024-01-24 00:00:00 (CET)	0000-00-00 00:00:00 (UTC)	2024-01-24 10:24:26 (CET)	8192	0	0
+r/r 1287:	System Volume Information/WPSettings.dat	2024-01-24 10:24:28 (CET)	2024-01-24 00:00:00 (CET)	0000-00-00 00:00:00 (UTC)	2024-01-24 10:24:26 (CET)	12	0	0
+r/r 1290:	System Volume Information/IndexerVolumeGuid	2024-01-24 10:24:28 (CET)	2024-01-24 00:00:00 (CET)	0000-00-00 00:00:00 (UTC)	2024-01-24 10:24:26 (CET)	76	0	0
+r/r * 10:	ZK-INKJET-NANO-BOOT.bin	2022-12-09 17:13:18 (CET)	2024-01-24 00:00:00 (CET)	0000-00-00 00:00:00 (UTC)	2024-01-24 10:24:29 (CET)	12736	0	0
+r/r * 13:	ZK-INKJET-NANO-APP.bin	2022-12-09 17:13:14 (CET)	2024-01-24 00:00:00 (CET)	0000-00-00 00:00:00 (UTC)	2024-01-24 10:24:29 (CET)	2576940	0	0
+r/r 16:	ZK-INKJET-UI-QVGA.bin	2022-12-05 19:02:32 (CET)	2024-01-24 00:00:00 (CET)	0000-00-00 00:00:00 (UTC)	2024-01-24 10:24:29 (CET)	460800	0	0
+v/v 8385539:	$MBR	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	512	0	0
+v/v 8385540:	$FAT1	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	65536	0	0
+V/V 8385541:	$OrphanFiles	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0	0	0
+-/r * 3344391:	$OrphanFiles/WPSETT~1.DAT	2024-08-19 15:00:08 (CEST)	2024-08-19 00:00:00 (CEST)	0000-00-00 00:00:00 (UTC)	2024-08-19 15:00:06 (CEST)	12	0	0
+-/r * 3344394:	$OrphanFiles/INDEXE~1	2024-08-19 15:00:08 (CEST)	2024-08-19 00:00:00 (CEST)	0000-00-00 00:00:00 (UTC)	2024-08-19 15:00:07 (CEST)	76	0	0
+
+  inode 10: 12736 bytes sha256 a651630c374c5441190cc35887baa814b4820c8ba2be100c9614f622cca6264d
+  inode 13: 2576940 bytes sha256 3be9028b01c0007aab9192877341918a0bc155beef55ac17e7e8f3bcc95151ea
+  inode 16: 460800 bytes sha256 81de4c19350c574c18c07b68fb33cfb65249111aa63767d58addd3a76db64b2a
+  BOOT.bin sha256 a651630c374c5441190cc35887baa814b4820c8ba2be100c9614f622cca6264d / APP.bin sha256 3be9028b01c0007aab9192877341918a0bc155beef55ac17e7e8f3bcc95151ea
+d/d 6:	System Volume Information	2024-08-19 15:00:08 (CEST)	2024-08-19 00:00:00 (CEST)	0000-00-00 00:00:00 (UTC)	2024-08-19 15:00:06 (CEST)	4096	0	0
+r/r 519:	System Volume Information/WPSettings.dat	2024-08-19 15:00:08 (CEST)	2024-08-19 00:00:00 (CEST)	0000-00-00 00:00:00 (UTC)	2024-08-19 15:00:06 (CEST)	12	0	0
+r/r 522:	System Volume Information/IndexerVolumeGuid	2024-08-19 15:00:08 (CEST)	2024-08-19 00:00:00 (CEST)	0000-00-00 00:00:00 (UTC)	2024-08-19 15:00:07 (CEST)	76	0	0
+r/r * 9:	ZK-INKJET-UI-QVGA.bin	2022-09-30 18:15:54 (CEST)	2024-08-19 00:00:00 (CEST)	0000-00-00 00:00:00 (UTC)	2024-08-19 15:00:09 (CEST)	307200	0	0
+v/v 2095107:	$MBR	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	512	0	0
+v/v 2095108:	$FAT1	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	32768	0	0
+V/V 2095109:	$OrphanFiles	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0	0	0
+
