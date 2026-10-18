@@ -287,6 +287,54 @@ gegen eine Kandidatenmenge beweist ohne Dichte-Vergleich nichts.
   Listing selbst ist eine Untergrenze. Alles uebrige Code ist ARM, etwa
   `mov r8,#0x28800000` bei file+0x65FE4.
 
+## Patches live testen -- ohne die Karte zu schreiben
+
+APP.bin laeuft auch aus dem RAM, hochgeladen ueber den USB-Boot des
+Boot-ROMs (am Geraet seit 2026-10-18: Original mit Diagnose M0 A0, Endstand
+VBUS-Waechter mit 42 s Kabel ziehen). Werkzeuge: das Nachbar-Repository
+`../n329-usbboot` (Linux-Ersatz fuer TurboWriter, eigenes Git, Belege in
+dessen README und `docs/protocol.md`) und hier `tools/scripts/live_image.py`.
+
+Einmal am PC einrichten (sudo, macht der Maintainer): udev-Regel und
+usb-storage-Quirk aus `../n329-usbboot/linux/`. Ohne den Quirk haelt der
+Kernel den Boot-ROM fuer eine 1-TiB-Platte, liest deren letzten Sektor und
+setzt das Geraet nach 30 s zurueck.
+
+```bash
+# 1. Platine ohne SD-Karte an USB: Boot-ROM meldet sich als 0416:9396
+(cd ../n329-usbboot && python3 -m n329usb list)
+# 2. Karte einstecken, dann:
+python3 tools/scripts/live_image.py --stand vbus_waechter_end --run
+python3 tools/scripts/live_image.py --patch 0xVA=ALT:NEU --run     # Versuch auf dem Original
+```
+
+Was passiert: BOOT.bin nach 0x700000, in der Kopie Wort 0x702FC8
+`ldr r0,[r5]` -> `b 0x703028` (beide SD-Lesungen der APP.bin und der memcmp
+uebersprungen), der Block nach 0x58000, Start bei 0x700000. BOOT.bin stellt
+den Takt ein, zeigt das Startbild von der Karte und springt in die Kopie. Auf
+die Karte wird nichts geschrieben.
+
+Der Block ist das, was BOOT.bin sonst von der Karte liest: 0x280000 Bytes,
+Image plus Stub-Sektoren dahinter (ab Datei 0x275400), Rest Null. Ein
+Patch-Stand ist also nicht nur seine Image-Datei; seine Stub-Sektoren liegen
+oft in mehreren Artefaktordnern, weil die Patches aufeinander aufbauen. Neue
+Staende in `STANDS` in `live_image.py` eintragen. Das Skript prueft das
+ALT-Wort jedes `--patch`, rechnet danach den MD5-Kopf neu und schreibt
+keinen Block, dessen Pruefwert [0x558] nicht 0 ist (sonst Dauerton und
+'NG', CL-FIRMWARE-REC-119).
+
+Grenzen:
+
+- **Ohne Batterie** haengt der Drucker beim Start eines Drucks und startet
+  im Diagnosemenue neu; Druck- und Diagnosetests also mit Batterie. Ohne
+  Batterie kommt ausserdem zuerst der Ladebildschirm, und Hooks in
+  `ui_main_loop` laufen erst nach einem Tippen auf den Bildschirm.
+- **Die RAM-Kopie verschwindet erst stromlos.** Zum Aufraeumen USB und
+  Batterie ab.
+- **Ein Reset bootet die Karte.** Steckt die Karte, startet nach einem Reset
+  (etwa dem Watchdog) die Firmware von der Karte. Ein Reset zeigt sich also am
+  Startlogo, nicht am Boot-ROM auf dem Bus.
+
 ## Repository
 
 ```text
