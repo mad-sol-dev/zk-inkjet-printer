@@ -1,0 +1,37 @@
+Checks for the BOOT.bin pass, 2026-10-18 (generated inline, raw output).
+BOOT.bin 12736 bytes, sha256 a651630c374c5441190cc35887baa814b4820c8ba2be100c9614f622cca6264d
+
+1. Boot code header at card 0x200 (SDWRITER/Src/Writer.h IBR_BOOT_STRUCT_T):
+   +0x00 BootCodeMarker  0x57425AA5
+   +0x04 ExeAddr         0x00700000
+   +0x08 ImageSize       0x00003100
+   +0x0C SkewMarker      0xA55A4257
+   +0x10 DQSODS          0x00001010
+   +0x14 CLKQSDS         0x00888800
+   +0x18 DRAMMarker      0x00000000
+   +0x1C DRAMSize        0x00000000
+   card 0x220..+0x31C0 equals BOOT.bin: True; header ImageSize 0x3100 is 192 bytes short of the file
+   sectors 1.. needed for header + file: 25 (0x3200 bytes)
+
+2. Card sector 33 (BSP SDLoader image table, magic 0x574255AA/0x57425963): all zero = True
+
+3. Image at card 0x00100000, first 3001262 bytes (CL-BOOT-REC-115):
+   word 0: 0xEA000014 (b to +0x58); handler words +0x20..+0x3C: 0x58, 0x40, 0x44, 0x48, 0x4C, 0x0, 0x50, 0x54
+   ARM ldr-literal words: 5287
+   base 0x000000: 2311 literals inside the image,  74 on a push{..,lr} prologue
+   base 0x058000: 2185 literals inside the image,   1 on a push{..,lr} prologue
+   base 0x100000: 1917 literals inside the image,   1 on a push{..,lr} prologue
+   base 0x200000: 1558 literals inside the image,   2 on a push{..,lr} prologue
+   length 0x2DCBAE > BOOT load length 0x280000 by 379822 bytes
+
+4. Ghidra (ZK-INKJET-NANO-BOOT.bin, image base 0x0, 79 functions) against boot_listing.py (80):
+   Ghidra only (+0x700000): 0x700004-0x70001C, seven 'vector' labels of the Raw Binary loader on the
+   mode/stack set-up instructions of Reset_Go; BOOT.bin has no vector table at its start.
+   capstone only: 0x70009C 0x7000F8 0x700120 (scatter helpers, reached through the scatter table),
+   0x702100 (sysClockSwitch, copied to SRAM), 0x7024BC 0x702974 (FIQ/IRQ dispatchers, written to VA 0x3C/0x38),
+   0x702D84 0x702DA4 (tick helper, timer1 ISR, reached through sysInstallISR).
+
+5. Bytes neither code nor loaded literal (coverage.txt):
+   0x7004C4 bx lr (tail of the division routine), 0x7007C0 bx lr (default ISR: the RW tables 0xC4-0x1BC
+   are filled with 0x7007C0), 0x7027B8 {1,2,2,4} (sysGetPLLOutputKhz map), 0x7030EC-0x7031C0 divider table,
+   scatter table, vector block, compressed RW data.

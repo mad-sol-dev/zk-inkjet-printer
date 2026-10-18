@@ -1,0 +1,84 @@
+# BOOT.bin function roles, read 2026-10-18 from tools/scripts/boot_listing.py output (capstone, base 0x700000).
+# Columns: entry <TAB> name <TAB> role. "BSP:" = matches the named function of the Nuvoton N32901-3 NonOS BSP
+# (vendor/N32901-3_NonOS_BSP/LOADER/SDLoader, SYSLIB) in structure and constants; "vendor" = not in the BSP SDLoader.
+# The names are labels for this listing only; nothing was written to Ghidra.
+0x700000	Reset_Go	BSP wb_init.s, vendor stack layout: per-mode stacks with IRQ/FIQ masked (UND 0x7FF000, ABT 0x7FF400, IRQ 0x7FF800, FIQ 0x7FFC00, SYS 0x800000, SVC 0x7FEC00, ends in SVC), clears SCTLR.V (vectors at 0), bl __main
+0x700060	__scatterload	armlink: walks the 4-entry scatter table 0x7030FC-0x70313C, calls each helper through bx r3, then __rt_entry
+0x70009C	__scatterload_decompress	armlink: veneer to Thumb LZ-style decompressor 0x7000A4; unpacks 0x24 bytes at 0x70319C to RW 0x60-0x1E0
+0x7000F8	__scatterload_copy	armlink: copies the 0x60-byte vector block 0x70313C to VA 0
+0x700120	__scatterload_zeroinit	armlink: zeroes 0x1E0-0x8000 and 0x2D8000-0x558000 (second APP read buffer)
+0x70014C	__rt_lib_init	armlink C library init stub (Thumb, empty)
+0x700150	__rt_lib_shutdown	armlink C library shutdown stub (Thumb, empty)
+0x700154	__rt_entry	armlink: sp=0x7FEC00, __rt_lib_init, calls main through the thunk 0x7020FC, then exit
+0x700188	_sys_exit	armlink: shutdown stub, then the endless loop 0x7007C4
+0x70019C	memcmp	C library (Thumb): word loop, byte fallback; returns 0 on equal. Used for the logo and APP compares
+0x700210	memcpy	C library (__rt_memcpy): used only by sysClockSwitchStart for the SRAM copy
+0x700348	__aeabi_idiv	C library: signed division (r0/r1)
+0x7004C8	exit	C library (Thumb): calls _sys_exit
+0x7004D8	__aeabi_uidiv	C library: unsigned division, second entry into 0x700348's loop
+0x7004FC	cache_test_clean_dcache	BSP wb_cache: mrc p15,c7,c14,3 loop (test, clean and invalidate D-cache)
+0x700508	mmu_enable	BSP wb_mmu: TTBR=r0, DACR=0x40000000 (domain 15 client), SCTLR |= M|C|I
+0x70052C	lcd_set_window	vendor: ST7789 CASET 0x2A (x0,x1), RASET 0x2B (y0,y1), RAMWR 0x2C over SPI0
+0x70058C	lcd_blit_320x240	vendor: CS low, window 0..319 x 0..239, push 0x12C00 RGB565 pixels from r0, window again, CS high
+0x7005E0	lcd_init_st7789	vendor: SPI0 init, SLPOUT, 120 ms, B2/B7/BB/C3/C4/C6/D0, gamma E0/E1 (14 bytes each), 3A=55, 36=B4, DISPON 29
+0x7007C4	_sys_exit_loop	b . (exit never returns)
+0x7007C8	pwm1_output_enable	vendor: PWM POE bit 1 on/off (r0); PWM1 is set up with CNR 99 / CMR 49 in pwm_init. Called only with 0 (and from timer1_isr with 0)
+0x7007E8	initClock	BSP SdLoader.c initClock: DQSODS 0x1010, CKDQSDS 0x888800, SDREF 0x805A (12 MHz), SDTIME/SDMR by DDR type, MISCPCR, sysSetSystemClock(UPLL, 192000, 192000, 192000, 96000, 48000)
+0x7008B8	gpio_configure	vendor: (port mask 1=A 2=B 4=C 8=D 16=E, pin, mode, ...): mux pin to GPIO, mode low nibble = dir/pull (jump table, 6 cases), high nibble = GPIO interrupt with sysInstallISR; BOOT uses only mode 5 (output, pull-up)
+0x700BB0	gpio_write	vendor: (port mask, pin, value) on GPIOx_DOUT
+0x700C24	gpio_d0_init	vendor: GPD0 output, value (r0 > 0); called with 0
+0x700C60	pwm_init	vendor: GPDFUN GPD1 and GPD2 to function 0b10, APBCLK bit 5, PWM reset; PPR 0x1B1, CSR 0x4444; PWM1 CNR 99 CMR 49, PWM2 CNR 999 CMR 1, auto-reload; POE bit 2 on (PWM2 output), channels 1 and 2 started
+0x700D24	boot_fail_reset	vendor: MISCR.WDTRSTEN=1 (watchdog reset to RST_ pin), WTCR WTIS=00 + WTE|WTRE|WTR, then b . ; watchdog reset after about 0.37 s (2^14+1024 clocks at 12 MHz/256)
+0x700D50	gpio_d3_low	vendor: GPD3 output, value 0
+0x700D7C	watchdog_start	vendor: WTCR by timeout argument (<=1000 0x482, <=2000 0x492, <=5000 0x4A2, else 0x4B2); called with 10000 -> 0x4B2 = 2^20+1024 clocks, 22.4 s, reset enabled, no WTR
+0x700DCC	uart_init	vendor: UART registers 0xB8008100-0xB8008124, GPAFUN bits 20-21 and 24-25, divisor 12000000/baud - 2; called with 115200. No other access to the UART block found in BOOT, and BOOT holds no strings: nothing is printed
+0x700E4C	delay_ms	vendor: r0 times delay_us(1000)
+0x700E70	pwm3_stop	vendor: PWM3 interrupt off, CNR3=CMR3=0
+0x700E94	delay_us	vendor: busy wait on PWM3 one-shot (PDR3)
+0x700EF0	fmiCheckRB	BSP sd.c: SDCR |= 0x40 (8 clocks) until card ready (SDISR bit 7)
+0x700F24	fmiGet_SD_info	BSP sd.c: CMD9 (CSD), total sector count into SDInfo
+0x700FCC	fmiInitDevice	BSP sd.c: AHBCLK SIC/SD on, DMAC reset/enable, FMI reset, FMI reference clock = UPLL output
+0x701044	fmiInitSDDevice	BSP sd.c: FMI/SD reset, port pins (BOOT passes port 0 constant), SDIER/SDISR/SDTMOUT, fmiSD_Init, clock divider (SD 24 MHz, MMC 20 MHz), fmiGet_SD_info, fmiSelectCard
+0x701288	fmiSDCmdAndRsp	BSP sd.c: command with R1/R3/R6/R7 response, timeout
+0x7013A8	fmiSDCmdAndRsp2	BSP sd.c: command with R2 (136-bit) response
+0x701490	fmiSDCmdAndRspDataIn	BSP sd.c: command with a data block in (SCR, switch status)
+0x70151C	fmiSDCommand	BSP sd.c: command without response (CMD0, CMD7 deselect)
+0x701578	fmiSD_Init	BSP sd.c: card identification: CMD0, CMD8, CMD55+ACMD41, CMD2, CMD3; MMC branch CMD0, CMD1; card type into SDInfo
+0x701894	fmiSD_Read	BSP sd.c fmiSD_Read + fmiSD_Read_in: (sector, count, dest) CMD7 select, CMD18 in chunks of 255 sectors by DMA to dest, checks SDISR CRC7 and CRC16, CMD12, CMD7 deselect; returns 0 or -1
+0x701AAC	fmiSelectCard	BSP sd.c: CMD7, ACMD51 (SCR), fmiSwitchToHighSpeed, ACMD6 (bus width), CMD16 (block length), CMD7 deselect; MMC branch CMD6
+0x701D28	fmiSwitchToHighSpeed	BSP sd.c: CMD6 twice through fmiSDCmdAndRspDataIn
+0x701DF0	lcd_spi_init	vendor: AHB/APB clock and reset bits, GPE8 (D/C) and GPD13 (CS) output high, GPDFUN for GPD12, GPD14, GPD15 (GPD13 stays GPIO), SPI0 divider 0, CNTRL 0x44, SSR 1
+0x701ED8	lcd_cs	vendor: GPD13 = r0 (LCD chip select)
+0x701EF8	lcd_dc	vendor: GPE8 = r0 (LCD data/command)
+0x701F18	lcd_write_data8	vendor: one byte over SPI0 (CNTRL 0x45), waits for GO clear
+0x701F44	lcd_write_cmd	vendor: D/C low, byte, D/C high
+0x701F68	lcd_write_data16	vendor: one 16-bit word over SPI0 (CNTRL 0x85)
+0x701F8C	lcd_write_pixels	vendor: r1 halfwords from r0 over SPI0, 4x32-bit bursts (CNTRL 0x305), then 2x32, 1x32, 1x16
+0x7020FC	main_thunk	b main (Ghidra: thunk_FUN_00002f2c)
+0x702100	sysClockSwitch	BSP wb_config.c: PLL and divider switch (GCR 0x20C/0x21C/0x220/0x224), runs from SRAM 0xFF001000 after sysClockSwitchStart copied it there
+0x702380	sysClockSwitchStart	BSP wb_config.c: AIC masked, backs up SRAM 0xFF000000 (0x2000 bytes) to 0x3F0, copies 0x701100.. to SRAM, calls 0xFF001000, restores SRAM and AIC
+0x702414	sysDisableCache	BSP wb_cache: clean D-cache, invalidate I/D, drain write buffer, SCTLR M, I, C off
+0x70246C	sysEnableCache	BSP wb_cache: sysInitMMUTable, then cache flag (called with 0 = write-back)
+0x702494	sysEnableInterrupt	BSP wb_aic: AIC_MECR = 1 << n
+0x7024BC	sysFiqHandler	BSP wb_aic: FIQ dispatcher through the table at 0x140, AIC_EOSCR; installed at VA 0x3C
+0x70255C	sysFlushCache	BSP wb_cache: 6 = I, 7 = D, 8 = I+D; main calls it with 8 after every read
+0x7025A4	sysGetCacheState	BSP wb_cache: returns the cache-on flag at 0x1C0
+0x7025B4	sysGetChipVersion	BSP: reads the boot ROM word 0xFFFF3EB4; 'PB28' -> 'G', else 'A'
+0x7025D8	sysGetExternalClock	BSP wb_config.c: 12000 kHz for chip 'G' or CHIPCFG[3:2]=10, else 27000
+0x702624	sysGetPLLControlRegister	BSP wb_config.c: searches NR/NF/NO for a target PLL frequency (divider table 0x7030EC)
+0x702748	sysGetPLLOutputKhz	BSP wb_config.c: PLL output from APLLCON/UPLLCON (map {1,2,2,4} at 0x7027B8)
+0x7027BC	sysInitMMUTable	BSP wb_mmu: 4096 1-MB sections at TTB 0x4000: 0-64 MB identity write-back (0xDFE), rest identity uncached (0xDF2), 0x80000000-0x83FFFFFF uncached alias of 0-64 MB; then mmu_enable(0x4000)
+0x702874	sysInitializeISR	BSP wb_aic: VA 0x18/0x1C = ldr pc,[pc,#0x18], IRQ handler word 0x38 = 0x702974, FIQ word 0x3C = 0x7024BC, I-cache flush if cache on
+0x7028C4	sysInstallISR	BSP wb_aic: (priority, source, handler): AIC_SCR priority, handler into IRQ table 0xC0 or FIQ table 0x140 (priority 0)
+0x702974	sysIrqHandler	BSP wb_aic: IRQ dispatcher through the table at 0xC0, AIC_EOSCR; installed at VA 0x38
+0x702A14	sysSetGlobalInterrupt	BSP wb_aic: 0 = AIC_MECR all, 1 = AIC_MDCR all
+0x702A38	sysSetInterruptType	BSP wb_aic: AIC_SCR source type bits
+0x702A94	sysSetLocalInterrupt	BSP wb_aic: CPSR I/F (0x3F/0x7F/0xBF enable, 0x40/0x80/0xC0 disable)
+0x702AF4	sysSetSystemClock	BSP wb_config.c: dividers and PLL for (source, PLL, SYS, CPU, HCLK, APB kHz), calls sysClockSwitchStart
+0x702D84	tick_increment	vendor: 64-bit tick counter at RW 0x1D8
+0x702DA4	timer1_isr	vendor: clears TISR bit 1, tick_increment, counts down the word at 0xB4 and switches PWM1 output off at zero
+0x702DF8	timer1_init	vendor: timer 1 periodic (TCSR1 0x68000000, TICR1 12000), sysInstallISR(2, 15, timer1_isr), sysEnableInterrupt(15), sysSetInterruptType(15, 1), sysSetLocalInterrupt(0x3F) = IRQ and FIQ on
+0x702E80	gpio_b6_write	vendor: GPB6 = r0; called with 0
+0x702E90	gpio_b6_init	vendor: GPB6 output, pull-up
+0x702EA4	board_init	vendor: watchdog_start(10000), clear SRAM boot header 0xFF000000, initClock, sysDisableCache, sysFlushCache(8), sysEnableCache(0), sysSetGlobalInterrupt(1), sysSetLocalInterrupt(0xC0), GPD0=0, GPD3=0, pwm_init, timer1_init, pwm3_stop, uart_init(115200), PWM1 off, lcd_init_st7789, GPB6 output = 0
+0x702F2C	main	vendor (replaces the BSP SDLoader main): board_init, 10 ms; loop up to 3 times: fmiInitDevice, fmiInitSDDevice(0), 10 ms, logo 0x12C sectors from 0x1C000 to 0x76F400 and to 0x794C00, blit, memcmp; APP 0x1400 sectors from 0x18000 to 0x80058000 and to 0x802D8000, memcmp 0x280000; on success shut SD/FMI/timer1/cache/interrupts/PWM1 down and blx 0x58000; after the third failure boot_fail_reset

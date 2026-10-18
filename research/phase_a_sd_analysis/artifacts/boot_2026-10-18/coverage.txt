@@ -1,0 +1,9 @@
+bytes reached as code: 11908 of 12736; pool words: 151; functions: 80
+vector block copied to VA 0 from 0x70313C; handler words: 0x700000, 0x40, 0x44, 0x4C, 0x50, 0x0, 0x58, 0x5C
+Thumb instructions: 112, ARM instructions: 2920
+
+Ranges neither code nor referenced pool word:
+  0x007004C4-0x007004C8      4 bytes  zero 0
+  0x007007C0-0x007007C4      4 bytes  zero 0
+  0x007027B8-0x007027BC      4 bytes  zero 0
+  0x007030EC-0x007031C0    212 bytes  zero 74

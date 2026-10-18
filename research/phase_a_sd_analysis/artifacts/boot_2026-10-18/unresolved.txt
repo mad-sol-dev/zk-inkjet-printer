@@ -1,0 +1,9 @@
+0x0070008C A  indirect_jump subne pc, r7, r3
+0x00700090 A  indirect_call bx r3
+0x00702510 A  indirect_call blxeq r0
+0x00702520 A  indirect_jump subs pc, lr, #4
+0x00702538 A  indirect_call blxne r0
+0x007029C8 A  indirect_call blxeq r0
+0x007029D8 A  indirect_jump subs pc, lr, #4
+0x007029F0 A  indirect_call blxne r0
+0x007030B4 A  indirect_call blx r0
