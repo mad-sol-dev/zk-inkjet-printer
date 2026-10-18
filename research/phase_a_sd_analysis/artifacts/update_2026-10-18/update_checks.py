@@ -104,3 +104,16 @@ for ino in (10, 13, 16):
     P('  inode %d: %d bytes sha256 %s' % (ino, len(data), hashlib.sha256(data).hexdigest()))
 P('  BOOT.bin sha256', hashlib.sha256(boot).hexdigest(), '/ APP.bin sha256', hashlib.sha256(app).hexdigest())
 P(subprocess.run(['fls', '-r', '-p', '-l', '-o', str(0x2A61BE00 // 512), IMG], capture_output=True, text=True).stdout)
+
+P('\n10. UI-QVGA file of the January-2024 bundle on the USER volume against the raw start-logo frames')
+ui = subprocess.run(['icat', '-r', '-o', str(o), IMG, '16'], capture_output=True).stdout
+P('  inode 16 (%d bytes) == card 0x242A2000..+%#x: %s' % (len(ui), len(ui), ui == m[0x242A2000:0x242A2000 + len(ui)]))
+def unmask(b):  # XOR 0x4949 per 16-bit word, then swap red and blue of RGB565
+    out = []
+    for x in struct.unpack('<%dH' % (len(b) // 2), b):
+        x ^= 0x4949; out.append(((x & 0x1F) << 11) | (x & 0x7E0) | ((x >> 11) & 0x1F))
+    return struct.pack('<%dH' % len(out), *out)
+F = 0x25800
+for i in range(len(ui) // F):
+    fr = unmask(ui[i * F:(i + 1) * F])
+    P('  file frame %d unmasked == raw frame at 0x3800000/0x3825800/0x384B000:' % i, [fr == m[a:a + F] for a in (0x3800000, 0x3825800, 0x384B000)])

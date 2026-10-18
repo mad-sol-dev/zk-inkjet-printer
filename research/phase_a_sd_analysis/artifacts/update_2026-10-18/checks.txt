@@ -458,3 +458,9 @@ v/v 2095107:	$MBR	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00
 v/v 2095108:	$FAT1	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	32768	0	0
 V/V 2095109:	$OrphanFiles	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0000-00-00 00:00:00 (UTC)	0	0	0
 
+
+10. UI-QVGA file of the January-2024 bundle on the USER volume against the raw start-logo frames
+  inode 16 (460800 bytes) == card 0x242A2000..+0x70800: True
+  file frame 0 unmasked == raw frame at 0x3800000/0x3825800/0x384B000: [False, False, False]
+  file frame 1 unmasked == raw frame at 0x3800000/0x3825800/0x384B000: [False, False, False]
+  file frame 2 unmasked == raw frame at 0x3800000/0x3825800/0x384B000: [False, False, True]
