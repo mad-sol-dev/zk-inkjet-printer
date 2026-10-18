@@ -7,13 +7,15 @@ they were, next to the RE-KB, where findings were written down. Since August
 2026 only `research/TRUTH.csv` is authoritative (rules in `research/TRUTH.md`),
 and the RE-KB is frozen. From October 2026 the maintainer (@mad-sol-dev)
 collects session logs again, for the story of how the work went, not as a
-second register.
+second register. A log is written only when the maintainer asks for one
+(rule 2 in `CLAUDE.md`).
 
 ## What a log is
 
-A log tells the story of a session: where it started, what was tried in which
-order, what did not hold, what the device did, and which threads are left
-open. It is a source, not an authority (rule 7 in `CLAUDE.md`).
+Sessions can be wrong and follow dead ends; the triage, the distillate, is
+`TRUTH.csv`. A log tells that story: where the session started, what was tried
+in which order, what did not hold, what the device did, and which threads are
+left open. It is a source, not an authority (rule 7 in `CLAUDE.md`).
 
 A finding exists only as a row in `TRUTH.csv`. A log names the claim IDs and
 commits that carry it and does not restate the rows. Where a log and the

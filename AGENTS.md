@@ -13,7 +13,10 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
 2. **Eine Sitzung darf** Zeilen in `TRUTH.csv` aendern oder hinzufuegen und
    Rohartefakte erzeugen. **Eine Sitzung darf kein neues beschreibendes
    Dokument anlegen.** `research/system_understanding.md` und alles daneben ist
-   abgeleitet und nicht autoritativ.
+   abgeleitet und nicht autoritativ. Sitzungen koennen sich irren und
+   Irrwegen folgen; die Triage, das Destillat, ist `TRUTH.csv`. Ein
+   Sitzungslog in `research/sessions/` erzaehlt diese Geschichte und entsteht
+   nur, wenn der Maintainer es verlangt (Format im README dort).
 3. **Das Register nur ueber das Werkzeug aendern:** `tools/scripts/truth.py`
    (Kommandozeile) oder die `truth_*`-Werkzeuge des MCP-Servers `truth`. Keine
    eigenen Schnipsel -- eines davon hat die Datei am 2026-08-21 auf null Bytes
@@ -54,63 +57,41 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
 
 <!-- ZK-TRUTH-RULES: Ende -->
 
-# Agent & Repository Guidelines
+# Agent guide
 
-This repository is both a **real reverse-engineering project** (ZK1696 handheld inkjet printer) and a **reference template** for running LLM agents against firmware using the Model Context Protocol (MCP).
+This file is for agents other than Claude Code (Codex, Aider and the like).
+The rules above are the same block as at the top of `CLAUDE.md` and apply to
+every agent.
 
-It is designed to showcase how three MCP servers can work together:
+The operating manual is `CLAUDE.md` (in German): reading and changing the
+register, the Ghidra and PDF MCP servers, the four modes of constant search,
+address conventions, testing patches live from RAM, repository layout and the
+frozen sources. All of it applies to every agent; only the notes on deferred
+tool schemas (`ToolSearch`) are specific to Claude Code.
 
-- **GhidraMCPd** – token-efficient Ghidra backend (batch disassembly, scalar search with context, etc.)
-- **re-kb-mcp** – JSON-based reverse-engineering knowledge base (findings, assets, threads) under `research/findings/.re_kb/`
-- **PDF Reader MCP** – high-performance PDF reader (`read_pdf` tool) for vendor manuals under `vendor/` :contentReference[oaicite:1]{index=1}
+## Start
 
-The instructions below target both **human contributors** and **LLM agents** (Codex, Aider Desk, Claude Code, etc.).
-
----
-
-## 1. Project Structure & Context
-
-Core layout:
-
-```text
-zk-inkjet-printer/
-  firmware/
-    bin/        # firmware binaries
-    image/      # SD card images, raw dumps
-  research/
-    phase_a_sd_analysis/  # decoded UI blobs, extracted file systems, logs, CSVs, images
-    ...         # analysis notes, methodology docs, traceability logs
-  vendor/
-    ...         # vendor PDFs: SoC datasheets, design guides, manuals
-  research/findings/.re_kb/
-    project.json
-    index.json
-    findings/
-    assets/
-    threads/
-  tools/
-    scripts/    # Python and shell helpers for carving, decoding, analysis
-    ...         # Python and shell helpers for carving, decoding, analysis
+```bash
+python3 tools/scripts/next.py
 ```
 
-## 2. Quick Start for Agents (MCP)
-- **Activate re-kb**: `bash research/findings/.re_kb/select_this_project.sh` (required before using re-kb tools).
-- **Ghidra MCPd**: `mcp__ghidra-bridge__project_overview` → `select_program(domain_file_id="...")`; then use `search_strings/search_functions/search_scalars_with_context/disassemble_at`.
-- **re-kb MCP**: `mcp__re-kb__get_finding_template`, `list_finding_enums`, `create_finding`, `attach_evidence`. Findings live in `research/findings/.re_kb/findings/`.
-- **PDF reader MCP**: `mcp__pdf-reader__read_pdf(sources=[{"path": "vendor/N3290x_Design_Guide_A1.pdf", "pages": "645-668"}])` for GPIO/UART/etc. (Design Guide has 897 pages).
+It checks `research/TRUTH.csv` and prints the work front. A reported violation
+is fixed first.
 
-## 3. Safety & Conventions
-- Treat everything in `firmware/bin/` and `firmware/image/` as **untrusted**; never modify in place. Place derived artifacts in `research/phase_a_sd_analysis/` with deterministic names.
-- Document commands in `research/analysis_traceability.md`; log significant work in `research/sessions/`.
-- Address notation follows `research/system_understanding.md` (VA vs MMIO).
-- Binary operations: capture SHA256 for modified binaries; avoid executing firmware.
+## The few things that break most often
 
-## 4. Useful Commands
-- Env: `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements-dev.txt`
-- Tests: `make test` or `python3 -m pytest -q`
-- Export: `make export` or `tools/make_export.sh --with-binaries`
-
-## 5. Key Docs
-- Onboarding: `research/README.md`, `research/system_understanding.md`
-- Findings index: `research/findings/.re_kb/findings/`, verification status: `research/system_understanding.md`
-- Vendor PDFs: `vendor/N3290x_Design_Guide_A1.pdf` (Design Guide), `vendor/N3290X.PDF` (datasheet mirror)
+- Only `research/TRUTH.csv` is authoritative. Change it only through
+  `tools/scripts/truth.py` or the MCP server `tools/scripts/truth_mcp.py`
+  (client template `mcp/claude-code.mcp.json.example`), never by hand.
+- APP.bin addresses: VA = file offset + 0x00058000 (CL-BOOT-REC-113). Rows and
+  logs written before 2026-08-31 count file offset + 0x00200000; their file
+  offsets are right.
+- `firmware/bin/` and `firmware/image/` are never edited in place. Derived
+  artefacts go to `research/phase_a_sd_analysis/`.
+- Hooks live in `.githooks/` (`git config core.hooksPath .githooks`): the
+  register is validated on commit, outgoing commits are checked for private
+  data on push.
+- Session logs in `research/sessions/` only when the maintainer asks for one
+  (rule 2); format in `research/sessions/README.md`.
+- The RE-KB (`research/findings/.re_kb/`), `research/system_understanding.md`
+  and the reports next to it are frozen sources, not references.

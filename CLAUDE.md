@@ -13,7 +13,10 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
 2. **Eine Sitzung darf** Zeilen in `TRUTH.csv` aendern oder hinzufuegen und
    Rohartefakte erzeugen. **Eine Sitzung darf kein neues beschreibendes
    Dokument anlegen.** `research/system_understanding.md` und alles daneben ist
-   abgeleitet und nicht autoritativ.
+   abgeleitet und nicht autoritativ. Sitzungen koennen sich irren und
+   Irrwegen folgen; die Triage, das Destillat, ist `TRUTH.csv`. Ein
+   Sitzungslog in `research/sessions/` erzaehlt diese Geschichte und entsteht
+   nur, wenn der Maintainer es verlangt (Format im README dort).
 3. **Das Register nur ueber das Werkzeug aendern:** `tools/scripts/truth.py`
    (Kommandozeile) oder die `truth_*`-Werkzeuge des MCP-Servers `truth`. Keine
    eigenen Schnipsel -- eines davon hat die Datei am 2026-08-21 auf null Bytes
@@ -361,8 +364,9 @@ Nach Regel 7 gelten Aussagen aus diesen Ablagen erst, wenn sie als Zeile in
 - `research/findings/.re_kb/` und `research/findings/re_kb_archive/` -- beide
   RE-KBs sind eingefroren, ihre IDs kollidieren (CL-TOOL-REC-103). Eine
   Finding-ID allein ist keine gueltige Referenz.
-- `research/sessions/` -- alte Sitzungsprotokolle bis 2025-12. Neue Sitzungen
-  legen dort nichts mehr an (Regel 2).
+- `research/sessions/` -- die Protokolle der RE-KB-Zeit bis 2026-01 werden
+  nicht mehr geaendert. Neue Logs kommen nur dazu, wenn der Maintainer es
+  verlangt (Regel 2); sie erzaehlen und belegen nichts.
 - `research/system_understanding.md`, `research/docs_rebuild/` und die
   Berichte daneben -- abgeleitet, teils veraltet.
 
