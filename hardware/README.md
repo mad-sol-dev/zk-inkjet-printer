@@ -30,7 +30,8 @@ few turned out wrong; the open ones are listed at the end.
 | Memory | 8 MB DDR in the package, 8 KB SRAM, 16 KB boot ROM | old note, datasheet | [CL-SOC-REC-005], [CL-SOC-REC-007] |
 | USB | 2.0 device controller in use; the 1.1 host has no stack in this firmware, and one of its two pin sets drives the print head | firmware | [CL-USB-REC-132] |
 
-Peripheral bases used by the firmware, from the Nuvoton BSP headers:
+Peripheral bases used by the firmware, from the headers of Nuvoton's
+[N32901-3 non-OS BSP](https://github.com/OpenNuvoton/N32901-3_NonOS_BSP):
 
 | Block | Base | Note | Register |
 |---|---|---|---|
@@ -113,8 +114,9 @@ only the start-up traffic has been captured so far ([CL-FIRMWARE-REC-120]).
   display board.
 - Nuvoton documents are not included. The
   [N3290x datasheet](https://www.nuvoton.com/resource-files/N3290x_DataSheet_Revision_A6.2.pdf)
-  is on Nuvoton's site; the N3290x Design Guide and the non-OS BSP are
-  available from Nuvoton as well.
+  is on Nuvoton's site, the [non-OS BSP](https://github.com/OpenNuvoton/N32901-3_NonOS_BSP) on Nuvoton's GitHub
+  (commit `8315e28` was used). The N3290x Design Guide is available from
+  Nuvoton as well.
 
 [CL-BOOT-REC-001]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-BOOT-REC-001
 [CL-DISPLAY-REC-002]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-DISPLAY-REC-002

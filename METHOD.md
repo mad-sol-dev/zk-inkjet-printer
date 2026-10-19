@@ -97,7 +97,8 @@ The first attempt at a clean-up was a set of Codex runs meant to distil a
 as "claims" and was discarded. The second attempt went subsystem by subsystem
 and merged 189 claims into 152 statements, each with confidence, evidence per
 source tier and a next test (2 to 6 January 2026). An authority order decided
-conflicts: artefacts such as datasheets, BSP headers and device tests first,
+conflicts: artefacts such as datasheets, the headers of Nuvoton's
+[BSP](https://github.com/OpenNuvoton/N32901-3_NonOS_BSP) and device tests first,
 then the newer knowledge base, then chat transcripts, then the older
 knowledge base, then old documents. That order corrected the USB controller
 base, the SoC variant and the display controller.

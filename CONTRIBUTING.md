@@ -46,7 +46,8 @@ dead until the card is restored.
 - For device tests, say what ran, from which card (a copy or the original),
   and what you saw.
 - Everything new in the repository is written in English.
-- Do not commit Nuvoton SDKs, tools or datasheets, and nothing private:
+- Do not commit Nuvoton SDKs, tools or datasheets; link them instead, as
+  with the [BSP](https://github.com/OpenNuvoton/N32901-3_NonOS_BSP). Commit nothing private either:
   home paths, host names, real names. A pre-push hook checks for that once
   you enable the hooks with `git config core.hooksPath .githooks`.
 

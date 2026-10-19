@@ -81,7 +81,8 @@ not a guarantee for every variant.
 - To work on it: `python3 tools/scripts/next.py` prints the current open
   questions, and [CLAUDE.md](CLAUDE.md) holds the working rules. Analysis
   needs Ghidra with [GhidraMCPd](https://github.com/mad-sol-dev/GhidraMCPd)
-  and the Nuvoton N3290x BSP (not included).
+  and Nuvoton's [N32901-3 non-OS BSP](https://github.com/OpenNuvoton/N32901-3_NonOS_BSP) (not included; the analysis
+  used commit `8315e28`, its latest).
 
 ## License
 

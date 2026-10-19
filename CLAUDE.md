@@ -396,7 +396,9 @@ Nach Regel 7 gelten Aussagen aus diesen Ablagen erst, wenn sie als Zeile in
 ## Vendor-Unterlagen und der PDF-Reader
 
 Die PDFs liegen **flach in `vendor/`**, nicht in `vendor/datasheets/`. Der BSP
-unter `vendor/N32901-3_NonOS_BSP/` ist fuer genau diesen Chip uebersetzt und
+unter `vendor/N32901-3_NonOS_BSP/` (Klon von
+https://github.com/OpenNuvoton/N32901-3_NonOS_BSP, Commit `8315e28`) ist fuer
+genau diesen Chip uebersetzt und
 schlaegt bei Konflikt den generischen Design Guide.
 
 Der `pdf-reader`-MCP ist angebunden und am 2026-08-21 nach dem Systemneuaufbau
