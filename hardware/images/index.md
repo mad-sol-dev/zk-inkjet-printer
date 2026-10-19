@@ -24,7 +24,8 @@ Previews (thumbnails) link to the large file under `processed/`.
 [![Power/connector](thumbs/dp20_mainboard_power_connector.jpg)](processed/dp20_mainboard_power_connector.jpg)
 [![SD & Display Connectors](thumbs/dp20_mainboard_sd_and_display_connectors.jpg)](processed/dp20_mainboard_sd_and_display_connectors.jpg)
 [![MOSFET row Q7-Q13 above the SoC](thumbs/dp20_mainboard_driver_row.jpg)](processed/dp20_mainboard_driver_row.jpg)
-[![MOSFET row Q7-Q13, close-up: all marked DS01](thumbs/dp20_mainboard_mosfet_row_ds01.jpg)](processed/dp20_mainboard_mosfet_row_ds01.jpg)
+[![MOSFET row Q7-Q13, close-up: all marked DS01 (2025-11-29)](thumbs/dp20_mainboard_mosfet_row_ds01.jpg)](processed/dp20_mainboard_mosfet_row_ds01.jpg)
+[![Level shifters IC1-IC6 next to the display, marked CM504B (2025-11-29)](thumbs/dp20_mainboard_cm504b_row.jpg)](processed/dp20_mainboard_cm504b_row.jpg)
 
 ## Display & Adapter
 [![Display board with adapter](thumbs/dp20_display_board_with_adapter.jpg)](processed/dp20_display_board_with_adapter.jpg)
