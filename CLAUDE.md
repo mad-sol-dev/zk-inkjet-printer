@@ -249,6 +249,13 @@ Der Bridge war am 2026-08-21 noch in Erprobung. **Ein leeres Ergebnis ist
 deshalb kein Befund, sondern ein Anlass, dieselbe Frage mit eigenem Code ueber
 der Rohdatei zu wiederholen.** Siehe CL-TOOL-REC-114.
 
+**Eigener Code ueber der Rohdatei** heisst zuerst `tools/scripts/app_disasm.py`:
+`dis <VA> [N]` zeigt das Disassemblat mit aufgeloesten Poolwerten (Strings,
+MMIO-Namen, Floats), `callers <VA>` alle Verweise im ganzen Image (ARM, Thumb,
+Poolworte, ADR, Ketten), `--selftest` die Positivkontrollen. Was es nicht kann,
+wird dort ergaenzt, statt ein eigenes `dis.py` im Scratchpad zu bauen
+(Regel 11).
+
 **Ghidra-Skripte ueber `run_script`** liegen in `tools/scripts/ghidra/`
 (`GHIDRA_MCP_SCRIPT_DIR`). Erst mit `dry_run=true` laufen lassen, dann echt.
 Ob ein Skript durchgelaufen ist, sagt nur `data.ok`, nicht das aeussere `ok`
