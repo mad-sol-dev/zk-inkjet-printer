@@ -57,7 +57,9 @@ SPI0_BA korrigiert.
    beschreibendes Dokument an. Genau daran ist es im Januar gekippt: nach dem
    6. Januar wurde wieder Prosa produziert statt Zeilen, und binnen neun Tagen war
    die Matrix veraltet.
-2. **`system_understanding.md` wird aus TRUTH.csv abgeleitet, nie direkt editiert.**
+2. **Zusammenfassungen werden aus TRUTH.csv abgeleitet, nie als zweiter Stand
+   gepflegt.** Die fruehere `system_understanding.md` ist am 2026-10-20
+   entfernt worden; Git hat sie.
 3. **Keine Zeile ohne `Next_Test`, solange `Decided=no`.** Eine Frage ohne
    definiertes Experiment ist kein Arbeitspaket, sondern ein Thema — und Themen
    sind das, was das Chaos erzeugt hat.

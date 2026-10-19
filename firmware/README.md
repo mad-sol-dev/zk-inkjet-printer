@@ -71,5 +71,4 @@ Verify with `sha256sum -c` against these lines.
 
 - [research/TRUTH.csv](../research/TRUTH.csv) is the only authoritative record; the rules are in [research/TRUTH.md](../research/TRUTH.md). A browsable view of the register: https://mad-sol-dev.github.io/zk-inkjet-printer/
 - [research/phase_a_sd_analysis/](../research/phase_a_sd_analysis/) holds the raw artefacts of the card analysis, including [boot_header_structure.md](../research/phase_a_sd_analysis/boot_header_structure.md).
-- [research/system_understanding.md](../research/system_understanding.md) is a derived summary from January 2026 and not authoritative.
 - [hardware/](../hardware/) holds the hardware documentation.

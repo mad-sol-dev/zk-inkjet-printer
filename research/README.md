@@ -28,7 +28,6 @@ file and the register disagree, the register is right.
 | `findings/` | The two JSON knowledge bases of 2025 and early 2026 | frozen; their IDs collide (CL-TOOL-REC-103) |
 | `docs_rebuild/` | The reconciliation of January 2026 that seeded the register | frozen |
 | `reference/n32903_registers.json` | MMIO register map extracted from the Nuvoton BSP | reference |
-| `system_understanding.md` | A summary of January 2026 | outdated |
 | `report_analyse_2_8_tft_lcd_18_pin_ffc_vermuteter_controller.md` | Report on the display controller, German | its conclusion, ST7789V, is in CL-DISPLAY-REC-002 |
 | `_dis.py` | A small disassembler for APP.bin, cited as evidence in the register | kept; uses the old base 0x200000 |
 

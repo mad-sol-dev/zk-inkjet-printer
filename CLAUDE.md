@@ -12,8 +12,8 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
    zuerst behoben. Sonst wird an der Front gearbeitet, nicht an etwas anderem.
 2. **Eine Sitzung darf** Zeilen in `TRUTH.csv` aendern oder hinzufuegen und
    Rohartefakte erzeugen. **Eine Sitzung darf kein neues beschreibendes
-   Dokument anlegen.** `research/system_understanding.md` und alles daneben ist
-   abgeleitet und nicht autoritativ. Sitzungen koennen sich irren und
+   Dokument anlegen.** Alles ausser `TRUTH.csv` -- READMEs, `METHOD.md`,
+   `research/docs_rebuild/` -- ist abgeleitet und nicht autoritativ. Sitzungen koennen sich irren und
    Irrwegen folgen; die Triage, das Destillat, ist `TRUTH.csv`. Ein
    Sitzungslog in `research/sessions/` erzaehlt diese Geschichte und entsteht
    nur, wenn der Maintainer es verlangt (Format im README dort).
@@ -390,8 +390,8 @@ Nach Regel 7 gelten Aussagen aus diesen Ablagen erst, wenn sie als Zeile in
 - `research/sessions/` -- die Protokolle der RE-KB-Zeit bis 2026-01 werden
   nicht mehr geaendert. Neue Logs kommen nur dazu, wenn der Maintainer es
   verlangt (Regel 2); sie erzaehlen und belegen nichts.
-- `research/system_understanding.md`, `research/docs_rebuild/` und die
-  Berichte daneben -- abgeleitet, teils veraltet.
+- `research/docs_rebuild/` und die Berichte in `research/phase_a_sd_analysis/`
+  -- abgeleitet, teils veraltet.
 
 ## Vendor-Unterlagen und der PDF-Reader
 
