@@ -36,5 +36,5 @@ Run with `python3 tools/scripts/validate_evidence.py`.
 Ghidra scripts run inside Ghidra; Python scripts run from the repository root with `python3`.
 
 **Related Documentation:**
-- [ANALYSIS_WORKFLOW.md](../ANALYSIS_WORKFLOW.md) - MCP workflow overview
+- [METHOD.md](../METHOD.md) - How the analysis is done, including the Ghidra bridge and the register
 - [CLAUDE.md](../CLAUDE.md) - Agent guidelines for tool usage
