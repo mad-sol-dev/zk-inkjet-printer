@@ -1,68 +1,98 @@
-# ZK-Inkjet Printer Reverse Engineering
+# ZK-Inkjet: reverse engineering a handheld inkjet printer
 
-![DP20 front](hardware/images/processed/dp20_printer_front_display.jpg)
+![The examined printer with its manual](hardware/images/processed/dp20_printer_front_display.jpg)
 
-> Photo gallery: see [**Galllary**](hardware/images/index.md)
-  
-**Status:** 🚧 Active Analysis | **Chip:** Nuvoton N32903U5DN | **Firmware:** Non-OS / Bare Metal
+Written by Claude (Opus 5.5) from the register and the commit history; not yet
+reviewed by the maintainer, @mad-sol-dev. The code is mostly AI-generated,
+tested by running it, not reviewed line by line.
 
-This repository documents the reverse engineering of the "ZK-1696" class handheld inkjet printers (often sold as **Luqeeg**, **Chiky Tech**, or generic **DP20**). These devices use HP45 (Si) thermal inkjet cartridges to print text, QR codes, and bitmaps on packaging.
+## What this is
 
-The goal is to understand the hardware and firmware well enough to enable **custom automation via USB** (e.g., printing serialized data sent from a PC without manual entry).
+The reverse engineering of a cheap handheld inkjet printer, the kind sold as
+ZK-1696, DP20, Luqeeg, Chiky Tech and under other names. It prints text,
+barcodes and images with an HP45-type cartridge and runs on a Nuvoton
+N32903U5DN, with a microSD card as its only storage. One unit was examined.
+The clues on it point to a single maker, ChikyTech, with dealers who put
+their own logo and name on it ([CL-FIRMWARE-REC-132], [CL-DISPLAY-REC-120]).
 
----
+It is also a year of reverse engineering in which language models did nearly
+all of the analysis, and of finding out how to keep that honest. One blind spot in a
+search tool made the USB path look dead for seven months. Another error put
+every address off by 0x1A8000. Three knowledge stores came and went before
+one CSV file and a handful of rules stuck. [METHOD.md](METHOD.md) tells that
+part.
 
-## 🧩 Project Status
+## Why
 
-| Component | Status | Notes |
-| :--- | :---: | :--- |
-| **SoC Identity** | ✅ Verified | **Nuvoton N32903U5DN** (ARM926EJ-S @ 200MHz, 8MB Stacked DDR). |
-| **Boot Chain** | ✅ Verified | Proprietary IBR → `BOOT.bin` (RAW Sec 1) → `APP.bin` (RAW Sec 2048). |
-| **Update System** | ✅ Verified | **Unsafe.** No CRC/Signature checks. Flashes raw data from SD card. |
-| **Pinout** | ✅ Verified | GPIOs mapped. UART console is **blocked** by printhead usage. |
-| **UI Decoding** | 🚧 In Progress | 480x480 framebuffer partially decoded (BGR565 scrambled). |
-| **USB CDC** | 🔄 Planning | Goal: Add a Virtual Serial Port mode or swap the Mass Storage Class with a Virtual Serial Port class.  |
+The plan was an e-bike battery. Its cells needed serial numbers, so a
+handheld inkjet printer was bought to print them. Typing every label on its
+touchscreen got old fast, and the obvious next step was to send labels from a
+PC. From there the maintainer followed Dave Jones's advice from the EEVblog,
+"Don't turn it on, take it apart!", rather more thoroughly than the battery
+required. The printer is now understood down to the timer that fires its
+nozzles. The bike is still waiting.
 
-## 🚴 The "Nerd Cascade"
+The goal is still the same: get a label into the printer from a PC and start
+the print, by patching the firmware rather than adding hardware. By now the
+challenge itself is at least half the point.
 
-↳ **Goal:** Label lithium cells for an E-recumbent bike battery.  
-&emsp;↳ **Tool:** Bought a cheap handheld inkjet printer.  
-&emsp;&emsp;↳ **Problem:** Manual data entry is tedious.  
-&emsp;&emsp;&emsp;↳ **Solution:** Reverse engineer the firmware to inject data via USB.  
-&emsp;&emsp;&emsp;&emsp;↳ **Reality:** Built custom Ghidra MCP tooling and forced AI agents to read datasheets.  
-&emsp;&emsp;&emsp;&emsp;&emsp;↳ *...the bike is still waiting.*
+## Where it stands
 
-## 📂 Repository Layout
+| Step | State | Register |
+|---|---|---|
+| Put a label into the printer without its editor | Works; printing one on paper is not recorded yet | [CL-STORAGE-REC-125] |
+| Reach the label store over USB | Works, with an 8-byte patch | [CL-USB-REC-119] |
+| USB without opening the menu | Works on the test card, unplugging included | [CL-USB-REC-126], [CL-USB-REC-130] |
+| Test patches without writing the card | Works, by booting APP.bin into RAM over USB | [CL-USB-REC-113] |
+| Start a print from the PC | Read from the code, not yet tried | [CL-FIRMWARE-REC-109] |
+| Print an image from outside | Read from the code, not yet tried | [CL-FIRMWARE-REC-117] |
 
-*   [**hardware/**](hardware/) - PCB analysis, Pinouts, and SoC datasheets.
-*   [**firmware/**](firmware/) - Memory maps, Update protocols, and Binary analysis.
-*   [**research/**](research/) - Documentation hub, Phase A findings, session logs, and system understanding.
-*   [**tools/**](tools/) - Custom Python scripts and utilities.
+The last two steps decide whether the original goal is met.
 
-**📚 Key Documentation:**
-*   [**ANALYSIS_WORKFLOW.md**](ANALYSIS_WORKFLOW.md) - Analysis workflow and MCP architecture overview
-*   [**HISTORY.md**](HISTORY.md) - Project timeline and major milestones
-*   [**research/README.md**](research/README.md) - Research documentation index and Phase A results
-*   [**research/system_understanding.md**](research/system_understanding.md) - Comprehensive system reference
+## Printer does not boot?
 
-## ⚡ Quick Start
+The SD card is the printer's only boot medium, so a formatted or broken card
+leaves it dead. A raw image of the examined unit's card is attached to the
+release [SD-Card-clone](https://github.com/mad-sol-dev/zk-inkjet-printer/releases/tag/SD-Card-clone).
+It has no normal file system and cannot be copied file by file. Write it to
+a card of at least 4 GB:
 
-**New to this project?** Start here:
-1. Read [ANALYSIS_WORKFLOW.md](ANALYSIS_WORKFLOW.md) for analysis workflow overview
-2. Check [research/README.md](research/README.md) for Phase A findings and current status
-3. Review [research/phase_a_sd_analysis/SUMMARY.md](research/phase_a_sd_analysis/SUMMARY.md) for latest ground truth
+```bash
+xz -d sdcard.work.img.xz
+sudo dd if=sdcard.work.img of=/dev/sdX bs=4M status=progress
+```
 
-**Prerequisites for development:**
-*   Python 3.10+ (for scripts and analysis tools)
-*   Ghidra 11.x (for binary analysis via MCP)
-*   See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed setup instructions
+Replace `/dev/sdX` with your card, and check twice which device that is. In
+[issue #1](https://github.com/mad-sol-dev/zk-inkjet-printer/issues/1) this
+brought back a printer with a different screen layout. That is one report,
+not a guarantee for every variant.
 
-## ⚠️ Safety Warning
+## More information
 
-**There are NO SAFETY GUARDS.**
-The firmware update mechanism performs **zero** checksum or cryptographic verification. If you flash a corrupted `APP.bin`, the device will brick. Always keep a backup of your SD card image (specifically sectors 0-4096).
+- [The register](https://mad-sol-dev.github.io/zk-inkjet-printer/): every
+  finding with its evidence, its test level and what it depends on. It is
+  the project's only authority; the file behind it is
+  [`research/TRUTH.csv`](research/TRUTH.csv).
+- [The SD card map](https://mad-sol-dev.github.io/zk-inkjet-printer/card_map.html):
+  what lies where on the card, and how updates get there.
+- [METHOD.md](METHOD.md): how the work is done with language models, what
+  was tried and dropped, and what turned out wrong.
+- [hardware/](hardware/): pinout and [photos](hardware/images/index.md).
+- To work on it: `python3 tools/scripts/next.py` prints the current open
+  questions, and [CLAUDE.md](CLAUDE.md) holds the working rules. Analysis
+  needs Ghidra with [GhidraMCPd](https://github.com/mad-sol-dev/GhidraMCPd)
+  and the Nuvoton N3290x BSP (not included).
 
 ## License
 
-*   **Code:** MIT
-*   **Documentation/Images:** CC BY 4.0
+Code: MIT. Documentation and images: CC BY 4.0.
+
+[CL-DISPLAY-REC-120]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-DISPLAY-REC-120
+[CL-FIRMWARE-REC-109]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-FIRMWARE-REC-109
+[CL-FIRMWARE-REC-117]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-FIRMWARE-REC-117
+[CL-FIRMWARE-REC-132]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-FIRMWARE-REC-132
+[CL-STORAGE-REC-125]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-STORAGE-REC-125
+[CL-USB-REC-113]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-USB-REC-113
+[CL-USB-REC-119]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-USB-REC-119
+[CL-USB-REC-126]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-USB-REC-126
+[CL-USB-REC-130]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-USB-REC-130
