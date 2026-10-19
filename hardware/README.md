@@ -53,7 +53,7 @@ Peripheral bases used by the firmware, from the Nuvoton BSP headers:
 | Boot and storage | microSD on SD0 (GPE2-7); the card is the only boot medium | device | [CL-BOOT-REC-001], [CL-SOC-REC-014] |
 | Display | 320 × 240, ST7789V on SPI0 (from BOOT.bin's init sequence); control pin GPE8; backlight switched on and off through GPD0 | firmware; GPE8 old note; backlight derived | [CL-DISPLAY-REC-002], [CL-HARDWARE-REC-007], [CL-HARDWARE-REC-115] |
 | Print head, addresses | 22 lines HA0-21 on GPC0-15, GPE0-1, GPB15, GPD9-11, through six CM504B level shifters | firmware | [CL-HP45-REC-007] |
-| Print head, primitives | 14 lines on GPA0-7, GPA10-11, GPD5-8, through CM504B into seven dual N-MOSFETs (Q7 to Q13, SOT23-6, marked "DS01") | firmware; MOSFETs old note | [CL-HP45-REC-016], [CL-HP45-REC-005] |
+| Print head, primitives | 14 lines on GPA0-7, GPA10-11, GPD5-8, through CM504B into seven dual N-MOSFETs (Q7 to Q13, SOT23-6, marked "DS01") | firmware; MOSFETs device | [CL-HP45-REC-016], [CL-HP45-REC-017] |
 | Head supply VADJ | PWM2 regulated in software against ADC channel 3, setpoint 9.0 V from the settings, enable on GPD3; 9.09 V shown on the diagnostic screen | firmware, device | [CL-FIRMWARE-REC-131], [CL-HP45-REC-011] |
 | Print key | GPE9, polled | firmware | [CL-HARDWARE-REC-109], [CL-HARDWARE-REC-112] |
 | Encoder wheel | GPE11, counted by interrupt, value on the diagnostic screen | device | [CL-HARDWARE-REC-113], [CL-HP45-REC-014] |
@@ -108,7 +108,7 @@ only the start-up traffic has been captured so far ([CL-FIRMWARE-REC-120]).
   the other, each gate opposite its own source. The FS8205 by Fortune
   Semiconductor has the same arrangement, numbered from the other end, so
   it fits electrically; its [datasheet is at LCSC](https://www.lcsc.com/product-detail/C32254.html).
-  The exact part behind "DS01" is not identified.
+  The exact part behind "DS01" is not identified ([CL-HP45-REC-017]).
 - [`images/`](images/index.md): photos of the housing, the mainboard and the
   display board.
 - Nuvoton documents are not included. The
@@ -139,7 +139,7 @@ only the start-up traffic has been captured so far ([CL-FIRMWARE-REC-120]).
 [CL-HARDWARE-REC-116]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-HARDWARE-REC-116
 [CL-HARDWARE-REC-117]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-HARDWARE-REC-117
 [CL-HARDWARE-REC-118]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-HARDWARE-REC-118
-[CL-HP45-REC-005]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-HP45-REC-005
+[CL-HP45-REC-017]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-HP45-REC-017
 [CL-HP45-REC-007]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-HP45-REC-007
 [CL-HP45-REC-011]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-HP45-REC-011
 [CL-HP45-REC-014]: https://mad-sol-dev.github.io/zk-inkjet-printer/#CL-HP45-REC-014
