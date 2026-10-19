@@ -53,7 +53,7 @@ Peripheral bases used by the firmware, from the Nuvoton BSP headers:
 | Boot and storage | microSD on SD0 (GPE2-7); the card is the only boot medium | device | [CL-BOOT-REC-001], [CL-SOC-REC-014] |
 | Display | 320 × 240, ST7789V on SPI0 (from BOOT.bin's init sequence); control pin GPE8; backlight switched on and off through GPD0 | firmware; GPE8 old note; backlight derived | [CL-DISPLAY-REC-002], [CL-HARDWARE-REC-007], [CL-HARDWARE-REC-115] |
 | Print head, addresses | 22 lines HA0-21 on GPC0-15, GPE0-1, GPB15, GPD9-11, through six CM504B level shifters | firmware | [CL-HP45-REC-007] |
-| Print head, primitives | 14 lines on GPA0-7, GPA10-11, GPD5-8, through CM504B into seven dual N-MOSFETs | firmware; MOSFETs old note | [CL-HP45-REC-016], [CL-HP45-REC-005] |
+| Print head, primitives | 14 lines on GPA0-7, GPA10-11, GPD5-8, through CM504B into seven dual N-MOSFETs (Q7 to Q13, SOT23-6, very likely FS8205) | firmware; MOSFETs old note | [CL-HP45-REC-016], [CL-HP45-REC-005] |
 | Head supply VADJ | PWM2 regulated in software against ADC channel 3, setpoint 9.0 V from the settings, enable on GPD3; 9.09 V shown on the diagnostic screen | firmware, device | [CL-FIRMWARE-REC-131], [CL-HP45-REC-011] |
 | Print key | GPE9, polled | firmware | [CL-HARDWARE-REC-109], [CL-HARDWARE-REC-112] |
 | Encoder wheel | GPE11, counted by interrupt, value on the diagnostic screen | device | [CL-HARDWARE-REC-113], [CL-HP45-REC-014] |
@@ -96,11 +96,15 @@ only the start-up traffic has been captured so far ([CL-FIRMWARE-REC-120]).
   board tracing of December 2025, in German. Its SoC side was spot-checked
   against the datasheet; its board side was not re-checked, whatever its
   check marks say ([CL-HARDWARE-REC-107], [CL-HARDWARE-REC-108]).
-- [`Hp45_Interface.ods`](Hp45_Interface.ods): the six CM504B (IC1 to IC6) and
-  the print head connector, pin by pin, with the SoC pin on each input and
-  the MOSFET gate on each output.
+- [`Hp45_Interface.pdf`](Hp45_Interface.pdf): the print head wiring from the
+  board tracing, pin by pin. It covers the six CM504B level shifters (IC1 to
+  IC6) with the SoC pin on each input, the cartridge connector in pogo-pin
+  view, the seven dual MOSFETs Q7 to Q13, and the encoder chip MT6701. Column
+  headings are in German. [`Hp45_Interface.ods`](Hp45_Interface.ods) is the
+  editable source.
 - [`datasheets/FS8205-DS.pdf`](datasheets/FS8205-DS.pdf): FS8205 dual
-  N-channel MOSFET. Which positions on the board use it is not recorded.
+  N-channel MOSFET. The maintainer compared its pinout with Q7 to Q13 on the
+  board, and it fits; it is very likely the part used there.
 - [`images/`](images/index.md): photos of the housing, the mainboard and the
   display board.
 - Nuvoton documents are not included. The
