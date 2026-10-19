@@ -1,0 +1,11 @@
+# count_tool_usage.py --since 2026-10-08 --until 2026-10-19T20:45, 33 sessions, 4026 calls
+day	bridge_incl_run_script	fw_unversioned	fw_runs_unversioned	versioned_analysis
+2026-10-11	196	34	34	11
+2026-10-12	329	86	87	35
+2026-10-13	78	38	40	12
+2026-10-14	25	40	45	23
+2026-10-15	2	66	76	12
+2026-10-16	0	3	3	1
+2026-10-17	24	36	36	32
+2026-10-18	21	116	139	33
+2026-10-19	0	1	1	0
