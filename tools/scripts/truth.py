@@ -72,6 +72,10 @@ class Abgelehnt(Exception):
     """Die Aenderung wurde nicht geschrieben. Der Text sagt, warum."""
 
 
+class Ungueltig(Abgelehnt):
+    """Invalid input to a read command, such as a broken --text pattern. Exit code 2."""
+
+
 def heute():
     return datetime.date.today().isoformat()
 
@@ -277,7 +281,11 @@ def front():
 
 def finden(offen=None, prio=None, subsystem=None, oracle=None, text=None, limit=50):
     _, rows = lesen()
-    rx = re.compile(text, re.I) if text else None
+    try:
+        rx = re.compile(text, re.I) if text else None
+    except re.error as e:
+        raise Ungueltig("--text: invalid regular expression %r: %s (for a literal search escape "
+                        "it, e.g. '%s')" % (text, e, re.escape(text)))
     treffer = []
     for r in rows:
         if offen is True and r["Decided"] != "no":
@@ -601,6 +609,9 @@ def main(argv=None):
             print(prio(a.id, a.wert, a.dry_run))
         elif a.cmd == "commit":
             print(commit(a.nachricht))
+    except Ungueltig as e:
+        print(str(e), file=sys.stderr)
+        return 2
     except Abgelehnt as e:
         print(str(e), file=sys.stderr)
         return 1

@@ -268,6 +268,13 @@ def main():
                "Kopien" not in out, out)
         t.verboten("--json mit fehlender Datei: Ablehnung statt Traceback", "--json",
                    "set", "T-SELBSTTEST-001", "--json", os.path.join(t.root, "fehlt.json"))
+        rc, out = t.cli("find", "--text", "(r0")
+        t.soll("find --text with a broken regex: one-line error, exit code 2, no traceback",
+               rc == 2 and "Traceback" not in out and out.strip().count("\n") == 0
+               and "invalid regular expression" in out, "rc=%d\n%s" % (rc, out))
+        rc, out = t.cli("find", "--text", "Frage A|Befund B")
+        t.soll("find --text stays a regex (alternation finds both rows)",
+               rc == 0 and "T-SELBSTTEST-001" in out and "T-SELBSTTEST-002" in out, out)
         if evidenz_ab is None or heute < evidenz_ab:
             print("--   O2 ohne Evidenz: uebersprungen, der Validator kennt die Regel %s"
                   % ("nicht (EVIDENZ_AB fehlt)" if evidenz_ab is None else "erst ab " + evidenz_ab))
@@ -337,7 +344,9 @@ def main():
                                                                 "felder": ["Decided"]}}},
                 {"jsonrpc": "2.0", "id": 4, "method": "tools/call",
                  "params": {"name": "truth_close", "arguments": {"id": "T-SELBSTTEST-002",
-                                                                 "oracle": "O9"}}}]
+                                                                 "oracle": "O9"}}},
+                {"jsonrpc": "2.0", "id": 5, "method": "tools/call",
+                 "params": {"name": "truth_find", "arguments": {"text": "(r0"}}}]
         vorher = t.hash()
         p = subprocess.run([sys.executable, os.path.join(t.root, TOOLS_REL, "truth_mcp.py")],
                            cwd=t.root, capture_output=True, text=True,
@@ -350,7 +359,7 @@ def main():
             except json.JSONDecodeError:
                 antworten.setdefault("muell", []).append(z)
         t.soll("MCP: nur JSON auf stdout, eine Antwort je Anfrage, keine auf die Benachrichtigung",
-               "muell" not in antworten and sorted(k for k in antworten if k) == [1, 2, 3, 4],
+               "muell" not in antworten and sorted(k for k in antworten if k) == [1, 2, 3, 4, 5],
                p.stdout + p.stderr)
         tools = antworten.get(2, {}).get("result", {}).get("tools", [])
         t.soll("MCP: Werkzeugliste", len(tools) >= 10 and all("inputSchema" in x for x in tools))
@@ -359,6 +368,10 @@ def main():
         r4 = antworten.get(4, {}).get("result", {})
         t.soll("MCP: verbotene Aenderung als isError, Datei unveraendert",
                r4.get("isError") is True and t.hash() == vorher, str(r4))
+        r5 = antworten.get(5, {}).get("result", {})
+        t.soll("MCP: truth_find with a broken regex is isError with the one-line message",
+               r5.get("isError") is True and "invalid regular expression" in r5["content"][0]["text"]
+               and "Traceback" not in r5["content"][0]["text"], str(r5))
     finally:
         shutil.rmtree(t.root, ignore_errors=True)
     print("\n%s" % ("Alle Kontrollen bestanden." if not t.fehler
