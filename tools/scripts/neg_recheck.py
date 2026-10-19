@@ -25,7 +25,7 @@ the report on stdout and, with --out DIR, report.txt and raw.json there.
 
     python3 tools/scripts/neg_recheck.py [--out DIR]
 """
-import json, os, struct, sys
+import json, os, re, struct, sys
 import capstone
 
 APP = 'firmware/bin/ZK-INKJET-NANO-APP.bin'
@@ -210,30 +210,42 @@ MODES = [('lit', m_lit), ('imm', m_imm), ('adr', m_adr), ('chain', m_chain), ('b
 
 
 # ---------------------------------------------------------------- argument recovery
-REGS = {'r0': 0, 'r1': 1, 'r2': 2, 'r3': 3}
+# Up to 2026-10-19 call_args took the first instruction whose first operand was
+# the register as its definition. Stores and compares do not write their first
+# operand (bl 0xBDFD0: 'str r0, [r4, #0x178]' reported, r0 = 0x78 is right), and
+# ldrd/umull, 'ldr r1,[r0,#4]!' and 'str r1,[r0],#4' write registers that are
+# not the first operand. The written set now comes from capstone's regs_access.
+CS_ARM_DETAIL = capstone.Cs(capstone.CS_ARCH_ARM, capstone.CS_MODE_ARM)
+CS_ARM_DETAIL.detail = True
+CS_ARM_DETAIL.skipdata = True
+_IMM = re.compile(r'(\w+), #(-?0x[0-9a-f]+|-?\d+)')
 
 
 def call_args(o, regs=('r0', 'r1'), back=12):
-    """Constant arguments before an ARM call at file offset o: walk back up to
-    `back` instructions, the first write to each register decides. '?' if that
-    write is not mov/mvn #imm, or if a branch or function start is crossed."""
+    """Constant arguments before the ARM call at file offset o. Walks back up to
+    `back` instructions; the first instruction that writes a register decides
+    (mov/mvn Rd,#imm -> value, anything else -> its text). Stops at data, a
+    branch, push/stmdb, pop/ldm or a pc write; an undecided register is '?'."""
     res = {r: None for r in regs}
     lo = max(0, o - 4 * back)
-    ins = list(CS_ARM.disasm(D[lo:o], va(lo)))
-    for i in reversed(ins):
-        m = i.mnemonic
-        if m.startswith(('b', 'pop', 'ldm')) and not m.startswith('bic') or 'pc' in i.op_str.split(',')[0]:
+    for i in reversed(list(CS_ARM_DETAIL.disasm(D[lo:o], va(lo)))):
+        m, ops = i.mnemonic, i.op_str
+        if i.id == 0:                 # skipdata: a word capstone cannot decode
             break
-        if m.startswith('push') or m.startswith('stmdb sp!'):
+        written = {i.reg_name(x) for x in i.regs_access()[1]}
+        if m.startswith(('push', 'stmdb', 'pop', 'ldm')) or (m.startswith('b') and not m.startswith('bic')) \
+                or 'pc' in written:
             break
-        dst = i.op_str.split(',')[0].strip()
-        if dst in res and res[dst] is None:
-            if m in ('mov', 'movs') and '#' in i.op_str:
-                res[dst] = int(i.op_str.split('#')[1], 0)
-            elif m in ('mvn', 'mvns') and '#' in i.op_str:
-                res[dst] = ~int(i.op_str.split('#')[1], 0) & 0xFFFFFFFF
+        imm = _IMM.fullmatch(ops)
+        for r in regs:
+            if r not in written or res[r] is not None:
+                continue
+            if m in ('mov', 'movs') and imm and imm.group(1) == r:
+                res[r] = int(imm.group(2), 0) & 0xFFFFFFFF
+            elif m in ('mvn', 'mvns') and imm and imm.group(1) == r:
+                res[r] = ~int(imm.group(2), 0) & 0xFFFFFFFF
             else:
-                res[dst] = '%s %s' % (m, i.op_str)
+                res[r] = '%s %s' % (m, ops)
         if all(v is not None for v in res.values()):
             break
     return {r: (hex(v) if isinstance(v, int) else (v or '?')) for r, v in res.items()}
@@ -286,6 +298,20 @@ def controls():
     tb = [e for e in m_bl(BASE, END) if e['kind'] == 'thumb-bl']
     out.append(('bl/thumb', 'Thumb BL pairs decoded in file+0x10000-0x1FFFF (plausibility, targets in image)',
                 len(tb), len(tb) > 0))
+    return out + call_args_controls()
+
+
+def call_args_controls():
+    """call_args against three sites read in the listing (2026-10-19)."""
+    out = []
+    a = call_args(0xBDFD0 - BASE, ('r0',))['r0']
+    out.append(('args', 'bl 0xBDFD0: r0 = 0x78 from mov at 0xBDFC4, past str r0,[r4,#0x178]', a, a == '0x78'))
+    a = call_args(0x83AF8 - BASE, ('r1',))['r1']
+    out.append(('args', 'bl 0x83AF8: r1 from ldrd r0,r1 at 0x83AF4, not the ldr r1 at 0x83AF0', a,
+                a == 'ldrd r0, r1, [r1, #0xb8]'))
+    a = call_args(0x7FA20 - BASE, ('r0',))['r0']
+    out.append(('args', 'bl 0x7FA20: r0 written back by ldr r1,[r0,#0x34]! at 0x7FA10', a,
+                a == 'ldr r1, [r0, #0x34]!'))
     return out
 
 

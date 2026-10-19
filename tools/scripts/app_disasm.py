@@ -189,36 +189,6 @@ def prev_push(a, thumb):
     return None
 
 
-NO_DEST = ('str', 'cmp', 'cmn', 'tst', 'teq', 'push', 'stm')
-
-
-def call_args(o, regs, back=12):
-    """Constant arguments before the ARM call at file offset o. Walks back up to
-    `back` instructions; the first instruction that writes a register decides
-    (mov/mvn #imm -> value, anything else -> its text). Stores and compares do
-    not write their first operand. Stops at a branch, push or pc write: '?'."""
-    res = {r: None for r in regs}
-    lo = max(0, o - 4 * back)
-    for i in reversed(list(n.CS_ARM.disasm(D[lo:o], BASE + lo))):
-        m, ops = i.mnemonic, i.op_str
-        dst = ops.split(',')[0].strip()
-        if m.startswith(('push', 'stmdb', 'pop', 'ldm')) or (m.startswith('b') and not m.startswith('bic')) \
-                or dst == 'pc':
-            break
-        if m.startswith(NO_DEST) or dst not in res or res[dst] is not None:
-            continue
-        imm = re.fullmatch(r'\w+, #(-?0x[0-9a-f]+|-?\d+)', ops)
-        if m in ('mov', 'movs') and imm:
-            res[dst] = int(imm.group(1), 0) & 0xFFFFFFFF
-        elif m in ('mvn', 'mvns') and imm:
-            res[dst] = ~int(imm.group(1), 0) & 0xFFFFFFFF
-        else:
-            res[dst] = '%s %s' % (m, ops)
-        if all(v is not None for v in res.values()):
-            break
-    return {r: (hex(v) if isinstance(v, int) else (v or '?')) for r, v in res.items()}
-
-
 def callers(t, arg_regs=()):
     """All references to VA t; returns a dict of lists (VAs and kinds)."""
     t &= ~1
@@ -227,7 +197,7 @@ def callers(t, arg_regs=()):
         if e['kind'].startswith('arm'):
             e2 = {'va': e['va'], 'kind': e['kind'], 'push': prev_push(e['va'], False)}
             if arg_regs and e['kind'].startswith('arm-bl'):
-                e2['args'] = call_args(e['file'], arg_regs)
+                e2['args'] = n.call_args(e['file'], arg_regs)
             res['arm_branch'].append(e2)
     for e in b.thumb_bl(t, t + 1):
         res['thumb_branch'].append({'va': e['va'], 'kind': e['kind'], 'push': prev_push(e['va'], True)})
@@ -306,8 +276,11 @@ def selftest():
           r.get(0xC0870, (0,))[0] == 0xC0808 and r.get(0xC52B4, (0,))[0] == 0xC4CF8,
           {hex(k): v and hex(v[0]) for k, v in r.items()})
     args = {e['va']: e['args'] for e in callers(0x8A7BC, ('r0',))['arm_branch'] if 'args' in e}
-    check('call_args: bl 0xBDFD0 has r0 = 0x78 (mov at 0xBDFC4, then only stores; neg_recheck.call_args '
-          'reports "str r0, [r4, #0x178]")', args.get(0xBDFD0, {}).get('r0') == '0x78', args.get(0xBDFD0))
+    check('callers 0x8A7BC --args r0: bl 0xBDFD0 has r0 = 0x78 (mov at 0xBDFC4, then only stores; '
+          'before 2026-10-19 "str r0, [r4, #0x178]")', args.get(0xBDFD0, {}).get('r0') == '0x78',
+          args.get(0xBDFD0))
+    for mode, what, got, ok in n.call_args_controls():
+        check('neg_recheck.call_args, ' + what, ok, got)
     lines = dis(0xC54D8, 1)
     check('dis 0xC54D8: pool value 0x40E00000 named float 7 (CL-FIRMWARE-REC-132)',
           'float 7' in lines[1], lines[1].strip())
