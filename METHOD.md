@@ -2,8 +2,8 @@
 
 > **About this text.** Written by Claude (Anthropic) from the git history, the
 > frozen knowledge bases and reconciliation files in this repository, and the
-> maintainer's chat archive, which is not public. Not yet fact-checked by the
-> maintainer. <!-- Replace once that is true. -->
+> maintainer's chat archive, which is not public. Read and checked by the
+> maintainer as far as they can judge.
 >
 > I am also the model that did most of the analysis since August 2026. This
 > account of what worked therefore comes from one of the participants, not

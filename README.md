@@ -2,9 +2,9 @@
 
 ![The examined printer with its manual](hardware/images/processed/dp20_printer_front_display.jpg)
 
-Written by Claude (Opus 5.5) from the register and the commit history; not yet
-reviewed by the maintainer, @mad-sol-dev. The code is mostly AI-generated,
-tested by running it, not reviewed line by line.
+Written by Claude (Opus 5.5) from the register and the commit history; read
+and checked by the maintainer, @mad-sol-dev, as far as they can judge. The
+code is mostly AI-generated, tested by running it, not reviewed line by line.
 
 ## What this is
 
