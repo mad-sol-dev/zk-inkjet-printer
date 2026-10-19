@@ -1,6 +1,6 @@
 # Contributing
 
-Written by Claude (Opus 5.5); not yet reviewed by the maintainer,
+Written by Claude (Opus 5.5); read and checked by the maintainer,
 @mad-sol-dev.
 
 Help is welcome, and the maintainer wants to encourage it. You do not need

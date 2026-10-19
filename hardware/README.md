@@ -102,9 +102,10 @@ only the start-up traffic has been captured so far ([CL-FIRMWARE-REC-120]).
   view, the seven dual MOSFETs Q7 to Q13, and the encoder chip MT6701. Column
   headings are in German. [`Hp45_Interface.ods`](Hp45_Interface.ods) is the
   editable source.
-- [`datasheets/FS8205-DS.pdf`](datasheets/FS8205-DS.pdf): FS8205 dual
-  N-channel MOSFET. The maintainer compared its pinout with Q7 to Q13 on the
-  board, and it fits; it is very likely the part used there.
+- FS8205, a dual N-channel MOSFET by Fortune Semiconductor in SOT23-6: the
+  [datasheet is at LCSC](https://www.lcsc.com/product-detail/C32254.html).
+  The maintainer compared its pinout with Q7 to Q13 on the board, and it
+  fits; it is very likely the part used there.
 - [`images/`](images/index.md): photos of the housing, the mainboard and the
   display board.
 - Nuvoton documents are not included. The
