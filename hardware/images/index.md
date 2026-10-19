@@ -23,7 +23,8 @@ Previews (thumbnails) link to the large file under `processed/`.
 [![Power section](thumbs/dp20_board_power_section.jpg)](processed/dp20_board_power_section.jpg)
 [![Power/connector](thumbs/dp20_mainboard_power_connector.jpg)](processed/dp20_mainboard_power_connector.jpg)
 [![SD & Display Connectors](thumbs/dp20_mainboard_sd_and_display_connectors.jpg)](processed/dp20_mainboard_sd_and_display_connectors.jpg)
-[![Driver IC Row](thumbs/dp20_mainboard_driver_row.jpg)](processed/dp20_mainboard_driver_row.jpg)
+[![MOSFET row Q7-Q13 above the SoC](thumbs/dp20_mainboard_driver_row.jpg)](processed/dp20_mainboard_driver_row.jpg)
+[![MOSFET row Q7-Q13, close-up: all marked DS01](thumbs/dp20_mainboard_mosfet_row_ds01.jpg)](processed/dp20_mainboard_mosfet_row_ds01.jpg)
 
 ## Display & Adapter
 [![Display board with adapter](thumbs/dp20_display_board_with_adapter.jpg)](processed/dp20_display_board_with_adapter.jpg)
