@@ -1,25 +1,59 @@
-# Contributing to ZK-Inkjet RE
+# Contributing
 
-We welcome hackers, makers, and signal analysts!
+Written by Claude (Opus 5.5); not yet reviewed by the maintainer,
+@mad-sol-dev.
 
-## How to Help
+Help is welcome, and the maintainer wants to encourage it. You do not need
+to write code to make a difference here. So far everything rests on a single
+printer, so a report about a second one is worth more than most patches.
 
-### 1. The "Safety First" Rule
-Do **not** submit PRs that contain raw vendor SDKs or copyrighted binaries.
-*   ✅ Commit: Analysis scripts, Markdown notes, JSON findings.
-*   ❌ Commit: `APP.bin`, Nuvoton tools.
+## You own one of these printers
 
-### 2. Updating Findings
-We use a structured Knowledge Base (`.re_kb`). If you verify a pinout or reverse a function:
-1.  Don't just update the text files.
-2.  Update the corresponding JSON in `.re_kb/findings/`.
-3.  Run `python tools/generate_verification_summary.py` to sync the tables.
+Open an [issue](https://github.com/mad-sol-dev/zk-inkjet-printer/issues) and
+tell us what you have. Any of these helps:
 
-### 3. Beginners
-Check `docs/guide/operations.md`. A good first task is decoding the remaining artifacts in the UI blob (`ZK-INKJET-UI-QVGA.bin`) or mapping the menu state machine.
+- the name it was sold under, the model on its label, and where you bought it;
+- photos of the start screen, the About screen, the main board from both
+  sides, and the SD card, whose print matters;
+- whether the [card image](https://github.com/mad-sol-dev/zk-inkjet-printer/releases/tag/SD-Card-clone)
+  from this repository boots on your printer, as in
+  [issue #1](https://github.com/mad-sol-dev/zk-inkjet-printer/issues/1);
+- a raw image of your own card, if you are comfortable sharing it. It holds
+  your saved labels and settings, so look before you send.
 
-### 4. Advanced
-We are looking for a way to enable **USB CDC** (Virtual Serial).
-*   Target: `0xB1008000` (USB Device Controller - USBD_BA, BSP-verified).
-*   Goal: Inject a CDC descriptor and a handler hook to accept ASCII commands.
+Before you write anything to your card, take a full image of it:
+
+```bash
+sudo dd if=/dev/sdX of=my_card.img bs=4M status=progress
 ```
+
+The card is the printer's only boot medium. A bad write leaves the printer
+dead until the card is restored.
+
+## You want to work on the analysis
+
+- Start with `python3 tools/scripts/next.py`. It lists the open questions,
+  each with the experiment that would answer it.
+- Findings go into [`research/TRUTH.csv`](research/TRUTH.csv), and only
+  through `tools/scripts/truth.py`. Each row carries a verdict, its evidence,
+  a test level and the rows it depends on. The rules are in
+  [`research/TRUTH.md`](research/TRUTH.md) and at the top of
+  [`CLAUDE.md`](CLAUDE.md), both in German; [METHOD.md](METHOD.md) explains
+  why they exist.
+- A negative result counts only after the same method has found a known
+  case. A number or count in the register names the command that reproduces
+  it.
+- For device tests, say what ran, from which card (a copy or the original),
+  and what you saw.
+- Everything new in the repository is written in English.
+- Do not commit Nuvoton SDKs, tools or datasheets, and nothing private:
+  home paths, host names, real names. A pre-push hook checks for that once
+  you enable the hooks with `git config core.hooksPath .githooks`.
+
+Pull requests are welcome. If you are unsure whether something fits, open
+an issue first.
+
+## Licence
+
+By contributing you agree that code is licensed under MIT, and
+documentation and images under CC BY 4.0, like the rest of the repository.
