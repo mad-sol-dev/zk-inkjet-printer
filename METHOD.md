@@ -25,7 +25,8 @@
   [The Ghidra bridge](#the-ghidra-bridge) ·
   [Delegation and night runs](#delegation-task-files-night-runs) ·
   [The address base](#the-address-base) ·
-  [One tool for the register](#october-2026-one-tool-for-the-register)
+  [One tool for the register](#october-2026-one-tool-for-the-register) ·
+  [Exploring versus proving](#october-2026-exploring-versus-proving)
 - Looking back:
   [Wrong turns about the device](#wrong-turns-about-the-device) ·
   [What went wrong and what it left behind](#what-went-wrong-and-what-it-left-behind)
@@ -332,6 +333,40 @@ O3 row is supposed to name the command or the procedure on the device that
 backs it, and five rows did not. Since 15 October the validator rejects such a
 row when it is changed.
 
+## October 2026: exploring versus proving
+
+On 19 October the maintainer said the sessions looked like the Wild West.
+Instead of using the Ghidra bridge or `run_script`, they kept writing quick
+Python over the raw file and reading the answer off the console. A separate
+session counted it from the Claude Code transcripts since 8 October
+(`research/phase_a_sd_analysis/artifacts/tool_usage_2026-10-19/`). Over 4,026
+tool calls in 33 sessions, 675 went through the bridge, and only 29 of those
+failed. Against that stood 1,164 inline Python calls and 201 runs of scratchpad
+scripts, 516 of them over firmware bytes. The shift shows day by day: 329
+bridge calls on 12 October, 2 on 15 October, and 21 on 18 October against 116
+calls with unversioned code over the firmware. The bridge was not failing; it
+was being skipped.
+
+The register showed the cost. Of 74 living O2 and O3 rows touched since
+15 October, 10 named no repeatable call at all and 14 described a computation
+in words. Several of my own rows from those days rest on a scratchpad script
+that never made it into the repository, among them CL-BOOT-REC-115 and
+CL-FIRMWARE-REC-131.
+
+Code over the raw file was never the problem as such. The positive-control
+rule asks for a second, independent method, and our own decoders are exactly
+that. The problem was code that left no trace. Rule 11 draws the line:
+explore with any means, but a number, count, set comparison or negative
+result that goes into an O2 row runs through the bridge or through a
+versioned script, and the row names that call. The validator enforces this
+for rows changed from 20 October. `tools/scripts/app_disasm.py` gives the
+usual raw-file questions, a listing with pool values and the callers of an
+address, one repeatable command (commits `e687027`, `6877f17`, `7a5013b`,
+`7ab45c8`).
+
+It is the most recent example of how the rules here come about: someone
+notices something, it gets counted, and only then does it become a rule.
+
 ## Wrong turns about the device
 
 The two most expensive mistakes, the scalar search and the address base, are
@@ -376,6 +411,7 @@ written straight into the card's document store instead, which needs neither
 | Prose crept back, this time into the register's cells: one cell reached 28,428 characters, the log of 30 commits retold | A cell holds the verdict and what it rests on; the path goes into the commit message. The validator enforces 2,000 characters for a statement and 1,000 for a next test |
 | Every session wrote its own script to change the register, with the same traps each time | One tool for all changes, which runs the validator before it writes, with a self-test |
 | O2/O3 rows without the command or procedure that would reproduce them | The validator requires that entry for O2/O3 rows changed since 15 October |
+| Sessions skipped the bridge for throwaway scripts; register rows cited code that no longer existed | Rule 11: explore with any means, prove with a repeatable call; the validator checks the call for O2 rows; `app_disasm.py` for raw-file questions |
 
 ## A session today
 
@@ -455,6 +491,8 @@ and compare the results.
   above it are shortened when they are next touched.
 - The evidence requirement for O2/O3 rows applies only to rows changed from
   15 October on. Five older rows still lack the entry.
+- Rule 11 applies only to rows changed from 20 October on. 27 older O2 rows
+  name no repeatable call yet.
 - The two old knowledge bases are frozen in practice, but the row that is
   meant to decide that (CL-TOOL-REC-103) is still formally open.
 - For the gaps from mid-January to August and through September 2026 there
