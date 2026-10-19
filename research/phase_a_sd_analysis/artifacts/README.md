@@ -27,5 +27,5 @@ dd if=firmware/image/sdcard.work.img of=<ziel> bs=1 skip=<offset> count=<groesse
 ```
 
 `ui_qvga_old_vol3.bin` stammt nicht aus einem Rohschnitt, sondern aus
-`tsk_recover -o 1388767 -e` auf dem FAT-Volume @ 0x2A61BE00 (siehe
-`../../analysis_traceability.md`).
+`tsk_recover -o 1388767 -e` auf dem FAT-Volume @ 0x2A61BE00 (2026-01-13,
+geloeschte Datei `ZK-INKJET-UI-QVGA.bin`, 307 200 Bytes).
