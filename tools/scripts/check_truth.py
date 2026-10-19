@@ -37,6 +37,41 @@ ZELLE_AB = "2026-10-16"
 EVIDENZ_AB = "2026-10-15"
 ZELLGRENZE = {"Statement": 2000, "Next_Test": 1000}
 
+# Ab diesem Datum muss der Beleg einer O2-Zeile einen wiederholbaren Aufruf
+# nennen (Regel 11 in CLAUDE.md): ein Skript, ein Brueckenwerkzeug mit
+# Argument, run_script mit Skriptnamen, einen Befehl wie pdftotext oder grep,
+# oder ein Disassemblat an genannten Adressen. Die Auszaehlung der Sitzungen vom
+# 2026-10-08 bis 2026-10-19 fand 1164 Inline-Python-Aufrufe und 201 Laeufe von
+# Scratchpad-Skripten gegen 675 Brueckenaufrufe; mehrere O2-Zeilen nannten als
+# Beleg nur Prosa ('python3 Bytesuche nach ...') oder ein Skript, das nie
+# versioniert wurde (CL-BOOT-REC-115: pruef_boot115.py im Scratchpad).
+# Erkannt wird nur, dass ein Aufruf genannt ist, nicht, dass er die Zahl
+# geliefert hat. Ein genanntes Skript, das im Repository fehlt, ist nur ein
+# Hinweis: Skripte aus Nachbar-Repositories und der Selbsttest der Vorlage
+# (probe.py) nennen Dateien, die hier nicht liegen.
+BELEG_AB = "2026-10-20"
+BELEG_BRUECKE = ("analyze_function_complete|apply_label|collect|datatypes_create|"
+                 "datatypes_update|disassemble_at|disassemble_batch|find_in_function|jt_scan|"
+                 "jt_slot_check|jt_slot_process|list_functions_in_range|mmio_annotate_compact|"
+                 "read_bytes|read_words|rename_function|search_exports|search_functions|"
+                 "search_imports|search_scalars_with_context|search_scalars|search_strings|"
+                 "search_xrefs_to|set_comment|string_xrefs_compact|strings_compact")
+BELEG_SHELL = ("pdftotext|pdfgrep|grep|sha256sum|md5sum|cmp|xxd|hexdump|strings|"
+               "arm-none-eabi-objdump|objdump|readelf|sigrok-cli|analyzeHeadless|binwalk")
+BELEG_SKRIPT = re.compile(r"((?:[\w.~/-]*/)?[\w-]+\.py)\b")
+BELEG_AUFRUF = [
+    re.compile(r"\bpython3?\s+-m\s+[\w.]+"),
+    re.compile(r"\brun_script\b[^;\]]{0,40}?[\w-]+\.py"),
+    re.compile(r"\b(?:%s)\b[^;\]]{0,80}?(?:0x[0-9A-Fa-f]+|['\"]|\w+=)" % BELEG_BRUECKE),
+    re.compile(r"(?<![\w./-])(?:%s)\s+(?:-|['\"]|[\w.~-]*/)" % BELEG_SHELL),
+    re.compile(r"(?<![\w./-])dd\s+if="),
+    re.compile(r"\bcapstone\b[^;\]]{0,80}?0x[0-9A-Fa-f]{3,}"),
+]
+BELEG_SCRATCH = re.compile(r"(?:/tmp/|scratchpad)[^\s;\]]*\.py")
+BELEG_PROSA = re.compile(r"\bpython3?\s+(?!-[muc]\b)(?![\w.~/-]+\.py\b)[A-Za-z]|"
+                         r"\b(?:Bytesuche|Stringsuche|Poolsuche|byte search|string search|"
+                         r"re\.finditer|struct\.unpack|Regex)\b", re.I)
+
 ATOMAR = """Wie es nicht wieder passiert: TRUTH.csv nie in place schreiben.
   open(P,'w') kuerzt die Datei, bevor der Rest des Aufrufs geprueft wird --
   ein assert weiter unten im Skript kommt zu spaet. Stattdessen in eine
@@ -99,6 +134,64 @@ def alte_adressen(rows):
                 treffer.append(r["Claim_ID"])
                 break
     return treffer
+
+
+def _skript_da(pfad):
+    """Liegt ein im Beleg genanntes Skript im Repository (Wurzel, tools/scripts, Artefakte)?"""
+    if pfad.startswith(("/", "~")):
+        return os.path.exists(os.path.expanduser(pfad))
+    name = os.path.basename(pfad)
+    if any(os.path.exists(k) for k in (pfad, os.path.join("tools/scripts", pfad),
+                                       os.path.join("tools/scripts", name),
+                                       os.path.join("tools/scripts/ghidra", name))):
+        return True
+    return bool(glob.glob("research/phase_a_sd_analysis/artifacts/**/" + name, recursive=True))
+
+
+def beleg_pruefen(text):
+    """Regel 11: was nennt ein Beleg? -> (aufruf, scratch_pfade, prosa, fehlende_skripte)"""
+    scratch = BELEG_SCRATCH.findall(text)
+    rest = BELEG_SCRATCH.sub(" ", text)
+    skripte = [m.group(1) for m in BELEG_SKRIPT.finditer(rest)]
+    aufruf = bool(skripte) or any(p.search(rest) for p in BELEG_AUFRUF)
+    return (aufruf, scratch, bool(BELEG_PROSA.search(text)),
+            [s for s in skripte if not _skript_da(s)])
+
+
+def beleg_selbsttest():
+    """Positiv- und Negativkontrollen fuer beleg_pruefen; Aufruf mit --selbsttest-beleg."""
+    faelle = [  # (Beleg, aufruf, scratch, prosa)
+        ("1 [python3 tools/scripts/scatter_base.py firmware/bin/ZK-INKJET-NANO-APP.bin "
+         "--pooltest 0x58000]", True, False, False),
+        ("3 [Regex rb'(Jan|Feb) [ 0-9][0-9]' ueber firmware/bin/ZK-INKJET-NANO-APP.bin; "
+         "Bytesuche DCJET in beiden]", False, False, True),
+        ("1 [python3 /tmp/claude-1000/x/scratchpad/pruef_boot115.py]", False, True, False),
+        ("6 [mcp disassemble_at 0xB2AC0 count=40; python3 Bytesuche nach 0x123B00]",
+         True, False, True),
+        ("1 [Ghidra search_xrefs_to 0x0010c06c (4)]", True, False, False),
+        ("1 [mcp run_script dekompilieren.py 0xD7A7C]", True, False, False),
+        ("1 [capstone ARM over firmware/bin/ZK-INKJET-NANO-APP.bin at VA 0xBB990-0xBB9C4]",
+         True, False, False),
+        ("1 [pdftotext -layout vendor/N3290X.PDF, grep 'USB1.1 Host']", True, False, False),
+        ("1 [python3 -m n329usb --trace boot FA93_musb.bin]", True, False, False),
+        ("1 [CL-BOOT-REC-118 (main 0x702F2C); CL-BOOT-REC-121]", False, False, False),
+        ("1 [strings 0xBE9C4, 0xBE9BC in the image]", False, False, False),
+        ("1 [python3 probe.py a.bin]", True, False, False),
+    ]
+    fehler = 0
+    for text, a, s, p in faelle:
+        ist = beleg_pruefen(text)
+        ok = (ist[0], bool(ist[1]), ist[2]) == (a, s, p)
+        fehler += not ok
+        print("%s  %s" % ("ok  " if ok else "FEHL", text[:90]))
+    fehlt = beleg_pruefen("1 [python3 probe_fehlt_hier.py a.bin]")[3]
+    ok = fehlt == ["probe_fehlt_hier.py"] and not beleg_pruefen(
+        "1 [python3 tools/scripts/neg_recheck.py]")[3]
+    fehler += not ok
+    print("%s  fehlendes Skript erkannt, vorhandenes nicht gemeldet" % ("ok  " if ok else "FEHL"))
+    print("\n%s" % ("Alle Kontrollen bestanden." if not fehler
+                    else "%d Kontrolle(n) fehlgeschlagen." % fehler))
+    return 1 if fehler else 0
 
 
 def main():
@@ -279,6 +372,52 @@ def main():
         warn.append("%d Altzeile(n) auf O2/O3 ohne Beleg in Evidence_E0: %s -- beim Anfassen "
                     "Beleg nachtragen oder auf O1 senken" % (len(x), ", ".join(x)))
 
+    # --- Beleg einer O2-Zeile nennt einen wiederholbaren Aufruf (Regel 11) ---
+    def o2_mit_beleg(r):
+        return (r.get("Oracle", "") == "O2" and not r["Superseded_By"]
+                and (r.get("Evidence_E0") or "").strip() not in ("", "0"))
+    ohne_aufruf, im_scratch, prosa, fehlt = [], [], [], []
+    alt_ohne = []
+    for r in rows:
+        if not o2_mit_beleg(r):
+            continue
+        aufruf, scratch, pr, fe = beleg_pruefen(r["Evidence_E0"])
+        if r.get("Updated", "") < BELEG_AB:
+            if not aufruf:
+                alt_ohne.append(r["Claim_ID"])
+            continue
+        if not aufruf:
+            ohne_aufruf.append(r["Claim_ID"])
+        if scratch:
+            im_scratch.append((r["Claim_ID"], scratch[0]))
+        if pr:
+            prosa.append(r["Claim_ID"])
+        if fe:
+            fehlt.append((r["Claim_ID"], fe[0]))
+    if ohne_aufruf:
+        err.append("O2-Beleg ohne wiederholbaren Aufruf: %s -- Evidence_E0 nennt das Skript "
+                   "(tools/scripts/ oder neben der Ausgabe im Artefaktordner), das "
+                   "Brueckenwerkzeug mit Argument, run_script mit Skriptnamen oder den Befehl "
+                   "(pdftotext, grep ...). Ein Verweis auf andere Zeilen reicht nicht: deren "
+                   "Aufruf hierher uebernehmen, sonst ist die Zeile O1 (Regel 11)" % ohne_aufruf[:12])
+    if im_scratch:
+        err.append("O2-Beleg nennt ein Skript im Scratchpad: %s -- das Skript verschwindet mit "
+                   "der Sitzung. Nach tools/scripts/ oder neben seine Ausgabe in "
+                   "research/phase_a_sd_analysis/artifacts/ legen, committen und diesen Pfad "
+                   "nennen (Regel 11)" % im_scratch[:8])
+    if prosa:
+        warn.append("%d O2-Zeile(n) beschreiben einen Rechenschritt in Worten statt mit Skript "
+                    "(etwa 'python3 Bytesuche nach ...'): %s -- liefert dieser Schritt eine Zahl, "
+                    "Zaehlung oder einen Negativbefund, gehoert er in ein versioniertes Skript "
+                    "(Regel 11)" % (len(prosa), ", ".join(prosa[:12])))
+    if fehlt:
+        warn.append("O2-Beleg nennt ein Skript, das im Repository nicht liegt: %s -- "
+                    "versionieren oder den Pfad korrigieren (Regel 11)" % fehlt[:8])
+    if alt_ohne:
+        warn.append("%d Altzeile(n) auf O2 nennen keinen wiederholbaren Aufruf in Evidence_E0: "
+                    "%s -- beim Anfassen den Aufruf nachtragen oder auf O1 senken (Regel 11)"
+                    % (len(alt_ohne), ", ".join(alt_ohne[:12]) + (" ..." if len(alt_ohne) > 12 else "")))
+
     # --- Zellgrenze ---
     lebend = [r for r in rows if not r["Superseded_By"]]
     zu_lang = [(r["Claim_ID"], c, len(r.get(c) or "")) for r in lebend
@@ -350,4 +489,4 @@ def main():
     return 1 if err else 0
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(beleg_selbsttest() if "--selbsttest-beleg" in sys.argv[1:] else main())
