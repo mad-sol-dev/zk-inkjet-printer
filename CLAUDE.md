@@ -55,6 +55,17 @@ in `research/TRUTH.md`, die Pruefung in `tools/scripts/check_truth.py`.
     der Sprache der Datei, bis sie als Ganzes uebersetzt wird -- eine Datei
     halb deutsch, halb englisch hilft niemandem.
 
+11. **Erkunden mit jedem Mittel, belegen nur mit einem wiederholbaren.**
+    Inline-Python, capstone und Skripte im Scratchpad sind zum Suchen
+    erlaubt. Was als Zahl, Zaehlung, Mengenvergleich oder Negativbefund in
+    eine O2-Zeile geht, laeuft ueber die Bruecke (Werkzeug mit Argumenten
+    oder `run_script <skript>.py`) oder ueber ein versioniertes Skript,
+    unter `tools/scripts/` oder neben seiner Ausgabe im Artefaktordner.
+    `Evidence_E0` nennt genau diesen Aufruf. Ein Skript, das nur im
+    Scratchpad lag, ist kein Beleg, Prosa wie 'python3 Bytesuche nach ...'
+    auch nicht. Ein Disassemblat an genannten Adressen ist eine Lesung und
+    darf so stehen.
+
 <!-- ZK-TRUTH-RULES: Ende -->
 
 # CLAUDE.md
