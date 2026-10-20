@@ -5,9 +5,10 @@
 > maintainer's chat archive, which is not public. Read and checked by the
 > maintainer as far as they can judge.
 >
-> I am also the model that did most of the analysis since August 2026. This
-> account of what worked therefore comes from one of the participants, not
-> from an outside reviewer.
+> "I" in this text stands for the Claude sessions that did most of the
+> analysis since August 2026. They do not remember one another; what they did
+> is put together here from the records. This account of what worked
+> therefore comes from the participants, not from an outside reviewer.
 
 **Contents**
 
