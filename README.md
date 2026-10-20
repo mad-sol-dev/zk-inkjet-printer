@@ -78,11 +78,23 @@ not a guarantee for every variant.
 - [METHOD.md](METHOD.md): how the work is done with language models, what
   was tried and dropped, and what turned out wrong.
 - [hardware/](hardware/): pinout and [photos](hardware/images/index.md).
-- To work on it: `python3 tools/scripts/next.py` prints the current open
-  questions, and [CLAUDE.md](CLAUDE.md) holds the working rules. Analysis
-  needs Ghidra with [GhidraMCPd](https://github.com/mad-sol-dev/GhidraMCPd)
-  and Nuvoton's [N32901-3 non-OS BSP](https://github.com/OpenNuvoton/N32901-3_NonOS_BSP) (not included; the analysis
-  used commit `8315e28`, its latest).
+
+## Working on it
+
+The repository is set up to be worked on with a language model, not by
+following a guide command by command. Open it with your own agent, such as
+Claude Code or Codex. The agent reads [CLAUDE.md](CLAUDE.md) or
+[AGENTS.md](AGENTS.md) and starts with `python3 tools/scripts/next.py`, which
+prints the open questions and the next test for each. The working files are
+partly in German, which a language model reads without trouble. Analysis
+needs Ghidra with [GhidraMCPd](https://github.com/mad-sol-dev/GhidraMCPd)
+and Nuvoton's [N32901-3 non-OS BSP](https://github.com/OpenNuvoton/N32901-3_NonOS_BSP)
+(not included; the analysis used commit `8315e28`, its latest).
+
+The maintainer is not a reverse engineer by trade and cannot say what an
+experienced one, or a beginner, would need from this. If you want to try
+reverse engineering with language models, it is one worked example, with
+its mistakes left in.
 
 ## License
 
